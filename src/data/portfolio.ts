@@ -342,7 +342,7 @@ class AVLTree {
     architecture: "Engineered with Next.js 16 App Router, React 19, and TypeScript, establishing bidirectional connectivity between who I am, live GitHub code artifacts, and verified LinkedIn milestones through an interactive terminal and command palette.",
     tradeoff: "Opted for client-side keyboard navigation and native Tailwind CSS tokens over heavy external component suites, achieving sub-second Turbopack compilation and 100% WCAG AAA contrast compliance.",
     tags: ["AI Development", "Next.js 16", "React 19", "TypeScript", "GitHub Integration", "LinkedIn Sync", "Tailwind CSS v4"],
-    githubUrl: "https://github.com/mogesjohnson/website",
+    githubUrl: "https://github.com/mogesjohnson/Personal-Portfolio",
     metrics: [
       { label: "Identity Sync", value: "GitHub + LinkedIn" },
       { label: "Compile Time", value: "< 750ms Turbopack" },
