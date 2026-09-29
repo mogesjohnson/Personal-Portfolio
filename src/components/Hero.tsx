@@ -1,6 +1,6 @@
 import { personalInfo } from "@/data/portfolio";
 import { ArrowDownRight, MapPin, GraduationCap, FileText, Calendar, CheckCircle2, Phone, Mail } from "lucide-react";
-import InteractiveConsole from "@/components/InteractiveConsole";
+
 
 interface HeroProps {
   onOpenResume: () => void;
@@ -126,10 +126,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
         </a>
       </div>
 
-      {/* Interactive Terminal Sandbox */}
-      <div className="mt-8">
-        <InteractiveConsole onOpenResume={onOpenResume} />
-      </div>
+
 
       {/* Architectural Pillars / Focus */}
       <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3 pt-6 border-t border-slate-200/80 dark:border-slate-800/80 font-mono text-xs">

@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { ArrowUpRight, ChevronDown, ChevronUp, Copy, Check, Terminal, Search, Code, Cpu, BarChart2 } from "lucide-react";
+import { ArrowUpRight, ChevronDown, ChevronUp, Copy, Check, FileCode2, Search, Code, Cpu, BarChart2 } from "lucide-react";
 import { projects, personalInfo, type Project } from "@/data/portfolio";
 
 export default function Projects() {
   const [activeCategory, setActiveCategory] = useState<string>("All");
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [expandedId, setExpandedId] = useState<string | null>("active-directory-lab");
+  const [expandedId, setExpandedId] = useState<string | null>(null);
   const [activeTabMap, setActiveTabMap] = useState<Record<string, "flow" | "code" | "metrics">>({
     "active-directory-lab": "code",
     "data-structures-cpp": "code",
@@ -221,7 +221,7 @@ export default function Projects() {
                     className="w-full flex items-center justify-between text-xs font-mono text-slate-600 dark:text-slate-400 hover:text-amber-600 dark:hover:text-amber-400 transition-colors py-1 font-semibold"
                   >
                     <span className="inline-flex items-center gap-1.5">
-                      <Terminal className="h-3.5 w-3.5 text-sky-600 dark:text-sky-400" />
+                      <FileCode2 className="h-3.5 w-3.5 text-sky-600 dark:text-sky-400" />
                       <span>{isExpanded ? "collapse technical artifacts" : "inspect architecture, code & trade-offs"}</span>
                     </span>
                     {isExpanded ? (
