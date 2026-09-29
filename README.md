@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Personal Portfolio — Moges Johnson
 
-## Getting Started
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat&logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-blue?style=flat&logo=react)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6?style=flat&logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=flat&logo=tailwind-css)](https://tailwindcss.com/)
+[![WCAG](https://img.shields.io/badge/Accessibility-WCAG_AAA-brightgreen?style=flat)](https://www.w3.org/WAI/standards-guidelines/wcag/)
 
-First, run the development server:
+Authentic, high-performance personal developer portfolio and engineering platform for **Moges Johnson** — Software Engineering Student at Liberty University (Class of 2028) & Handshake AI Fellow.
+
+---
+
+## ⚡ Highlights
+
+- **Anti-AI-Slop Visual Hierarchy:** Strictly follows the **60-30-10 Rule** with the *Vibrant & Cheerful Palette*:
+  - **60% Dominant (Canvas):** Soothing warm oat cream (`#faf7f2` light) / deep midnight slate (`#090d16` dark).
+  - **30% Secondary (Structure & Typography):** Deep slate blue (`#0f172a`) and calming sky blue (`#0284c7`).
+  - **10% Accent (Action Points):** Sunny amber (`#f59e0b` / `#fbbf24`) exclusively on primary CTA buttons with dark text for **> 11:1 WCAG AAA contrast**.
+- **Interactive Command Palette (`Cmd+K` / `Ctrl+K`):** Instant keyboard traversal across projects, background, resume, theme toggle, and external links.
+- **In-Browser Terminal Sandbox:** Interactive developer console supporting `$whoami`, `$projects`, `$experience`, `$github`, `$linkedin`, `$resume`, `$stack`, `$now`, and Tab auto-complete.
+- **Interactive Resume Modal:** 1-click ATS-ready raw text copying and high-fidelity 8.5 &times; 11 printable PDF formatting.
+- **Verified Credentials & Real Experience:** Showcases real roles at **Handshake** (AI Fellow), **NonProfitly, Inc.** (SWE Intern), **Quincy's Original Lobster Rolls** (Assistant Manager), and **Gold Coast Landscape & Irrigation**.
+- **Real Technical Projects:**
+  1. *Active Directory & Systems Administration Lab* (Windows Server 2022, AD DS, GPO)
+  2. *Data Structures & Algorithmic Optimization Suite* (C++, AVL Trees, Splay Trees, Graph Traversal)
+  3. *AI Development: Developer Portfolio & Engineering Systems* (Next.js 16, React 19, TypeScript, Turbopack)
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework:** [Next.js 16 (App Router)](https://nextjs.org/)
+- **Library:** [React 19](https://react.dev/)
+- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
+- **Icons:** [Lucide React](https://lucide.dev/)
+- **Language:** TypeScript 5+
+- **Bundler:** Turbopack
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 18.18+ or 20+
+- npm, pnpm, or yarn
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/mogesjohnson/Personal-Portfolio.git
+
+# Navigate into directory
+cd Personal-Portfolio
+
+# Install dependencies
+npm install
+```
+
+### Running Locally
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Building for Production
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 📬 Contact & Connect
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Website:** [mogesjohnson.com](https://mogesjohnson.com)
+- **GitHub:** [@mogesjohnson](https://github.com/mogesjohnson)
+- **LinkedIn:** [linkedin.com/in/mogesjohnson](https://linkedin.com/in/mogesjohnson)
+- **Email:** [mgjohnson9@liberty.edu](mailto:mgjohnson9@liberty.edu)
