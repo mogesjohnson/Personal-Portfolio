@@ -158,7 +158,7 @@ export default function RedesignExperience() {
           <button type="button" className="mobile-command-link" onClick={() => { setMenuOpen(false); setCommandPaletteOpen(true); }}>Open command menu</button>
         </nav>
         <div className="nav-actions">
-          <button className="nav-command" type="button" onClick={() => setCommandPaletteOpen(true)} aria-label="Open command menu"><Command size={14} /> <span>⌘ K</span></button>
+          <button className="nav-command" type="button" onClick={() => setCommandPaletteOpen(true)} aria-label="Open command menu"><Command size={14} /> <span>K</span></button>
           <button className="nav-resume" type="button" onClick={() => setResumeOpen(true)}>Résumé <ArrowUpRight size={15} /></button>
           <button className="nav-menu" type="button" onClick={() => setMenuOpen(!menuOpen)} aria-label={menuOpen ? "Close navigation" : "Open navigation"} aria-expanded={menuOpen}>{menuOpen ? <X size={22} /> : <Menu size={22} />}</button>
         </div>

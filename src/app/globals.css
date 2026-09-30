@@ -54,6 +54,8 @@
 .palette-panel input{color:var(--ink)}
 .resume-toolbar .btn-primary{background:var(--acid);border:1px solid var(--acid);border-radius:2px;box-shadow:none}
 .resume-toolbar .btn-primary:hover{background:#eeffad}
+.hero-line{width:max-content}
+.hero-line-outline{font-size:.84em;line-height:1.08}
 @media print{
   @page{size:letter;margin:.55in}
   html,body,.site-shell{background:white!important;overflow:visible!important}
