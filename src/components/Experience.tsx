@@ -7,7 +7,7 @@ export default function Experience() {
       {/* Section Header */}
       <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-10">
         <div>
-          <h2 className="text-xs font-mono uppercase tracking-wider font-semibold section-eyebrow">
+          <h2 className="text-xs uppercase tracking-wider font-semibold section-eyebrow">
             02 // Work Experience &amp; Leadership
           </h2>
           <p className="mt-2 font-bold text-slate-900 dark:text-slate-100 section-title">
@@ -15,7 +15,7 @@ export default function Experience() {
           </p>
         </div>
 
-        <span className="text-xs font-mono text-slate-500 dark:text-slate-400">
+        <span className="text-xs text-slate-500 dark:text-slate-400">
           operations &bull; systems integration &bull; leadership
         </span>
       </div>
@@ -51,7 +51,7 @@ export default function Experience() {
                   </p>
                 </div>
 
-                <div className="flex flex-wrap md:flex-col md:items-end gap-x-3 gap-y-1.5 shrink-0 text-xs font-mono text-slate-500 dark:text-slate-400">
+                <div className="flex flex-wrap md:flex-col md:items-end gap-x-3 gap-y-1.5 shrink-0 text-xs text-slate-500 dark:text-slate-400">
                   <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 px-2.5 py-0.5 font-semibold text-slate-700 dark:text-slate-300">
                     <Calendar className="h-3 w-3 text-slate-400" />
                     <span>{item.period}</span>
@@ -63,7 +63,7 @@ export default function Experience() {
                 </div>
               </div>
 
-              <span className="mt-3 inline-block font-mono text-[10px] uppercase tracking-wider font-semibold text-sky-700 dark:text-sky-300 border border-sky-200 dark:border-sky-900/60 px-2 py-0.5 rounded-full bg-sky-50 dark:bg-sky-950/40">
+              <span className="mt-3 inline-block text-[10px] uppercase tracking-wider font-semibold text-sky-700 dark:text-sky-300 border border-sky-200 dark:border-sky-900/60 px-2 py-0.5 rounded-full bg-sky-50 dark:bg-sky-950/40">
                 {item.type}
               </span>
 

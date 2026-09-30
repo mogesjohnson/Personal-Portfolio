@@ -34,7 +34,7 @@ export default function NowSection() {
       {/* Section Header */}
       <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2 mb-10">
         <div>
-          <h2 className="text-xs font-mono uppercase tracking-wider font-semibold section-eyebrow">
+          <h2 className="text-xs uppercase tracking-wider font-semibold section-eyebrow">
             05 // Pulse &amp; Context
           </h2>
           <p className="mt-2 font-bold text-slate-900 dark:text-slate-100 section-title">
@@ -45,7 +45,7 @@ export default function NowSection() {
         {/* Live Clock Badge (30% Slate Structure + 10% Amber Pulse) */}
         <div
           aria-hidden="true"
-          className="inline-flex items-center gap-2 rounded-lg border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900/60 px-3 py-1.5 text-xs font-mono text-slate-700 dark:text-slate-300 self-start sm:self-auto shadow-sm"
+          className="inline-flex items-center gap-2 rounded-lg border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900/60 px-3 py-1.5 text-xs text-slate-700 dark:text-slate-300 self-start sm:self-auto shadow-sm"
         >
           <Clock className="h-3.5 w-3.5 text-amber-500 dark:text-amber-400" />
           <span className="text-slate-500 dark:text-slate-400">New York (EST):</span>
@@ -56,7 +56,7 @@ export default function NowSection() {
       </div>
 
       {/* The "Now" Grid */}
-      <div className="card p-5 sm:p-6 space-y-4 text-xs font-mono">
+      <div className="card p-5 sm:p-6 space-y-4 text-xs ">
         <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
           <span className="text-slate-700 dark:text-slate-300 font-bold uppercase tracking-wider text-[11px]">
             Active Status (Fall 2026)
@@ -90,7 +90,7 @@ export default function NowSection() {
 
       {/* Education & Academic Rigor */}
       <div className="mt-8 space-y-3">
-        <h3 className="text-xs font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-semibold">
+        <h3 className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-semibold">
           <GraduationCap className="h-3.5 w-3.5 text-sky-600 dark:text-sky-400" />
           <span>Academic Foundation</span>
         </h3>
@@ -100,12 +100,12 @@ export default function NowSection() {
             <h4 className="text-base font-bold text-slate-900 dark:text-slate-100">
               {personalInfo.education[0]?.institution}
             </h4>
-            <span className="font-mono text-xs text-sky-700 dark:text-sky-400 font-semibold">
+            <span className="text-xs text-sky-700 dark:text-sky-400 font-semibold">
               {personalInfo.education[0]?.timeline}
             </span>
           </div>
 
-          <p className="text-xs font-mono text-slate-700 dark:text-slate-300 font-semibold">
+          <p className="text-xs text-slate-700 dark:text-slate-300 font-semibold">
             {personalInfo.education[0]?.degreeOrHonor}
           </p>
 
@@ -115,10 +115,10 @@ export default function NowSection() {
 
           {personalInfo.education[0]?.coursework && (
             <div className="pt-2 border-t border-slate-100 dark:border-slate-800/80">
-              <span className="text-[11px] font-mono text-slate-500 dark:text-slate-400 block mb-2 font-semibold">
+              <span className="text-[11px] text-slate-500 dark:text-slate-400 block mb-2 font-semibold">
                 KEY COURSEWORK:
               </span>
-              <div className="flex flex-wrap gap-1.5 font-mono text-[11px]">
+              <div className="flex flex-wrap gap-1.5 text-[11px]">
                 {personalInfo.education[0].coursework.map((c) => (
                   <span
                     key={c}
@@ -136,7 +136,7 @@ export default function NowSection() {
 
       {/* Human Dimension / Beyond Code */}
       <div className="mt-8 space-y-3">
-        <h3 className="text-xs font-mono uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-semibold">
+        <h3 className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5 font-semibold">
           <Trophy className="h-3.5 w-3.5 text-amber-500 dark:text-amber-400" />
           <span>Character &amp; Dimensions Outside Code</span>
         </h3>

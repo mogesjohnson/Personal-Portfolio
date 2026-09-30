@@ -8,7 +8,7 @@ export default function Skills() {
     <section id="stack" className="pt-20 pb-6 border-t border-slate-200/80 dark:border-slate-800/80">
       {/* Section Header */}
       <div className="mb-10">
-        <h2 className="text-xs font-mono uppercase tracking-wider font-semibold section-eyebrow">
+        <h2 className="text-xs uppercase tracking-wider font-semibold section-eyebrow">
           04 // Core Competencies &amp; Technical Stack
         </h2>
         <p className="mt-2 font-bold text-slate-900 dark:text-slate-100 section-title">
@@ -29,7 +29,7 @@ export default function Skills() {
               <span className="icon-tile">
                 <Icon className="h-4 w-4" />
               </span>
-              <h3 className="font-mono text-xs text-slate-800 dark:text-slate-200 uppercase tracking-wider font-bold">
+              <h3 className="text-xs text-slate-800 dark:text-slate-200 uppercase tracking-wider font-bold">
                 {group.category}
               </h3>
             </div>
