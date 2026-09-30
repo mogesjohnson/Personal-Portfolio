@@ -87,7 +87,7 @@ Tools: C++, AVL Trees, Splay Trees, Graphs, Big-O Analysis
 AI Development: Developer Portfolio & Engineering Systems
 Tools: Next.js 16, React 19, TypeScript, Tailwind CSS v4, Turbopack, GitHub, LinkedIn
 • Designed and engineered a centralized developer platform connecting verified technical projects, authentic personal background ('who I am'), GitHub repositories, and LinkedIn experience into a unified, high-performance web system.
-• Built interactive command palette (Cmd+K), in-browser terminal sandbox, and instant ATS-ready resume export with zero third-party UI framework bloat.
+• Built an interactive command palette (Cmd+K), project case notes, and a printable resume view with no third-party UI framework.
 
 ACTIVITIES & ATHLETICS
 Liberty University Intramural Sports
@@ -104,19 +104,17 @@ Liberty University Intramural Sports
       role="dialog"
       aria-modal="true"
       aria-label="Resume of Moges Johnson"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4 sm:p-6 overflow-y-auto"
+      className="resume-dialog fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4 sm:p-6 overflow-y-auto"
     >
       <div
-        className="relative w-full max-w-4xl max-h-[92vh] flex flex-col rounded-2xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xl overflow-hidden"
+        className="resume-panel relative w-full max-w-4xl max-h-[92vh] flex flex-col rounded-2xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Top Control Bar */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60 font-mono text-xs">
+        <div className="resume-toolbar flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60 font-mono text-xs">
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 rounded-full bg-amber-400" />
-            <span className="font-bold text-slate-800 dark:text-slate-200">
-              curriculum_vitae // moges_johnson_resume.pdf
-            </span>
+            <span className="font-bold text-slate-800 dark:text-slate-200">Moges Johnson / Résumé</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -152,7 +150,7 @@ Liberty University Intramural Sports
         </div>
 
         {/* Printable Resume Content (Formatted matching Moges' uploaded document) */}
-        <div className="flex-1 overflow-y-auto p-6 sm:p-10 font-sans text-slate-800 dark:text-slate-200 print:p-0 print:text-black">
+        <div className="resume-content flex-1 overflow-y-auto p-6 sm:p-10 font-sans text-slate-800 dark:text-slate-200 print:p-0 print:text-black">
           {/* Header */}
           <div className="border-b border-slate-200 dark:border-slate-800 pb-5 mb-6 text-center sm:text-left">
             <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-slate-50 uppercase">
@@ -363,7 +361,7 @@ Liberty University Intramural Sports
                 </p>
                 <ul className="list-disc list-outside pl-4 space-y-1 text-slate-600 dark:text-slate-300 leading-relaxed pt-0.5">
                   <li>Designed and engineered a centralized developer platform connecting verified technical projects, authentic personal background (&apos;who I am&apos;), GitHub repositories, and LinkedIn experience.</li>
-                  <li>Built interactive command palette (Cmd+K), in-browser terminal sandbox, and instant ATS-ready resume export with sub-second Turbopack compilation.</li>
+                  <li>Built an interactive command palette (Cmd+K), project case notes, and a printable resume view with no third-party UI framework.</li>
                 </ul>
               </div>
             </div>

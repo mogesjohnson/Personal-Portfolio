@@ -339,14 +339,14 @@ class AVLTree {
     year: "2026",
     summary: "High-performance developer platform connecting verified technical projects, personal identity ('who I am'), GitHub repositories, and LinkedIn professional history into a unified engineering hub.",
     problem: "Recruiters and engineering leads often encounter fragmented footprints across scattered git repositories, resume PDFs, and social profiles, creating friction when evaluating a developer's authentic capabilities.",
-    architecture: "Engineered with Next.js 16 App Router, React 19, and TypeScript, establishing bidirectional connectivity between who I am, live GitHub code artifacts, and verified LinkedIn milestones through an interactive terminal and command palette.",
-    tradeoff: "Opted for client-side keyboard navigation and native Tailwind CSS tokens over heavy external component suites, achieving sub-second Turbopack compilation and 100% WCAG AAA contrast compliance.",
+    architecture: "Built with Next.js 16 App Router, React 19, and TypeScript. A focused command palette connects the portfolio sections, résumé, GitHub, and LinkedIn while a project switcher reveals the thinking behind each system.",
+    tradeoff: "Kept the interface self-contained with CSS and SVG motion instead of adding an animation framework, so the visual layer remains lightweight and can respect reduced-motion preferences.",
     tags: ["AI Development", "Next.js 16", "React 19", "TypeScript", "GitHub Integration", "LinkedIn Sync", "Tailwind CSS v4"],
     githubUrl: "https://github.com/mogesjohnson/Personal-Portfolio",
     metrics: [
       { label: "Identity Sync", value: "GitHub + LinkedIn" },
-      { label: "Compile Time", value: "< 750ms Turbopack" },
-      { label: "Accessibility", value: "100% WCAG AAA Contrast" },
+      { label: "Interaction", value: "Keyboard navigation" },
+      { label: "Motion", value: "Reduced-motion aware" },
     ],
     codeArtifact: {
       title: "Interactive Navigation Linking Projects, Bio, GitHub & LinkedIn",
@@ -369,7 +369,7 @@ export default function CommandPalette({ isOpen, onClose, onOpenResume }: Comman
       { step: "01", label: "Identity Core", tech: "Who I Am / Bio Engine", detail: "Bridges Liberty CS coursework, athletics grit, and operational leadership." },
       { step: "02", label: "Code Traceability", tech: "GitHub Integration", detail: "Deep-links live repositories, code snippets, and architectural breakdowns." },
       { step: "03", label: "Milestone Sync", tech: "LinkedIn Experience", detail: "Highlights verified roles at Handshake, NonProfitly, Quincy's, and Gold Coast." },
-      { step: "04", label: "Interactive Flow", tech: "Terminal & Cmd+K", detail: "Provides instant keyboard-driven search, resume export, and calendar dispatch." },
+      { step: "04", label: "Interactive Flow", tech: "Project switcher & Cmd+K", detail: "Provides keyboard-driven navigation, project case notes, résumé viewing, and calendar access." },
     ],
   },
 ];

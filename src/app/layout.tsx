@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Moges Johnson | Full Stack Software Engineer",
+  title: "Moges Johnson | Software Engineering & Applied AI",
   description:
-    "Personal website and portfolio of Moges Johnson - Full Stack Engineer specializing in React, Next.js, and TypeScript.",
+    "Explore the software, systems, and applied AI work of Moges Johnson, a software engineering student and Handshake AI Fellow.",
   keywords: [
     "Moges Johnson",
     "Software Engineer",
@@ -28,9 +28,9 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Moges Johnson" }],
   openGraph: {
-    title: "Moges Johnson | Full Stack Software Engineer",
+    title: "Moges Johnson | Software Engineering & Applied AI",
     description:
-      "Explore projects, technical stack, and software engineering work by Moges Johnson.",
+      "Explore projects and software engineering work by Moges Johnson.",
     type: "website",
   },
 };
