@@ -133,7 +133,7 @@ Liberty University Intramural Sports
             <button
               type="button"
               onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold transition-colors shadow-sm"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md btn-primary text-slate-950 font-bold transition-colors shadow-sm"
               title="Print or Save as PDF"
             >
               <Printer className="h-3.5 w-3.5" />

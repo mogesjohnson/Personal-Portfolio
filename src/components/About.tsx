@@ -2,13 +2,13 @@ import { personalInfo } from "@/data/portfolio";
 
 export default function About() {
   return (
-    <section id="about" className="pt-12 pb-6 border-t border-slate-200/80 dark:border-slate-800/80">
+    <section id="about" className="pt-20 pb-6 border-t border-slate-200/80 dark:border-slate-800/80">
       {/* Section Header */}
-      <div className="mb-6">
-        <h2 className="text-xs font-mono uppercase tracking-wider text-sky-700 dark:text-sky-400 font-semibold">
+      <div className="mb-10">
+        <h2 className="text-xs font-mono uppercase tracking-wider font-semibold section-eyebrow">
           03 // Engineering Philosophy &amp; Background
         </h2>
-        <p className="mt-1 text-lg font-bold text-slate-900 dark:text-slate-100">
+        <p className="mt-2 font-bold text-slate-900 dark:text-slate-100 section-title">
           How I Build Software
         </p>
       </div>
@@ -25,9 +25,9 @@ export default function About() {
         {personalInfo.principles.map((item, index) => (
           <div
             key={item.title}
-            className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/40 p-4 shadow-sm"
+            className="card card-accent p-5"
           >
-            <span className="font-mono text-amber-600 dark:text-amber-400 text-xs font-bold block mb-1.5">
+            <span className="icon-tile font-mono text-xs font-bold mb-3">
               0{index + 1}
             </span>
             <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">

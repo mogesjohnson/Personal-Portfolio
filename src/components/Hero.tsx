@@ -1,5 +1,5 @@
 import { personalInfo } from "@/data/portfolio";
-import { ArrowDownRight, MapPin, GraduationCap, FileText, Calendar, CheckCircle2, Phone, Mail } from "lucide-react";
+import { Server, Binary, Sparkles, ArrowDownRight, MapPin, GraduationCap, FileText, Calendar, CheckCircle2, Phone, Mail } from "lucide-react";
 
 
 interface HeroProps {
@@ -8,9 +8,12 @@ interface HeroProps {
 
 export default function Hero({ onOpenResume }: HeroProps) {
   return (
-    <section className="pt-8 pb-4">
+    <section className="relative pt-12 pb-4">
+      <div className="hero-orb -top-10 -left-24 h-72 w-72 bg-[radial-gradient(closest-side,rgba(245,158,11,0.22),transparent)] dark:bg-[radial-gradient(closest-side,rgba(251,191,36,0.10),transparent)]" aria-hidden="true" />
+      <div className="hero-orb top-10 right-0 h-64 w-64 bg-[radial-gradient(closest-side,rgba(14,165,233,0.18),transparent)] dark:bg-[radial-gradient(closest-side,rgba(14,165,233,0.10),transparent)]" aria-hidden="true" />
+
       {/* Availability Status & University Badge */}
-      <div className="flex flex-wrap items-center justify-between gap-3 mb-6 text-xs font-mono">
+      <div className="rise flex flex-wrap items-center justify-between gap-3 mb-8 text-xs font-mono" style={{ "--i": 0 } as React.CSSProperties}>
         <div className="inline-flex items-center gap-2 rounded-full border border-amber-300 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/10 px-3 py-1 text-amber-900 dark:text-amber-300 font-medium">
           <span className="h-2 w-2 rounded-full bg-amber-500 inline-block animate-pulse" />
           <span>{personalInfo.status}</span>
@@ -30,20 +33,20 @@ export default function Hero({ onOpenResume }: HeroProps) {
       </div>
 
       {/* Main Identity with Avatar Frame */}
-      <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-6">
+      <div className="rise flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-6" style={{ "--i": 1 } as React.CSSProperties}>
         <div className="space-y-2">
-          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-slate-50">
+          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tighter text-gradient leading-[1.05] pb-1">
             {personalInfo.name}
           </h1>
-          <p className="text-base sm:text-lg font-semibold text-slate-700 dark:text-slate-300">
+          <p className="text-base sm:text-xl font-semibold text-slate-700 dark:text-slate-300">
             {personalInfo.title} <span className="text-slate-400 dark:text-slate-600 font-normal">/</span>{" "}
             <span className="text-sky-700 dark:text-sky-300 font-medium">{personalInfo.focus}</span>
           </p>
         </div>
 
         {/* Tactile Monogram Avatar with 10% Sunny Amber Accent Ring */}
-        <div className="relative flex h-16 w-16 sm:h-20 sm:w-20 shrink-0 items-center justify-center rounded-xl border-2 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 shadow-md">
-          <span className="font-mono text-xl sm:text-2xl font-black tracking-tighter text-slate-900 dark:text-slate-100">
+        <div className="relative flex h-20 w-20 sm:h-28 sm:w-28 shrink-0 items-center justify-center rounded-2xl border border-amber-300/60 dark:border-amber-400/30 bg-gradient-to-br from-white to-amber-50 dark:from-slate-900 dark:to-slate-800 shadow-xl shadow-amber-500/10 ring-4 ring-amber-400/10">
+          <span className="font-mono text-2xl sm:text-4xl font-black tracking-tighter text-slate-900 dark:text-slate-100">
             MJ
           </span>
           <span
@@ -54,7 +57,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
       </div>
 
       {/* Recruiter Quick-Facts Bar */}
-      <div className="mt-4 flex flex-wrap gap-2 text-[11px] font-mono">
+      <div className="rise mt-5 flex flex-wrap gap-2 text-[11px] font-mono" style={{ "--i": 2 } as React.CSSProperties}>
         <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20 font-semibold">
           <CheckCircle2 className="h-3 w-3" />
           <span>{personalInfo.workAuth}</span>
@@ -75,7 +78,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
       </div>
 
       {/* Direct Mission Narrative */}
-      <div className="mt-5 space-y-3 text-sm sm:text-[15px] leading-relaxed text-slate-600 dark:text-slate-300 max-w-2xl">
+      <div className="rise mt-6 space-y-3 text-sm sm:text-base leading-relaxed text-slate-600 dark:text-slate-300 max-w-2xl" style={{ "--i": 3 } as React.CSSProperties}>
         <p>
           I am a Computer Science student at <strong className="text-slate-900 dark:text-slate-100 font-semibold">Liberty University</strong> pursuing a B.S. in Computer Science with a Software Engineering concentration and a Minor in Business (Expected Spring 2028). Currently, I am a <strong className="text-slate-900 dark:text-slate-100 font-semibold">Handshake AI Fellow</strong>.
         </p>
@@ -85,12 +88,12 @@ export default function Hero({ onOpenResume }: HeroProps) {
       </div>
 
       {/* Primary Action Points: Dual CTAs (Resume + Work) */}
-      <div className="mt-7 flex flex-wrap items-center gap-3 text-xs font-mono">
+      <div className="rise mt-8 flex flex-wrap items-center gap-3 text-xs font-mono" style={{ "--i": 4 } as React.CSSProperties}>
         {/* P0 Action: View / Download Resume (10% Sunny Amber Accent) */}
         <button
           type="button"
           onClick={onOpenResume}
-          className="inline-flex items-center gap-1.5 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold px-4 py-2.5 shadow-sm hover:shadow-amber-400/25 transition-all active:scale-[0.98]"
+          className="inline-flex items-center gap-1.5 rounded-lg btn-primary text-slate-950 font-bold px-4 py-2.5 shadow-sm hover:shadow-amber-400/25 transition-all active:scale-[0.98]"
         >
           <FileText className="h-4 w-4" />
           <span>View Resume / CV</span>
@@ -129,20 +132,23 @@ export default function Hero({ onOpenResume }: HeroProps) {
 
 
       {/* Architectural Pillars / Focus */}
-      <div className="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-3 pt-6 border-t border-slate-200/80 dark:border-slate-800/80 font-mono text-xs">
-        <div className="p-3.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/40 shadow-sm">
+      <div className="rise mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3 pt-8 border-t border-slate-200/80 dark:border-slate-800/80 font-mono text-xs" style={{ "--i": 5 } as React.CSSProperties}>
+        <div className="p-4 card card-sm card-accent">
+          <Server className="h-4 w-4 text-amber-600 dark:text-amber-400 mb-2.5" />
           <span className="text-sky-600 dark:text-sky-400 block text-[11px] mb-1 font-semibold">01 // SYSTEMS &amp; INFRA</span>
           <p className="text-slate-900 dark:text-slate-100 font-semibold">Windows Server 2022</p>
           <p className="text-slate-500 dark:text-slate-400 text-[11px] mt-1">Active Directory &amp; Group Policy (GPO)</p>
         </div>
 
-        <div className="p-3.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/40 shadow-sm">
+        <div className="p-4 card card-sm card-accent">
+          <Binary className="h-4 w-4 text-amber-600 dark:text-amber-400 mb-2.5" />
           <span className="text-sky-600 dark:text-sky-400 block text-[11px] mb-1 font-semibold">02 // ALGORITHMS &amp; C++</span>
           <p className="text-slate-900 dark:text-slate-100 font-semibold">Modern C++ (AVL &amp; Splay)</p>
           <p className="text-slate-500 dark:text-slate-400 text-[11px] mt-1">Graph theory &amp; Big-O optimization</p>
         </div>
 
-        <div className="p-3.5 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/40 shadow-sm">
+        <div className="p-4 card card-sm card-accent">
+          <Sparkles className="h-4 w-4 text-amber-600 dark:text-amber-400 mb-2.5" />
           <span className="text-sky-600 dark:text-sky-400 block text-[11px] mb-1 font-semibold">03 // APPLIED AI &amp; WEB</span>
           <p className="text-slate-900 dark:text-slate-100 font-semibold">Handshake AI &amp; Web Systems</p>
           <p className="text-slate-500 dark:text-slate-400 text-[11px] mt-1">LLM workflows, React 19 &amp; Next.js</p>

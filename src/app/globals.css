@@ -84,3 +84,252 @@ body {
 .dark ::-webkit-scrollbar-thumb {
   background: #334155;
 }
+
+/* ------------------------------------------------------------------ */
+/* Visual system: ambient backdrop, cards, motion                      */
+/* ------------------------------------------------------------------ */
+
+:root {
+  --card-bg: rgba(255, 255, 255, 0.94);
+  --card-border: rgba(15, 23, 42, 0.09);
+  --card-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px -12px rgba(15, 23, 42, 0.12);
+  --card-shadow-hover: 0 2px 4px rgba(15, 23, 42, 0.05), 0 20px 40px -16px rgba(15, 23, 42, 0.22);
+  --glow: rgba(245, 158, 11, 0.16);
+  --grid-line: rgba(15, 23, 42, 0.05);
+}
+
+.dark {
+  --card-bg: rgba(17, 24, 39, 0.92);
+  --card-border: rgba(148, 163, 184, 0.14);
+  --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+  --card-shadow-hover: 0 2px 4px rgba(0, 0, 0, 0.35), 0 24px 48px -16px rgba(0, 0, 0, 0.8);
+  --glow: rgba(251, 191, 36, 0.14);
+  --grid-line: rgba(148, 163, 184, 0.06);
+}
+
+/* Ambient backdrop: soft colour washes + a faint fading grid */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(900px 500px at 12% -5%, rgba(245, 158, 11, 0.13), transparent 60%),
+    radial-gradient(800px 500px at 95% 8%, rgba(14, 165, 233, 0.11), transparent 60%),
+    linear-gradient(var(--grid-line) 1px, transparent 1px) 0 0 / 44px 44px,
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px) 0 0 / 44px 44px;
+  height: 70vh;
+}
+
+/* Cards: glass surface, cursor spotlight, lift on hover */
+.card {
+  position: relative;
+  border-radius: 0.875rem;
+  border: 1px solid var(--card-border);
+  background: var(--card-bg);
+  box-shadow: var(--card-shadow);
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 0%), var(--glow), transparent 65%);
+  transition: opacity 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(245, 158, 11, 0.35);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+.card-sm {
+  border-radius: 0.75rem;
+}
+
+/* Section eyebrow: accent tick + gradient label */
+.section-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: linear-gradient(90deg, #0369a1, #d97706);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+.dark .section-eyebrow {
+  background-image: linear-gradient(90deg, #38bdf8, #fbbf24);
+}
+
+.section-eyebrow::before {
+  content: "";
+  width: 1.5rem;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #f59e0b, transparent);
+}
+
+.section-title {
+  letter-spacing: -0.02em;
+  font-size: 1.5rem !important;
+  line-height: 1.2;
+}
+
+@media (min-width: 640px) {
+  .section-title {
+    font-size: 1.75rem !important;
+  }
+}
+
+/* Gradient heading text */
+.text-gradient {
+  background: linear-gradient(120deg, #0f172a 20%, #b45309 60%, #0369a1 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.dark .text-gradient {
+  background-image: linear-gradient(120deg, #f8fafc 20%, #fbbf24 60%, #38bdf8 100%);
+}
+
+/* Primary button: gradient with moving sheen */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
+  box-shadow: 0 6px 18px -6px rgba(245, 158, 11, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.45) 50%, transparent 65%);
+  transform: translateX(-120%);
+  transition: transform 0.7s ease;
+}
+
+.btn-primary:hover::after {
+  transform: translateX(120%);
+}
+
+/* Hero backdrop orbs */
+.hero-orb {
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@keyframes float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(20px, -24px, 0); }
+}
+
+/* Entrance choreography for the hero */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: none; }
+}
+
+.rise {
+  animation: rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+
+/* Scroll-driven reveal for sections (progressive enhancement) */
+@supports (animation-timeline: view()) {
+  .scroll-progress {
+    transform-origin: 0 50%;
+    animation: grow linear both;
+    animation-timeline: scroll(root);
+  }
+}
+
+@keyframes grow {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* Keyboard focus */
+:focus-visible {
+  outline: 2px solid #f59e0b;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Tag chip: shared by projects, experience, skills */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 9999px;
+  border: 1px solid var(--card-border);
+  background: var(--surface-muted);
+  padding: 0.2rem 0.65rem;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: color 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.chip:hover {
+  color: var(--text-primary);
+  border-color: rgba(245, 158, 11, 0.5);
+  background: rgba(245, 158, 11, 0.08);
+}
+
+/* Icon tile used on feature cards */
+.icon-tile {
+  display: inline-flex;
+  height: 2.25rem;
+  width: 2.25rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.625rem;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.18), rgba(14, 165, 233, 0.1));
+  color: #b45309;
+}
+
+.dark .icon-tile {
+  color: #fbbf24;
+}
+
+/* Top accent line that appears on card hover */
+.card-accent::after {
+  content: "";
+  position: absolute;
+  left: 1.25rem;
+  right: 1.25rem;
+  top: -1px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, #f59e0b, #0ea5e9, transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card-accent:hover::after {
+  opacity: 1;
+}

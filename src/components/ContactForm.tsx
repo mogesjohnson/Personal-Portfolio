@@ -50,7 +50,7 @@ export default function ContactForm() {
         </div>
 
         {/* Quick Email Copy Box */}
-        <div className="rounded-lg border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900/60 p-3.5 space-y-2 text-xs font-mono shadow-sm">
+        <div className="card card-sm p-4 space-y-2 text-xs font-mono">
           <span className="text-slate-500 text-[11px] block">DIRECT EMAIL</span>
           <div className="flex items-center justify-between gap-2">
             <span className="font-semibold text-slate-800 dark:text-slate-200 truncate">
@@ -68,7 +68,7 @@ export default function ContactForm() {
         </div>
 
         {/* 1-Click Scheduling */}
-        <div className="rounded-lg border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900/60 p-3.5 space-y-2 text-xs font-mono shadow-sm">
+        <div className="card card-sm p-4 space-y-2 text-xs font-mono">
           <span className="text-slate-500 text-[11px] block">CALENDAR DISPATCH</span>
           <p className="text-slate-600 dark:text-slate-400 text-[11px]">
             Schedule a 15-minute technical intro chat directly on my calendar.
@@ -86,7 +86,7 @@ export default function ContactForm() {
       </div>
 
       {/* Form Right Side: Interactive Form */}
-      <div className="lg:col-span-7 rounded-xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6 shadow-sm">
+      <div className="lg:col-span-7 card p-6">
         {status === "success" ? (
           <div className="p-6 text-center space-y-3">
             <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 mx-auto">
@@ -181,7 +181,7 @@ export default function ContactForm() {
             <button
               type="submit"
               disabled={status === "submitting"}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-lg bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold px-6 py-2.5 shadow-sm transition-all active:scale-[0.98] disabled:opacity-50"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-lg btn-primary text-slate-950 font-bold px-6 py-2.5 shadow-sm transition-all active:scale-[0.98] disabled:opacity-50"
             >
               <Send className="h-4 w-4" />
               <span>{status === "submitting" ? "Sending..." : "Dispatch Message"}</span>

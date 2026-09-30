@@ -55,14 +55,14 @@ export default function Projects() {
   };
 
   return (
-    <section id="projects" className="pt-12 pb-6 border-t border-slate-200/80 dark:border-slate-800/80">
+    <section id="projects" className="pt-20 pb-6 border-t border-slate-200/80 dark:border-slate-800/80">
       {/* Section Header */}
-      <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-3 mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-3 mb-10">
         <div>
-          <h2 className="text-xs font-mono uppercase tracking-wider text-sky-700 dark:text-sky-400 font-semibold">
+          <h2 className="text-xs font-mono uppercase tracking-wider font-semibold section-eyebrow">
             01 // Selected Systems &amp; Projects
           </h2>
-          <p className="mt-1 text-lg font-bold text-slate-900 dark:text-slate-100">
+          <p className="mt-2 font-bold text-slate-900 dark:text-slate-100 section-title">
             Case Studies &amp; Verified Software
           </p>
         </div>
@@ -88,7 +88,7 @@ export default function Projects() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search projects, technologies (e.g. C++, Windows Server, Active Directory, GPO, Next.js)..."
-            className="w-full pl-9 pr-4 py-2 rounded-lg border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900/60 text-xs font-mono text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-amber-400 focus:ring-1 focus:ring-amber-400 focus:outline-none shadow-sm"
+            className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900/60 text-xs font-mono text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:border-amber-400 focus:ring-1 focus:ring-amber-400 focus:outline-none shadow-sm"
           />
           {searchQuery && (
             <button
@@ -113,9 +113,9 @@ export default function Projects() {
                 aria-selected={isActive}
                 type="button"
                 onClick={() => setActiveCategory(cat)}
-                className={`rounded-md px-3 py-1.5 transition-all focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:outline-none ${
+                className={`rounded-full px-3.5 py-1.5 transition-all focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:outline-none ${
                   isActive
-                    ? "bg-amber-400 text-slate-950 font-bold shadow-sm shadow-amber-400/20"
+                    ? "btn-primary text-slate-950 font-bold shadow-sm shadow-amber-400/20"
                     : "bg-white dark:bg-slate-900/60 text-slate-700 dark:text-slate-300 hover:border-slate-400 dark:hover:border-slate-600 border border-slate-300 dark:border-slate-800 shadow-sm"
                 }`}
               >
@@ -129,7 +129,7 @@ export default function Projects() {
       {/* Projects List */}
       <div className="space-y-5">
         {filteredProjects.length === 0 ? (
-          <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/40 p-8 text-center text-xs font-mono text-slate-500">
+          <div className="card p-8 text-center text-xs font-mono text-slate-500">
             No projects matched &ldquo;{searchQuery}&rdquo; in category {activeCategory}.
           </div>
         ) : (
@@ -141,15 +141,15 @@ export default function Projects() {
             return (
               <article
                 key={project.id}
-                className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/40 p-5 transition-all hover:border-slate-300 dark:hover:border-slate-700 shadow-sm"
+                className="card card-accent p-5 sm:p-6"
               >
                 {/* Header row */}
                 <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2">
                   <div className="flex flex-wrap items-center gap-2.5">
-                    <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
+                    <h3 className="text-lg font-bold tracking-tight text-slate-900 dark:text-slate-100">
                       {project.title}
                     </h3>
-                    <span className="font-mono text-[11px] font-semibold text-sky-800 dark:text-sky-300 border border-sky-200 dark:border-sky-900/60 px-2 py-0.5 rounded-md bg-sky-50 dark:bg-sky-950/40">
+                    <span className="font-mono text-[11px] font-semibold text-sky-800 dark:text-sky-300 border border-sky-200 dark:border-sky-900/60 px-2 py-0.5 rounded-full bg-sky-50 dark:bg-sky-950/40">
                       {project.category}
                     </span>
                     <span className="font-mono text-[11px] text-slate-400 dark:text-slate-500 font-medium">
@@ -158,7 +158,7 @@ export default function Projects() {
                   </div>
 
                   {/* Direct Action Links */}
-                  <div className="flex items-center gap-3 text-xs font-mono pt-1 sm:pt-0">
+                  <div className="flex shrink-0 items-center gap-3 text-xs font-mono pt-1 sm:pt-0 whitespace-nowrap">
                     <a
                       href={project.githubUrl}
                       target="_blank"
@@ -191,21 +191,21 @@ export default function Projects() {
                 </p>
 
                 {/* Metrics Highlights Bar */}
-                <div className="mt-3 grid grid-cols-3 gap-2 py-2 px-3 rounded-lg bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800/80 font-mono text-[11px]">
+                <div className="mt-4 grid grid-cols-3 divide-x divide-slate-200 dark:divide-slate-800 rounded-lg bg-slate-50/80 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800/80 font-mono text-[11px]">
                   {project.metrics.map((m) => (
-                    <div key={m.label} className="truncate">
-                      <span className="text-slate-400 block text-[10px] truncate">{m.label}</span>
-                      <span className="font-bold text-slate-800 dark:text-slate-200 truncate">{m.value}</span>
+                    <div key={m.label} className="truncate px-3 py-2.5">
+                      <span className="text-slate-400 block text-[10px] uppercase tracking-wider truncate">{m.label}</span>
+                      <span className="block mt-0.5 font-bold text-[12px] text-slate-900 dark:text-slate-100 truncate">{m.value}</span>
                     </div>
                   ))}
                 </div>
 
                 {/* Stack tags */}
-                <div className="mt-3.5 flex flex-wrap gap-1.5 font-mono text-[11px]">
+                <div className="mt-4 flex flex-wrap gap-1.5">
                   {project.tags.map((tag) => (
                     <span
                       key={tag}
-                      className="rounded-md bg-slate-100 dark:bg-slate-800/80 px-2 py-0.5 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700/80 font-medium"
+                      className="chip"
                     >
                       {tag}
                     </span>
