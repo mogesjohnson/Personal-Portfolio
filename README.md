@@ -1,82 +1,44 @@
-# Personal Portfolio — Moges Johnson
+# Moges Johnson — Portfolio
 
-[![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat&logo=next.js)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-19-blue?style=flat&logo=react)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6?style=flat&logo=typescript)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=flat&logo=tailwind-css)](https://tailwindcss.com/)
-[![WCAG](https://img.shields.io/badge/Accessibility-WCAG_AAA-brightgreen?style=flat)](https://www.w3.org/WAI/standards-guidelines/wcag/)
+A personal portfolio for Moges Johnson, built with Next.js 16, React 19, TypeScript, and Tailwind CSS 4.
 
-Authentic, high-performance personal developer portfolio and engineering platform for **Moges Johnson** — Software Engineering Student at Liberty University (Class of 2028) & Handshake AI Fellow.
+## Live Motion (v3)
 
----
+The site is built around one idea: a single living particle field that follows the reader down the page.
 
-## ⚡ Highlights
+- **Signal field.** One full-screen Canvas 2D layer of ~1,900 particles (fewer on phones). Elements marked `data-signal="<formation>"` act as anchors. While one is on screen, the particles spring into its formation, fitted to the element's box: the MJ monogram in the hero, each project's diagram in the work section, and the contact mark at the end. Between anchors they drift through a flow field. The cursor pushes them around, and a click sends out a shockwave.
+- **Title sequence.** A roughly two-second kinetic intro that hard-cuts words across colour plates, then lifts away to the hero. It plays once per session, and any key, click, or scroll skips it.
+- **Scroll scenes.** GSAP ScrollTrigger and Lenis drive the headline reveals, a scrubbed word-by-word quote, velocity-reactive marquees, a pinned horizontal experience timeline, and a variable-weight footer wordmark.
+- **Transitions.** The theme switch uses the View Transitions API as a circular reveal from the toggle. Project titles decode from noise when you switch projects.
+- **Accessibility.** With `prefers-reduced-motion`, nothing animates. The particle field never mounts, and the diagrams render as static SVG from the same geometry. Without JavaScript the page renders fully and statically.
 
-- **Anti-AI-Slop Visual Hierarchy:** Strictly follows the **60-30-10 Rule** with the *Vibrant & Cheerful Palette*:
-  - **60% Dominant (Canvas):** Soothing warm oat cream (`#faf7f2` light) / deep midnight slate (`#090d16` dark).
-  - **30% Secondary (Structure & Typography):** Deep slate blue (`#0f172a`) and calming sky blue (`#0284c7`).
-  - **10% Accent (Action Points):** Sunny amber (`#f59e0b` / `#fbbf24`) exclusively on primary CTA buttons with dark text for **> 11:1 WCAG AAA contrast**.
-- **Interactive Command Palette (`Cmd+K` / `Ctrl+K`):** Instant keyboard traversal across projects, background, resume, theme toggle, and external links.
-- **In-Browser Terminal Sandbox:** Interactive developer console supporting `$whoami`, `$projects`, `$experience`, `$github`, `$linkedin`, `$resume`, `$stack`, `$now`, and Tab auto-complete.
-- **Interactive Resume Modal:** 1-click ATS-ready raw text copying and high-fidelity 8.5 &times; 11 printable PDF formatting.
-- **Verified Credentials & Real Experience:** Showcases real roles at **Handshake** (AI Fellow), **NonProfitly, Inc.** (SWE Intern), **Quincy's Original Lobster Rolls** (Assistant Manager), and **Gold Coast Landscape & Irrigation**.
-- **Real Technical Projects:**
-  1. *Active Directory & Systems Administration Lab* (Windows Server 2022, AD DS, GPO)
-  2. *Data Structures & Algorithmic Optimization Suite* (C++, AVL Trees, Splay Trees, Graph Traversal)
-  3. *AI Development: Developer Portfolio & Engineering Systems* (Next.js 16, React 19, TypeScript, Turbopack)
+The field lowers its particle count automatically if the frame rate drops. The live count and FPS appear under the hero.
 
----
-
-## 🛠️ Tech Stack
-
-- **Framework:** [Next.js 16 (App Router)](https://nextjs.org/)
-- **Library:** [React 19](https://react.dev/)
-- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
-- **Icons:** [Lucide React](https://lucide.dev/)
-- **Language:** TypeScript 5+
-- **Bundler:** Turbopack
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Node.js 18.18+ or 20+
-- npm, pnpm, or yarn
-
-### Installation
+## Run locally
 
 ```bash
-# Clone the repository
-git clone https://github.com/mogesjohnson/Personal-Portfolio.git
-
-# Navigate into directory
-cd Personal-Portfolio
-
-# Install dependencies
-npm install
-```
-
-### Running Locally
-
-```bash
+npm ci
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the application.
+Open [http://localhost:3000](http://localhost:3000). The intro plays once per browser session. Use **Replay the Live Motion intro** in the command menu (`Ctrl+K` / `Cmd+K`) to see it again.
 
-### Building for Production
+## Verify
 
 ```bash
+npm run lint
 npm run build
 ```
 
----
+## Where things live
 
-## 📬 Contact & Connect
-
-- **Website:** [mogesjohnson.com](https://mogesjohnson.com)
-- **GitHub:** [@mogesjohnson](https://github.com/mogesjohnson)
-- **LinkedIn:** [linkedin.com/in/mogesjohnson](https://linkedin.com/in/mogesjohnson)
-- **Email:** [mgjohnson9@liberty.edu](mailto:mgjohnson9@liberty.edu)
+| Path | What it does |
+| --- | --- |
+| [`src/data/portfolio.ts`](src/data/portfolio.ts) | All content: projects, experience, education, skills, contact |
+| [`src/components/live/LiveMotion.tsx`](src/components/live/LiveMotion.tsx) | Page composition and global state |
+| [`src/components/live/SignalField.tsx`](src/components/live/SignalField.tsx) | The particle engine |
+| [`src/components/live/formations.ts`](src/components/live/formations.ts) | Formation geometry, shared by the particles and the SVG fallback |
+| [`src/components/live/motion.ts`](src/components/live/motion.ts) | Lenis + GSAP scroll choreography |
+| [`src/components/live/IntroSequence.tsx`](src/components/live/IntroSequence.tsx) | Title sequence |
+| [`src/components/live/flags.ts`](src/components/live/flags.ts) | Theme, motion, and intro flags set before first paint |
+| [`src/app/globals.css`](src/app/globals.css) | Design tokens and styles |

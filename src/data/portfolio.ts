@@ -16,6 +16,12 @@ export interface ArchitectureNode {
 export interface Project {
   id: string;
   title: string;
+  /** Short label used by the project switcher. */
+  shortTitle: string;
+  /** Figure code shown on the project diagram. */
+  code: string;
+  /** Particle formation the live signal field draws for this project. */
+  signal: "sys" | "tree" | "orbit";
   category: "Systems & Infrastructure" | "Data Structures & C++" | "AI & Web Systems";
   year: string;
   summary: string;
@@ -223,6 +229,9 @@ export const projects: Project[] = [
   {
     id: "active-directory-lab",
     title: "Active Directory & Systems Administration Lab",
+    shortTitle: "Identity infrastructure",
+    code: "01 / SYS",
+    signal: "sys",
     category: "Systems & Infrastructure",
     year: "2024",
     summary: "Configured an enterprise Windows Server 2022 environment in a two-person team, establishing centralized network resources, hierarchical Organizational Units, and Group Policy Management.",
@@ -273,6 +282,9 @@ foreach ($dept in $Departments) {
   {
     id: "data-structures-cpp",
     title: "Data Structures & Algorithmic Optimization Suite",
+    shortTitle: "Algorithmic thinking",
+    code: "02 / ALG",
+    signal: "tree",
     category: "Data Structures & C++",
     year: "2024",
     summary: "Engineered high-performance data storage and retrieval systems in modern C++ utilizing AVL Trees, Splay Trees, Graph traversal algorithms, and Big-O efficiency profiling.",
@@ -335,41 +347,61 @@ class AVLTree {
   {
     id: "developer-portfolio",
     title: "AI Development: Developer Portfolio & Engineering Systems",
+    shortTitle: "A connected portfolio",
+    code: "03 / WEB",
+    signal: "orbit",
     category: "AI & Web Systems",
     year: "2026",
     summary: "High-performance developer platform connecting verified technical projects, personal identity ('who I am'), GitHub repositories, and LinkedIn professional history into a unified engineering hub.",
     problem: "Recruiters and engineering leads often encounter fragmented footprints across scattered git repositories, resume PDFs, and social profiles, creating friction when evaluating a developer's authentic capabilities.",
-    architecture: "Engineered with Next.js 16 App Router, React 19, and TypeScript, establishing bidirectional connectivity between who I am, live GitHub code artifacts, and verified LinkedIn milestones through an interactive terminal and command palette.",
-    tradeoff: "Opted for client-side keyboard navigation and native Tailwind CSS tokens over heavy external component suites, achieving sub-second Turbopack compilation and 100% WCAG AAA contrast compliance.",
-    tags: ["AI Development", "Next.js 16", "React 19", "TypeScript", "GitHub Integration", "LinkedIn Sync", "Tailwind CSS v4"],
+    architecture: "Built with Next.js 16 App Router, React 19, and TypeScript. One Canvas 2D particle field follows the reader down the page, assembling into the MJ monogram, each project's diagram, and the contact mark, while GSAP ScrollTrigger and Lenis choreograph the scroll scenes and a Cmd+K palette handles keyboard navigation.",
+    tradeoff: "Drew every visual in code (particles on a single canvas, diagrams in SVG) instead of shipping video or WebGL. The field lowers its particle count if frames drop, and reduced-motion visitors get static SVG diagrams with no animation at all.",
+    tags: ["AI Development", "Next.js 16", "React 19", "TypeScript", "Canvas 2D", "GSAP", "GitHub Integration", "LinkedIn Sync", "Tailwind CSS v4"],
     githubUrl: "https://github.com/mogesjohnson/Personal-Portfolio",
     metrics: [
       { label: "Identity Sync", value: "GitHub + LinkedIn" },
-      { label: "Compile Time", value: "< 750ms Turbopack" },
-      { label: "Accessibility", value: "100% WCAG AAA Contrast" },
+      { label: "Rendering", value: "Canvas 2D particle field" },
+      { label: "Motion", value: "Reduced-motion aware" },
     ],
     codeArtifact: {
-      title: "Interactive Navigation Linking Projects, Bio, GitHub & LinkedIn",
+      title: "Live Motion: Morphing a Particle Swarm Between Formations",
       language: "typescript",
-      filename: "src/components/CommandPalette.tsx",
-      code: `// Unified Command Palette connecting projects, who I am, GitHub, and LinkedIn
-export default function CommandPalette({ isOpen, onClose, onOpenResume }: CommandPaletteProps) {
-  const actions = [
-    { id: "projects", title: "Explore Verified Technical Projects", category: "Code", run: () => navigateTo("projects") },
-    { id: "about", title: "Who I Am — Background & Philosophy", category: "Identity", run: () => navigateTo("about") },
-    { id: "github", title: "GitHub Profile & Repositories", category: "External", run: () => window.open(personalInfo.socialLinks.github, "_blank") },
-    { id: "linkedin", title: "LinkedIn Experience & Milestones", category: "External", run: () => window.open(personalInfo.socialLinks.linkedin, "_blank") },
-    { id: "resume", title: "View & Download Resume / CV", category: "Documents", run: () => onOpenResume() },
-  ];
-  // Instant keyboard search and execution...
-}`,
-      explanation: "Centralizes navigation connecting verified projects, personal identity ('who I am'), active GitHub repositories, and LinkedIn milestones into a single keyboard-driven interface.",
+      filename: "src/components/live/SignalField.tsx",
+      code: `// Called whenever a new anchor (monogram, project diagram, contact mark) takes the screen.
+const morph = (f: Formation | null, now: number) => {
+  formation = f;
+  assign.fill(-1);
+  if (!f) {
+    /* nothing anchored on screen: kick every particle into the drift field */
+    return;
+  }
+  const n = Math.min(f.targets.length, pool);
+  // Pair particles and targets left-to-right so the swarm sweeps instead of tangling.
+  const participants = Array.from(order)
+    .filter((i) => i < pool)
+    .slice(0, n);
+  participants.sort((a, b) => px[a] - px[b]);
+  const tx = new Float32Array(n);
+  const targetOrder = Array.from({ length: n }, (_, j) => {
+    evalTarget(f.targets[j], now, pos);
+    tx[j] = pos[0];
+    return j;
+  }).sort((a, b) => tx[a] - tx[b]);
+  for (let m = 0; m < n; m++) {
+    const i = participants[m];
+    const j = targetOrder[m];
+    assign[i] = j;
+    // Stagger wake-up by target x, so the formation assembles like a wave.
+    wake[i] = now + 0.05 + (tx[j] / f.width) * 0.45 + Math.random() * 0.25;
+  }
+};`,
+      explanation: "Each particle is a spring pulled toward its assigned target. Sorting both sides by x keeps the flight paths from crossing, and the staggered wake times turn a jump cut into a sweep.",
     },
     architectureFlow: [
       { step: "01", label: "Identity Core", tech: "Who I Am / Bio Engine", detail: "Bridges Liberty CS coursework, athletics grit, and operational leadership." },
       { step: "02", label: "Code Traceability", tech: "GitHub Integration", detail: "Deep-links live repositories, code snippets, and architectural breakdowns." },
       { step: "03", label: "Milestone Sync", tech: "LinkedIn Experience", detail: "Highlights verified roles at Handshake, NonProfitly, Quincy's, and Gold Coast." },
-      { step: "04", label: "Interactive Flow", tech: "Terminal & Cmd+K", detail: "Provides instant keyboard-driven search, resume export, and calendar dispatch." },
+      { step: "04", label: "Live Motion Layer", tech: "Canvas 2D + GSAP ScrollTrigger", detail: "One particle field morphs from monogram to project diagrams as you scroll; Cmd+K handles keyboard navigation." },
     ],
   },
 ];

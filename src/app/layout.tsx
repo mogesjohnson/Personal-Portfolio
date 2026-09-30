@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { FLAGS_SCRIPT } from "@/components/live/flags";
+import "lenis/dist/lenis.css";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,9 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Moges Johnson | Full Stack Software Engineer",
+  title: "Moges Johnson | Software Engineering & Applied AI",
   description:
-    "Personal website and portfolio of Moges Johnson - Full Stack Engineer specializing in React, Next.js, and TypeScript.",
+    "Explore the software, systems, and applied AI work of Moges Johnson, a software engineering student and Handshake AI Fellow.",
   keywords: [
     "Moges Johnson",
     "Software Engineer",
@@ -28,9 +30,9 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Moges Johnson" }],
   openGraph: {
-    title: "Moges Johnson | Full Stack Software Engineer",
+    title: "Moges Johnson | Software Engineering & Applied AI",
     description:
-      "Explore projects, technical stack, and software engineering work by Moges Johnson.",
+      "Explore projects and software engineering work by Moges Johnson.",
     type: "website",
   },
 };
@@ -43,11 +45,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} scroll-smooth antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      data-theme="dark"
+      data-motion="reduce"
+      data-intro="off"
+      suppressHydrationWarning
     >
-      <body className="min-h-screen bg-[var(--background)] text-[var(--foreground)] flex flex-col font-sans">
-        {children}
-      </body>
+      <head>
+        {/* Sets theme, motion, and intro flags before first paint (see components/live/flags.ts). */}
+        <script dangerouslySetInnerHTML={{ __html: FLAGS_SCRIPT }} />
+      </head>
+      <body>{children}</body>
     </html>
   );
 }

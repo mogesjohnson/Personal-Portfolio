@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Search, FileText, Sun, GitBranch, Mail, CornerDownLeft, FolderGit2, Briefcase, Wrench, User, ExternalLink } from "lucide-react";
+import { Search, FileText, GitBranch, Mail, CornerDownLeft, FolderGit2, Briefcase, Wrench, User, ExternalLink, SunMoon, Clapperboard } from "lucide-react";
 import { personalInfo } from "@/data/portfolio";
+import { scrollToSection } from "@/components/live/scroll";
+import { toggleTheme } from "@/components/live/theme";
 
 interface CommandPaletteProps {
   isOpen: boolean;
@@ -16,10 +18,7 @@ export default function CommandPalette({ isOpen, onClose, onOpenResume }: Comman
 
   const navigateTo = (elementId: string) => {
     onClose();
-    const el = document.getElementById(elementId);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
+    scrollToSection(elementId);
   };
 
   const actions = [
@@ -38,7 +37,7 @@ export default function CommandPalette({ isOpen, onClose, onOpenResume }: Comman
       title: "Explore Projects & Architecture",
       category: "Navigation",
       icon: FolderGit2,
-      run: () => navigateTo("projects"),
+      run: () => navigateTo("work"),
     },
     {
       id: "experience",
@@ -63,7 +62,7 @@ export default function CommandPalette({ isOpen, onClose, onOpenResume }: Comman
     },
     {
       id: "contact",
-      title: "Get in Touch / Send Message",
+      title: "Get in Touch",
       category: "Outreach",
       icon: Mail,
       run: () => navigateTo("contact"),
@@ -72,17 +71,23 @@ export default function CommandPalette({ isOpen, onClose, onOpenResume }: Comman
       id: "theme",
       title: "Toggle Theme (Light / Dark)",
       category: "Preferences",
-      icon: Sun,
+      icon: SunMoon,
       run: () => {
         onClose();
-        const isDark = document.documentElement.classList.contains("dark");
-        if (isDark) {
-          document.documentElement.classList.remove("dark");
-          localStorage.setItem("mj-theme", "light");
-        } else {
-          document.documentElement.classList.add("dark");
-          localStorage.setItem("mj-theme", "dark");
-        }
+        toggleTheme();
+      },
+    },
+    {
+      id: "intro",
+      title: "Replay the Live Motion Intro",
+      category: "Preferences",
+      icon: Clapperboard,
+      run: () => {
+        try {
+          sessionStorage.removeItem("mj-intro");
+        } catch {}
+        window.scrollTo(0, 0);
+        window.location.reload();
       },
     },
     {
@@ -117,15 +122,6 @@ export default function CommandPalette({ isOpen, onClose, onOpenResume }: Comman
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
-        e.preventDefault();
-        if (isOpen) {
-          onClose();
-        } else {
-          setQuery("");
-        }
-      }
-
       if (!isOpen) return;
 
       if (e.key === "Escape") {
@@ -156,11 +152,12 @@ export default function CommandPalette({ isOpen, onClose, onOpenResume }: Comman
       role="dialog"
       aria-modal="true"
       aria-label="Command Palette"
-      className="fixed inset-0 z-50 flex items-start justify-center bg-slate-950/70 backdrop-blur-sm p-4 pt-20 sm:pt-28"
+      data-lenis-prevent
+      className="palette-dialog fixed inset-0 z-50 flex items-start justify-center bg-slate-950/70 backdrop-blur-sm p-4 pt-20 sm:pt-28"
       onClick={onClose}
     >
       <div
-        className="w-full max-w-xl rounded-xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xl overflow-hidden font-sans"
+        className="palette-panel w-full max-w-xl rounded-xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xl overflow-hidden font-sans"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Search Input Bar */}
