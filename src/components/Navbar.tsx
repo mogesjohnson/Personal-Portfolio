@@ -44,7 +44,7 @@ export default function Navbar({ onOpenResume, onOpenCommandPalette }: NavbarPro
   return (
     <header className="sticky top-0 z-40 w-full backdrop-blur-md bg-[var(--background)]/85 border-b border-slate-200/60 dark:border-slate-800/60 transition-colors">
       <div className="scroll-progress absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-500 to-sky-500" aria-hidden="true" />
-      <div className="mx-auto max-w-4xl px-6 py-3.5 flex items-center justify-between text-xs font-mono">
+      <div className="mx-auto max-w-4xl px-6 py-3.5 flex items-center justify-between text-xs ">
         {/* Brand */}
         <Link
           href="/"
@@ -121,7 +121,7 @@ export default function Navbar({ onOpenResume, onOpenCommandPalette }: NavbarPro
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 px-6 py-4 font-mono text-xs space-y-3">
+        <div className="md:hidden border-b border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-950/95 px-6 py-4 text-xs space-y-3">
           <nav className="flex flex-col gap-2.5">
             {navLinks.map((link) => (
               <a

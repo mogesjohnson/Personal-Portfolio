@@ -8,7 +8,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative mt-16 pt-10 pb-16 font-mono text-xs text-slate-500 dark:text-slate-400">
+    <footer className="relative mt-16 pt-10 pb-16 text-xs text-slate-500 dark:text-slate-400">
       <span
         aria-hidden="true"
         className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-400/60 to-transparent"

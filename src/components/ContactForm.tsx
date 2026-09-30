@@ -50,7 +50,7 @@ export default function ContactForm() {
         </div>
 
         {/* Quick Email Copy Box */}
-        <div className="card card-sm p-4 space-y-2 text-xs font-mono">
+        <div className="card card-sm p-4 space-y-2 text-xs ">
           <span className="text-slate-500 text-[11px] block">DIRECT EMAIL</span>
           <div className="flex items-center justify-between gap-2">
             <span className="font-semibold text-slate-800 dark:text-slate-200 truncate">
@@ -68,7 +68,7 @@ export default function ContactForm() {
         </div>
 
         {/* 1-Click Scheduling */}
-        <div className="card card-sm p-4 space-y-2 text-xs font-mono">
+        <div className="card card-sm p-4 space-y-2 text-xs ">
           <span className="text-slate-500 text-[11px] block">CALENDAR DISPATCH</span>
           <p className="text-slate-600 dark:text-slate-400 text-[11px]">
             Schedule a 15-minute technical intro chat directly on my calendar.
@@ -104,13 +104,13 @@ export default function ContactForm() {
                 setStatus("idle");
                 setFormData({ name: "", email: "", inquiryType: "Full-Time SWE Opportunity", message: "" });
               }}
-              className="mt-3 text-xs font-mono text-amber-600 dark:text-amber-400 hover:underline"
+              className="mt-3 text-xs text-amber-600 dark:text-amber-400 hover:underline"
             >
               Send another message &rarr;
             </button>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-4 text-xs font-mono">
+          <form onSubmit={handleSubmit} className="space-y-4 text-xs ">
             {status === "error" && (
               <div className="flex items-center gap-2 p-2.5 rounded bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 text-rose-700 dark:text-rose-300 text-xs">
                 <AlertCircle className="h-4 w-4 shrink-0" />

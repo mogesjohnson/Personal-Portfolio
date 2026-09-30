@@ -13,7 +13,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
       <div className="hero-orb top-10 right-0 h-64 w-64 bg-[radial-gradient(closest-side,rgba(14,165,233,0.18),transparent)] dark:bg-[radial-gradient(closest-side,rgba(14,165,233,0.10),transparent)]" aria-hidden="true" />
 
       {/* Availability Status & University Badge */}
-      <div className="rise flex flex-wrap items-center justify-between gap-3 mb-8 text-xs font-mono" style={{ "--i": 0 } as React.CSSProperties}>
+      <div className="rise flex flex-wrap items-center justify-between gap-3 mb-8 text-xs " style={{ "--i": 0 } as React.CSSProperties}>
         <div className="inline-flex items-center gap-2 rounded-full border border-amber-300 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/10 px-3 py-1 text-amber-900 dark:text-amber-300 font-medium">
           <span className="h-2 w-2 rounded-full bg-amber-500 inline-block animate-pulse" />
           <span>{personalInfo.status}</span>
@@ -46,7 +46,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
 
         {/* Tactile Monogram Avatar with 10% Sunny Amber Accent Ring */}
         <div className="relative flex h-20 w-20 sm:h-28 sm:w-28 shrink-0 items-center justify-center rounded-2xl border border-amber-300/60 dark:border-amber-400/30 bg-gradient-to-br from-white to-amber-50 dark:from-slate-900 dark:to-slate-800 shadow-xl shadow-amber-500/10 ring-4 ring-amber-400/10">
-          <span className="font-mono text-2xl sm:text-4xl font-black tracking-tighter text-slate-900 dark:text-slate-100">
+          <span className="text-2xl sm:text-4xl font-black tracking-tighter text-slate-900 dark:text-slate-100">
             MJ
           </span>
           <span
@@ -57,7 +57,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
       </div>
 
       {/* Recruiter Quick-Facts Bar */}
-      <div className="rise mt-5 flex flex-wrap gap-2 text-[11px] font-mono" style={{ "--i": 2 } as React.CSSProperties}>
+      <div className="rise mt-5 flex flex-wrap gap-2 text-[11px] " style={{ "--i": 2 } as React.CSSProperties}>
         <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20 font-semibold">
           <CheckCircle2 className="h-3 w-3" />
           <span>{personalInfo.workAuth}</span>
@@ -88,7 +88,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
       </div>
 
       {/* Primary Action Points: Dual CTAs (Resume + Work) */}
-      <div className="rise mt-8 flex flex-wrap items-center gap-3 text-xs font-mono" style={{ "--i": 4 } as React.CSSProperties}>
+      <div className="rise mt-8 flex flex-wrap items-center gap-3 text-xs " style={{ "--i": 4 } as React.CSSProperties}>
         {/* P0 Action: View / Download Resume (10% Sunny Amber Accent) */}
         <button
           type="button"
@@ -132,7 +132,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
 
 
       {/* Architectural Pillars / Focus */}
-      <div className="rise mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3 pt-8 border-t border-slate-200/80 dark:border-slate-800/80 font-mono text-xs" style={{ "--i": 5 } as React.CSSProperties}>
+      <div className="rise mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3 pt-8 border-t border-slate-200/80 dark:border-slate-800/80 text-xs" style={{ "--i": 5 } as React.CSSProperties}>
         <div className="p-4 card card-sm card-accent">
           <Server className="h-4 w-4 text-amber-600 dark:text-amber-400 mb-2.5" />
           <span className="text-sky-600 dark:text-sky-400 block text-[11px] mb-1 font-semibold">01 // SYSTEMS &amp; INFRA</span>

@@ -5,7 +5,7 @@ export default function About() {
     <section id="about" className="pt-20 pb-6 border-t border-slate-200/80 dark:border-slate-800/80">
       {/* Section Header */}
       <div className="mb-10">
-        <h2 className="text-xs font-mono uppercase tracking-wider font-semibold section-eyebrow">
+        <h2 className="text-xs uppercase tracking-wider font-semibold section-eyebrow">
           03 // Engineering Philosophy &amp; Background
         </h2>
         <p className="mt-2 font-bold text-slate-900 dark:text-slate-100 section-title">
@@ -27,7 +27,7 @@ export default function About() {
             key={item.title}
             className="card card-accent p-5"
           >
-            <span className="icon-tile font-mono text-xs font-bold mb-3">
+            <span className="icon-tile text-xs font-bold mb-3">
               0{index + 1}
             </span>
             <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
