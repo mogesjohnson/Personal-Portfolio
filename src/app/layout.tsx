@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { FLAGS_SCRIPT } from "@/components/live/flags";
+import "lenis/dist/lenis.css";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -43,11 +45,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} scroll-smooth antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      data-theme="dark"
+      data-motion="reduce"
+      data-intro="off"
+      suppressHydrationWarning
     >
-      <body className="min-h-screen bg-[var(--background)] text-[var(--foreground)] flex flex-col font-sans">
-        {children}
-      </body>
+      <head>
+        {/* Sets theme, motion, and intro flags before first paint (see components/live/flags.ts). */}
+        <script dangerouslySetInnerHTML={{ __html: FLAGS_SCRIPT }} />
+      </head>
+      <body>{children}</body>
     </html>
   );
 }

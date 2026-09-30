@@ -1,5 +1,5 @@
-import RedesignExperience from "@/components/RedesignExperience";
+import LiveMotion from "@/components/live/LiveMotion";
 
 export default function Home() {
-  return <RedesignExperience />;
+  return <LiveMotion />;
 }

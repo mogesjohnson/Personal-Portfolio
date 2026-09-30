@@ -104,6 +104,7 @@ Liberty University Intramural Sports
       role="dialog"
       aria-modal="true"
       aria-label="Resume of Moges Johnson"
+      data-lenis-prevent
       className="resume-dialog fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4 sm:p-6 overflow-y-auto"
     >
       <div

@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Search, FileText, GitBranch, Mail, CornerDownLeft, FolderGit2, Briefcase, Wrench, User, ExternalLink } from "lucide-react";
+import { Search, FileText, GitBranch, Mail, CornerDownLeft, FolderGit2, Briefcase, Wrench, User, ExternalLink, SunMoon, Clapperboard } from "lucide-react";
 import { personalInfo } from "@/data/portfolio";
+import { scrollToSection } from "@/components/live/scroll";
+import { toggleTheme } from "@/components/live/theme";
 
 interface CommandPaletteProps {
   isOpen: boolean;
@@ -16,10 +18,7 @@ export default function CommandPalette({ isOpen, onClose, onOpenResume }: Comman
 
   const navigateTo = (elementId: string) => {
     onClose();
-    const el = document.getElementById(elementId);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
-    }
+    scrollToSection(elementId);
   };
 
   const actions = [
@@ -67,6 +66,29 @@ export default function CommandPalette({ isOpen, onClose, onOpenResume }: Comman
       category: "Outreach",
       icon: Mail,
       run: () => navigateTo("contact"),
+    },
+    {
+      id: "theme",
+      title: "Toggle Theme (Light / Dark)",
+      category: "Preferences",
+      icon: SunMoon,
+      run: () => {
+        onClose();
+        toggleTheme();
+      },
+    },
+    {
+      id: "intro",
+      title: "Replay the Live Motion Intro",
+      category: "Preferences",
+      icon: Clapperboard,
+      run: () => {
+        try {
+          sessionStorage.removeItem("mj-intro");
+        } catch {}
+        window.scrollTo(0, 0);
+        window.location.reload();
+      },
     },
     {
       id: "github",
@@ -130,6 +152,7 @@ export default function CommandPalette({ isOpen, onClose, onOpenResume }: Comman
       role="dialog"
       aria-modal="true"
       aria-label="Command Palette"
+      data-lenis-prevent
       className="palette-dialog fixed inset-0 z-50 flex items-start justify-center bg-slate-950/70 backdrop-blur-sm p-4 pt-20 sm:pt-28"
       onClick={onClose}
     >
