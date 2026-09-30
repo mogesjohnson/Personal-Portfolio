@@ -12,6 +12,7 @@ import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import ResumeModal from "@/components/ResumeModal";
 import CommandPalette from "@/components/CommandPalette";
+import Spotlight from "@/components/Spotlight";
 
 export default function Home() {
   const [resumeOpen, setResumeOpen] = useState(false);
@@ -24,7 +25,7 @@ export default function Home() {
         onOpenCommandPalette={() => setCommandPaletteOpen(true)}
       />
 
-      <div className="mx-auto max-w-3xl px-6 flex flex-col gap-10">
+      <div className="mx-auto max-w-4xl px-6 flex flex-col gap-10">
         <main className="flex flex-col gap-10">
           <Hero onOpenResume={() => setResumeOpen(true)} />
           <Projects />
@@ -36,6 +37,8 @@ export default function Home() {
         </main>
         <Footer />
       </div>
+
+      <Spotlight />
 
       {/* Global Modals */}
       <ResumeModal isOpen={resumeOpen} onClose={() => setResumeOpen(false)} />

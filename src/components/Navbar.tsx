@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import ThemeToggle from "@/components/ThemeToggle";
 import { personalInfo } from "@/data/portfolio";
@@ -14,6 +14,8 @@ interface NavbarProps {
 export default function Navbar({ onOpenResume, onOpenCommandPalette }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const [active, setActive] = useState<string>("");
+
   const navLinks = [
     { label: "projects", href: "#projects" },
     { label: "experience", href: "#experience" },
@@ -23,9 +25,26 @@ export default function Navbar({ onOpenResume, onOpenCommandPalette }: NavbarPro
     { label: "contact", href: "#contact" },
   ];
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActive(e.target.id);
+        });
+      },
+      { rootMargin: "-40% 0px -55% 0px" }
+    );
+    ["projects", "experience", "stack", "about", "now", "contact"].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <header className="sticky top-0 z-40 w-full backdrop-blur-md bg-[var(--background)]/90 border-b border-slate-200/80 dark:border-slate-800/80 transition-colors">
-      <div className="mx-auto max-w-3xl px-6 py-3.5 flex items-center justify-between text-xs font-mono">
+    <header className="sticky top-0 z-40 w-full backdrop-blur-md bg-[var(--background)]/85 border-b border-slate-200/60 dark:border-slate-800/60 transition-colors">
+      <div className="scroll-progress absolute inset-x-0 bottom-0 h-[2px] bg-gradient-to-r from-amber-400 via-amber-500 to-sky-500" aria-hidden="true" />
+      <div className="mx-auto max-w-4xl px-6 py-3.5 flex items-center justify-between text-xs font-mono">
         {/* Brand */}
         <Link
           href="/"
@@ -41,7 +60,12 @@ export default function Navbar({ onOpenResume, onOpenCommandPalette }: NavbarPro
             <a
               key={link.href}
               href={link.href}
-              className="hover:text-slate-950 dark:hover:text-slate-100 transition-colors"
+              aria-current={active === link.href.slice(1) ? "true" : undefined}
+              className={`transition-colors ${
+                active === link.href.slice(1)
+                  ? "text-amber-600 dark:text-amber-400 font-semibold"
+                  : "hover:text-slate-950 dark:hover:text-slate-100"
+              }`}
             >
               {link.label}
             </a>
@@ -62,7 +86,7 @@ export default function Navbar({ onOpenResume, onOpenCommandPalette }: NavbarPro
           <button
             type="button"
             onClick={onOpenResume}
-            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold transition-all shadow-sm"
+            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md btn-primary text-slate-950 font-bold transition-all shadow-sm"
           >
             <FileText className="h-3 w-3" />
             <span>Resume</span>
