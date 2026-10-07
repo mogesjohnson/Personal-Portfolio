@@ -1,0 +1,1230 @@
+{
+  "$schema": "./motion-system.schema.json",
+  "meta": {
+    "name": "Live Motion — website motion system template",
+    "version": "1.0.0",
+    "createdOn": "2026-10-06",
+    "purpose": "A machine-readable blueprint of how the reference portfolio produces its animations and transitions: which tools and functions it uses, with what parameters, in what order, and how each degrades. Use it as a starting point for new sites, not as a page to clone.",
+    "howToUse": [
+      "Read `principles` and `architecture` first; they explain why the patterns are shaped the way they are.",
+      "Pick patterns by `category`. Every pattern names its `connector`: the template file and export that implements it.",
+      "Patterns with connector.kind \"scene\" are live-wired: connectors/registry.ts turns their `params` into running GSAP scenes, so editing numbers here changes the site.",
+      "`tokens` feed lib/styles/tokens.css via scripts/build-tokens.mjs. Re-run it after editing colours, easings or durations.",
+      "Before shipping, walk `qa.checklist` and `accessibility`. Every effect here has a defined reduced-motion and no-JS behaviour; keep it that way."
+    ],
+    "doNotCopy": "The reference site's content (name, copy, monogram, project diagrams, colour plates in the intro) belongs to its owner. The template keeps the techniques and the numbers, and replaces every piece of content with a parameter.",
+    "reference": {
+      "repository": "mogesjohnson/Personal-Portfolio (local: C:/Users/johns/projects/website)",
+      "commit": "956e586",
+      "pullRequest": 3,
+      "pullRequestTitle": "feat: Live Motion redesign (particle signal field + scroll scenes)",
+      "files": [
+        "src/app/layout.tsx",
+        "src/app/globals.css",
+        "src/components/live/LiveMotion.tsx",
+        "src/components/live/motion.ts",
+        "src/components/live/scroll.ts",
+        "src/components/live/flags.ts",
+        "src/components/live/theme.ts",
+        "src/components/live/SignalField.tsx",
+        "src/components/live/formations.ts",
+        "src/components/live/IntroSequence.tsx",
+        "src/components/live/HeroScene.tsx",
+        "src/components/live/WorkScene.tsx",
+        "src/components/live/SiteNav.tsx",
+        "src/components/live/ThemeToggle.tsx",
+        "src/components/live/LiveClock.tsx",
+        "src/components/live/ProjectDiagram.tsx",
+        "src/components/live/sections.tsx",
+        "src/components/live/ui.tsx"
+      ]
+    }
+  },
+
+  "provenance": {
+    "summary": "Built over two days (2026-09-29 to 2026-09-30) in four stages. The motion system came from PR #3, whose commits carry a `Co-authored-by: Claude Sonnet 5.5` trailer. No commit in the history names Opus 5.5. PR #3 also folded in two unpushed commits the PR body attributes to Codex.",
+    "timeline": [
+      { "commit": "110c2cf", "date": "2026-09-29", "title": "Initial commit from Create Next App", "coAuthor": null, "motionRelevance": "Next.js scaffold only." },
+      { "commit": "50dfdb7", "date": "2026-09-29", "title": "feat: personal portfolio & engineering platform for Moges Johnson", "coAuthor": null, "motionRelevance": "First content pass: Hero, Navbar, Projects, CommandPalette, ResumeModal, ThemeToggle as separate components. Little motion." },
+      { "commit": "2c69dff", "date": "2026-09-29", "title": "chore: link project githubUrl to Personal-Portfolio repo", "coAuthor": null, "motionRelevance": "None." },
+      { "commit": "e2a3a04", "date": "2026-09-29", "title": "fix: remove terminal dropdown from hero and collapse technical artifacts by default", "coAuthor": null, "motionRelevance": "None." },
+      { "commit": "540b505", "pr": 1, "date": "2026-09-30", "title": "feat: visual redesign with glass cards, timeline, and motion", "coAuthor": "Claude Sonnet 5.5", "motionRelevance": "Introduced glass cards with a cursor spotlight, scroll progress, active nav link, and the rule to avoid animated blur for scroll performance and respect prefers-reduced-motion." },
+      { "commit": "b532b7d", "pr": 2, "date": "2026-09-30", "title": "chore: remove terminal-style UI from the page", "coAuthor": "Claude Sonnet 5.5", "motionRelevance": "Removed the expandable project drawer and console; simplified the surface the later motion pass built on." },
+      { "commit": "d26e5bc", "date": "2026-09-30", "title": "feat: redesign portfolio experience 2.1", "coAuthor": null, "attributedTo": "Codex (per PR #3 body)", "motionRelevance": "Intermediate redesign that PR #3 built on." },
+      { "commit": "325819b", "date": "2026-09-30", "title": "fix: prevent hero headline clipping", "coAuthor": null, "attributedTo": "Codex (per PR #3 body)", "motionRelevance": "Headline line-box padding; the reason .hero-line keeps padding-bottom: 0.04em." },
+      { "commit": "956e586", "pr": 3, "date": "2026-09-30", "title": "feat: Live Motion redesign (particle signal field + scroll scenes)", "coAuthor": "Claude Sonnet 5.5", "motionRelevance": "Everything in this spec: particle field, formations, intro, Lenis + ScrollTrigger scenes, View Transitions theme reveal, static fallbacks. 37 files, +5060 / -1588." }
+    ],
+    "pr3TestPlan": [
+      "npm run lint, tsc --noEmit, npm run build pass",
+      "21 automated browser checks (intro skip, Ctrl+K, theme toggle, résumé scroll, palette + nav + mobile menu, repeat visit)",
+      "Screenshots reviewed: desktop, mobile, light theme, reduced motion",
+      "Open item: check on a real phone (headless Chrome held 59–60 FPS)"
+    ],
+    "pr3BugsFixedDuringTesting": [
+      "Direct links like /#contact crashed the page (ScrollTrigger `once: true` firing during refresh).",
+      "Space to skip the intro also scrolled the page a screen.",
+      "Command palette navigation did nothing while the scroll lock was held, and kept stale search text.",
+      "Résumé modal could not scroll under Lenis."
+    ]
+  },
+
+  "principles": [
+    {
+      "id": "one-living-thing",
+      "statement": "One continuous motion system follows the reader, instead of many unrelated effects.",
+      "why": "A single particle field that re-forms at each anchor reads as one designed object. Many separate animations read as decoration.",
+      "howApplied": "SignalField is mounted once, behind everything. Sections opt in by marking an element data-signal=\"<formation>\".",
+      "evidence": "src/components/live/SignalField.tsx:7-12"
+    },
+    {
+      "id": "static-first",
+      "statement": "The server renders the finished, static page. Motion is an upgrade the browser opts into.",
+      "why": "No-JS visitors, crawlers, reduced-motion users, and a crashed bundle all get a complete page.",
+      "howApplied": "<html> ships data-motion=\"reduce\" data-intro=\"off\". An inline head script upgrades the flags before paint. CSS hides entrance elements only under [data-motion=\"full\"], and a CSS failsafe shows them anyway after 3.5s.",
+      "evidence": "src/app/layout.tsx:46-57, src/components/live/flags.ts, src/app/globals.css:975-993"
+    },
+    {
+      "id": "one-geometry-two-renderers",
+      "statement": "Live visuals and their static fallback come from the same data.",
+      "why": "The SVG fallback can never drift out of sync with the particle formation.",
+      "howApplied": "formations.ts exports `diagrams` (shapes + labels) rendered as SVG by ProjectDiagram, and recipes that sample the same coordinates as particle targets.",
+      "evidence": "src/components/live/formations.ts:41-157, src/components/live/ProjectDiagram.tsx"
+    },
+    {
+      "id": "one-clock",
+      "statement": "Everything that reads scroll runs on the same clock, in a fixed order.",
+      "why": "If the particle field read window.scrollY before Lenis moved the page, formations would lag one frame behind their anchors and shimmer.",
+      "howApplied": "Lenis is driven from gsap.ticker with priority (prioritize=true). The particle loop is added to the same ticker afterwards. lagSmoothing(0) stops GSAP from time-warping after a hitch, which would desync scroll.",
+      "evidence": "src/components/live/motion.ts:19-25, src/components/live/SignalField.tsx:375-377"
+    },
+    {
+      "id": "fail-to-static",
+      "statement": "If motion setup throws, revert everything and show the static page.",
+      "why": "A half-initialised page (hidden headline, pinned section with no tween) is worse than no animation.",
+      "howApplied": "initLiveMotion wraps scene setup in try/catch. On error: run every cleanup, mm.revert(), ctx.revert(), destroy Lenis, set data-motion=\"reduce\".",
+      "evidence": "src/components/live/motion.ts:42-60"
+    },
+    {
+      "id": "everything-reverts",
+      "statement": "Every effect has a teardown, and the teardowns are collected in one place.",
+      "why": "React Strict Mode mounts twice in development, and hot reload remounts constantly. Leaked ScrollTriggers and listeners stack up.",
+      "howApplied": "gsap.context() records tweens, triggers and SplitTexts. gsap.matchMedia() owns breakpoint scenes. A `cleanups` array holds DOM listeners. One teardown runs them all.",
+      "evidence": "src/components/live/motion.ts:30-40"
+    },
+    {
+      "id": "expo-out-is-the-voice",
+      "statement": "One signature ease (expo.out / cubic-bezier(0.16, 1, 0.3, 1)) for anything that arrives.",
+      "why": "A consistent deceleration is most of what makes motion feel art-directed instead of assembled.",
+      "howApplied": "EXPO constant in motion.ts and --ease-out in CSS. Exits and wipes use power3 in/out, and overlays use --ease-io (0.7, 0, 0.2, 1).",
+      "evidence": "src/components/live/motion.ts:9, src/app/globals.css:32-33"
+    },
+    {
+      "id": "hard-cuts-and-soft-landings",
+      "statement": "Pair instant changes (set) with eased motion. Cut the plate, ease the letters.",
+      "why": "Cutting the background and words on a beat gives energy without the mush of cross-fades. Only the characters move.",
+      "howApplied": "The intro uses tl.set for --intro-bg/--intro-fg and word visibility, and fromTo with expo.out for characters. The eyebrow wipe uses set() to swap text while the bar covers it.",
+      "evidence": "src/components/live/IntroSequence.tsx:71-77, src/components/live/motion.ts:106-119"
+    },
+    {
+      "id": "input-has-weight",
+      "statement": "The page reacts to how you move, not just where you are.",
+      "why": "Scroll velocity, cursor proximity and clicks feeding into motion make the site feel physical.",
+      "howApplied": "Marquee timeScale and skew follow scroll velocity. Magnetic buttons follow the cursor. Footer letters gain font-weight near the cursor. Particles part around the pointer, and a click sends a shockwave.",
+      "evidence": "src/components/live/motion.ts:164-206, 288-344; src/components/live/SignalField.tsx:160-187"
+    },
+    {
+      "id": "budget-adapts",
+      "statement": "Expensive effects measure themselves and back off.",
+      "why": "One particle count can't suit a desktop GPU and a mid-range phone.",
+      "howApplied": "Particle pool starts at 1900 / 1100 / 850 by device class. If measured FPS drops below 42, the pool shrinks by 25% (floor 600) and the formation is rebuilt. devicePixelRatio is capped at 1.75. backdrop-filter is used only on wide, hover-capable screens.",
+      "evidence": "src/components/live/SignalField.tsx:43-45, 224-256, 81; src/app/globals.css:390-394"
+    },
+    {
+      "id": "replay-is-cheap",
+      "statement": "One-shot reveals replay when you scroll back into them from below, and never crash on refresh.",
+      "why": "`once: true` killed triggers mid-refresh and crashed deep links. `toggleActions: \"play none play none\"` keeps triggers alive, and replaying on re-entry feels intentional.",
+      "howApplied": "PLAY_ONCE constant for eyebrows, headings and the footer wordmark. ScrollTrigger.batch with onEnter and onEnterBack for data-reveal.",
+      "evidence": "src/components/live/motion.ts:73-78"
+    },
+    {
+      "id": "respect-the-reader",
+      "statement": "Motion never blocks reading or control.",
+      "why": "An intro you can't skip, or a smooth-scroll that traps a modal, turns delight into friction.",
+      "howApplied": "The intro skips on any key, click, wheel or touch, plays once per session, and has a 6s CSS failsafe. Overlays stop Lenis, and scrollable panes carry data-lenis-prevent. Trails fade harder while scrolling so they never smear text.",
+      "evidence": "src/components/live/IntroSequence.tsx:84-99, src/components/live/scroll.ts:22-27, src/components/live/SignalField.tsx:263-270"
+    }
+  ],
+
+  "stack": {
+    "framework": {
+      "name": "Next.js",
+      "version": "16.3.7",
+      "router": "App Router",
+      "react": "19.2.8",
+      "language": "TypeScript 5 (strict)",
+      "styling": "Tailwind CSS 4 (@import \"tailwindcss\", @theme inline, @custom-variant dark) plus hand-written CSS in globals.css",
+      "notes": [
+        "The page is one client component (LiveMotion) rendered from a server page.tsx. The layout stays a server component so it can inline the flags script.",
+        "Per node_modules/next/dist/docs/01-app/02-guides/preventing-flash-before-hydration.md, client-only state that affects first paint is applied by an inline <head> script, with suppressHydrationWarning on <html>."
+      ]
+    },
+    "libraries": [
+      {
+        "name": "gsap",
+        "version": "^3.15.0",
+        "role": "Animation engine, timeline sequencing, scroll choreography, shared ticker.",
+        "apisUsed": [
+          "gsap.registerPlugin(ScrollTrigger, SplitText)",
+          "gsap.timeline() / .to / .from / .fromTo / .set / .call / .addLabel / .seek",
+          "gsap.context() for batch revert",
+          "gsap.matchMedia() for breakpoint-scoped scenes",
+          "gsap.ticker.add(fn, once, prioritize) / ticker.remove / ticker.lagSmoothing(0)",
+          "gsap.quickTo() for high-frequency pointer following",
+          "gsap.delayedCall() for settle timers",
+          "gsap.utils.toArray / selector / clamp",
+          "ScrollTrigger.create / batch / update / refresh / getVelocity / direction",
+          "ScrollTrigger vars: trigger, start, end, scrub, pin, anticipatePin, invalidateOnRefresh, toggleActions, containerAnimation",
+          "SplitText.create(target, { type: 'words' | 'words,chars' })"
+        ],
+        "licenseNote": "Since 3.13, GSAP and all its plugins, SplitText included, are free under the standard GSAP license.",
+        "connector": "lib/runtime.ts, lib/scenes.ts, lib/pointer.ts, lib/intro.ts, lib/particles/field.ts"
+      },
+      {
+        "name": "lenis",
+        "version": "^1.3.26",
+        "role": "Smooth (lerped) scrolling that ScrollTrigger reads from.",
+        "apisUsed": [
+          "new Lenis({ lerp: 0.085, anchors: true, stopInertiaOnNavigate: true })",
+          "lenis.on('scroll', ScrollTrigger.update)",
+          "lenis.raf(timeMs) driven from gsap.ticker",
+          "lenis.stop() / lenis.start() for overlays and the intro",
+          "lenis.scrollTo(el, { duration: 1.6 }) for programmatic navigation",
+          "lenis.destroy()",
+          "data-lenis-prevent attribute on nested scrollers (modal, palette, <pre>)",
+          "import 'lenis/dist/lenis.css' in the root layout"
+        ],
+        "connector": "lib/runtime.ts, lib/scroll.ts"
+      },
+      {
+        "name": "lucide-react",
+        "version": "^1.48.0",
+        "role": "Stroke icons. The arrow icons take part in motion (rotate 45° on active tab, 90° on disclosure).",
+        "connector": "none (bring your own icon set)"
+      },
+      {
+        "name": "next/font/google (Geist, Geist Mono)",
+        "role": "Variable display/body face. Its weight axis drives the footer proximity effect, and its glyphs are sampled for the hero monogram formation.",
+        "notes": "Glyph sampling waits for document.fonts.ready (1.5s timeout) so particles don't trace the fallback face."
+      }
+    ],
+    "browserApis": [
+      { "api": "Canvas 2D", "use": "Particle field rendering (fillRect per particle, destination-out fade for trails, 'lighter' compositing on dark).", "fallback": "Not mounted in reduced motion; SVG renders instead." },
+      { "api": "View Transitions API (document.startViewTransition)", "use": "Circular clip-path theme reveal from the toggle button.", "fallback": "Instant attribute swap." },
+      { "api": "CSS scroll-driven animations (animation-timeline: scroll(root))", "use": "Top reading-progress bar with zero JS.", "fallback": "@supports guard; the bar stays at scaleX(0)." },
+      { "api": "IntersectionObserver", "use": "Active section for nav highlighting (rootMargin -45% 0px -50% 0px).", "fallback": "n/a (universal)." },
+      { "api": "MutationObserver", "use": "Theme store: notifies React when data-theme changes from anywhere.", "fallback": "n/a." },
+      { "api": "matchMedia", "use": "prefers-reduced-motion, (hover: hover) and (pointer: fine), (pointer: coarse), breakpoints via gsap.matchMedia.", "fallback": "n/a." },
+      { "api": "useSyncExternalStore", "use": "Motion preference, theme, and live clock as external stores with server snapshots, so there are no hydration mismatches.", "fallback": "n/a." },
+      { "api": "document.fonts.ready", "use": "Refresh ScrollTrigger after fonts load; gate glyph sampling.", "fallback": "1.5s timeout for the particle field." },
+      { "api": "inert attribute", "use": "Closed mobile menu and collapsed case file can't take focus.", "fallback": "Modern browsers only; content is clipped anyway." },
+      { "api": "CSS clip-path transitions", "use": "Mobile menu circle reveal from the burger button.", "fallback": "Instant under reduced motion (global duration override)." },
+      { "api": "CSS grid-template-rows transition (0fr → 1fr)", "use": "Animate a disclosure to its intrinsic height without measuring.", "fallback": "Instant under reduced motion." },
+      { "api": "Variable fonts (font-weight continuous)", "use": "Cursor-proximity weight swell on the footer wordmark.", "fallback": "Hover-capable devices only." },
+      { "api": "sessionStorage / localStorage", "use": "Intro seen-once flag (session) and theme choice (persistent). All access wrapped in try/catch.", "fallback": "Defaults: intro plays, dark theme." },
+      { "api": "Clipboard API", "use": "Copy-email button with a 2s confirmation state.", "fallback": "Navigates to mailto:." },
+      { "api": "Intl.DateTimeFormat", "use": "Live ticking local clock in the hero footer.", "fallback": "Server snapshot '--:--:--'." }
+    ]
+  },
+
+  "architecture": {
+    "layers": [
+      { "order": 1, "id": "flags", "name": "Pre-paint document flags", "responsibility": "Decide theme, motion mode and intro before the first pixel.", "siteFiles": ["src/components/live/flags.ts", "src/app/layout.tsx"], "templateFiles": ["lib/flags.ts", "connectors/next.tsx"], "runsWhen": "Synchronously while <head> parses." },
+      { "order": 2, "id": "css", "name": "CSS motion layer", "responsibility": "Transitions, keyframes, failsafes, scroll-driven progress, live/static switches, reduced-motion override.", "siteFiles": ["src/app/globals.css"], "templateFiles": ["lib/styles/motion.css", "lib/styles/tokens.css"], "runsWhen": "Always, keyed off data-* flags." },
+      { "order": 3, "id": "shell", "name": "React shell", "responsibility": "Composition, overlay state, Ctrl/⌘K, spotlight listener, mounts motion only in full mode.", "siteFiles": ["src/components/live/LiveMotion.tsx"], "templateFiles": ["connectors/react.tsx"], "runsWhen": "After hydration." },
+      { "order": 4, "id": "runtime", "name": "Motion runtime", "responsibility": "Lenis + GSAP ticker, context, matchMedia, scene setup, error fallback, teardown.", "siteFiles": ["src/components/live/motion.ts", "src/components/live/scroll.ts"], "templateFiles": ["lib/runtime.ts", "lib/scroll.ts"], "runsWhen": "useEffect when useFullMotion() is true." },
+      { "order": 5, "id": "scenes", "name": "Scroll and pointer scenes", "responsibility": "Individual effects (reveals, pins, marquees, magnetic).", "siteFiles": ["src/components/live/motion.ts"], "templateFiles": ["lib/scenes.ts", "lib/pointer.ts", "connectors/registry.ts"], "runsWhen": "Inside the runtime's GSAP context." },
+      { "order": 6, "id": "intro", "name": "Title sequence", "responsibility": "Once-per-session kinetic intro and the hand-off event.", "siteFiles": ["src/components/live/IntroSequence.tsx"], "templateFiles": ["lib/intro.ts", "connectors/react.tsx#TitleSequence"], "runsWhen": "data-intro=\"on\" only." },
+      { "order": 7, "id": "field", "name": "Particle field", "responsibility": "Canvas particle engine that morphs between anchor formations.", "siteFiles": ["src/components/live/SignalField.tsx", "src/components/live/formations.ts"], "templateFiles": ["lib/particles/field.ts", "lib/particles/formations.ts", "connectors/react.tsx#ParticleCanvas"], "runsWhen": "Full motion; starts after intro hand-off and font load." },
+      { "order": 8, "id": "components", "name": "Component-level motion", "responsibility": "Decode titles, nav indicator, menu reveal, theme toggle, live clock, tabs, disclosures.", "siteFiles": ["src/components/live/WorkScene.tsx", "src/components/live/SiteNav.tsx", "src/components/live/ThemeToggle.tsx", "src/components/live/LiveClock.tsx"], "templateFiles": ["connectors/react.tsx", "lib/text.ts", "lib/theme.ts"], "runsWhen": "Per component." }
+    ],
+    "bootSequence": [
+      { "step": 1, "when": "HTML parse, <head>", "what": "FLAGS_SCRIPT sets data-theme (localStorage), data-motion (prefers-reduced-motion), data-intro (sessionStorage + reduced motion)." },
+      { "step": 2, "when": "First paint", "what": "CSS paints the right theme. In full mode: .intro covers the screen (with a 6s failsafe), .hero-title is visibility:hidden and .hero-reveal is opacity:0 (with 3.5s failsafes)." },
+      { "step": 3, "when": "Hydration", "what": "LiveMotion's useLayoutEffect re-applies flags (Strict Mode resets <html> attributes in dev). useFullMotion flips from server snapshot false to true." },
+      { "step": 4, "when": "Effects", "what": "IntroSequence takes over from the CSS failsafe (animation: none), adds html.intro-lock, and builds its timeline. initLiveMotion creates Lenis, stops it if the intro is playing, and sets up all scenes. The hero chars are pre-set hidden and wait for the hand-off event." },
+      { "step": 5, "when": "≈ 0.3s + words × 0.3s + 0.45s (2.25s for 5 words), or on skip", "what": "Intro dispatches window event 'live:intro-done' at the exit label while the shutters start lifting." },
+      { "step": 6, "when": "On 'live:intro-done'", "what": "Lenis starts. Hero chars flip up (1.15s, stagger 0.035) and .hero-reveal follows at +0.25s. The particle field (once fonts are ready) bursts from the hero anchor's centre into the monogram formation." },
+      { "step": 7, "when": "Intro timeline complete", "what": "sessionStorage marks the intro as seen, data-intro=\"done\", and the intro unmounts." },
+      { "step": 8, "when": "document.fonts.ready", "what": "ScrollTrigger.refresh() recalculates trigger positions after the web font changes line lengths." }
+    ],
+    "documentFlags": {
+      "attributes": {
+        "data-theme": { "values": ["dark", "light"], "serverDefault": "dark", "source": "localStorage['mj-theme'] (template: 'site-theme')", "consumers": ["CSS tokens", "particle palette per frame", "ThemeToggle via MutationObserver"] },
+        "data-motion": { "values": ["full", "reduce"], "serverDefault": "reduce", "source": "matchMedia('(prefers-reduced-motion: reduce)')", "consumers": ["CSS .live-only/.static-only", "entrance failsafes", "decodeText", "setTheme", "runtime error fallback writes 'reduce'"] },
+        "data-intro": { "values": ["on", "off", "done"], "serverDefault": "off", "source": "sessionStorage['mj-intro'] === '1' or reduced motion → off", "consumers": ["CSS shows .intro only when on", "runtime stops Lenis", "particle field waits", "hero entrance waits"] }
+      },
+      "classes": {
+        "html.intro-lock": "overflow: hidden while the title sequence plays.",
+        "html.scroll-locked": "Template only: native scroll lock when Lenis is absent (reduced motion)."
+      },
+      "rehydrateGuard": "applyDocumentFlags() runs in useLayoutEffect and never downgrades data-intro from 'done'."
+    },
+    "events": [
+      { "name": "live:intro-done", "templateName": "motion:intro-done", "target": "window", "dispatchedBy": "IntroSequence handOff() at the 'exit' label or on skip", "consumers": ["heroEntrance → plays headline + starts Lenis", "SignalField → may start particles"], "guarantee": "Dispatched at most once per mount (handedOff guard)." }
+    ],
+    "sharedState": [
+      { "name": "Lenis handle", "where": "scroll.ts module variable", "why": "Nav links, the command palette and overlays need to scroll or lock without prop drilling." },
+      { "name": "Theme", "where": "<html data-theme> + MutationObserver", "why": "The DOM is the store, so the inline script, the toggle, the particle loop and CSS all agree." },
+      { "name": "Signal anchors", "where": "[data-signal] attributes in the DOM", "why": "Sections declare intent declaratively, and the field polls rects each frame." },
+      { "name": "Spotlight position", "where": "--mx / --my custom properties per .glass element", "why": "CSS owns the glow and JS only feeds coordinates." }
+    ],
+    "lifecycle": {
+      "teardownOrder": ["DOM listener cleanups", "mm.revert() (breakpoint scenes)", "ctx.revert() (tweens, ScrollTriggers, SplitText)", "gsap.ticker.remove(lenis driver)", "lenis.destroy()", "setLenis(null)"],
+      "strictMode": "Effects run, clean up, and run again in development. Every effect in the system is idempotent under that.",
+      "templateImprovements": [
+        "Scroll holds are reference counted (holdScroll returns its own release), so closing one overlay can't unlock another.",
+        "The runtime, not the hero scene, restarts Lenis after the intro, so pages without a hero headline don't stay locked.",
+        "Deferred callbacks (afterIntro) run inside gsap.context so their tweens revert too.",
+        "lagSmoothing is restored to GSAP's default (500, 33) on teardown.",
+        "ScrollTrigger.sort() after setup, because spec-driven scenes aren't created in page order."
+      ]
+    }
+  },
+
+  "tokens": {
+    "color": {
+      "dark": {
+        "bg": "#07080c",
+        "text": "#eceef2",
+        "text-2": "#b3bac6",
+        "muted": "#7d8595",
+        "line": "rgba(236, 238, 242, 0.1)",
+        "line-strong": "rgba(236, 238, 242, 0.22)",
+        "grid": "rgba(236, 238, 242, 0.035)",
+        "grid-strong": "rgba(236, 238, 242, 0.05)",
+        "accent": "#fbbf24",
+        "accent-text": "#fbbf24",
+        "accent-2": "#38bdf8",
+        "accent-2-text": "#7dd3fc",
+        "ok": "#34d399",
+        "on-accent": "#0b0d12",
+        "glass": "rgba(14, 17, 25, 0.62)",
+        "glass-border": "rgba(236, 238, 242, 0.09)",
+        "glow": "rgba(251, 191, 36, 0.13)",
+        "shadow": "0 30px 80px -42px rgba(0, 0, 0, 0.85)"
+      },
+      "light": {
+        "bg": "#f4f2ee",
+        "text": "#0d1117",
+        "text-2": "#3a4351",
+        "muted": "#5f6878",
+        "line": "rgba(13, 17, 23, 0.12)",
+        "line-strong": "rgba(13, 17, 23, 0.24)",
+        "grid": "rgba(13, 17, 23, 0.045)",
+        "grid-strong": "rgba(13, 17, 23, 0.06)",
+        "accent": "#f59e0b",
+        "accent-text": "#b45309",
+        "accent-2": "#0284c7",
+        "accent-2-text": "#0369a1",
+        "ok": "#047857",
+        "on-accent": "#0b0d12",
+        "glass": "rgba(255, 255, 255, 0.68)",
+        "glass-border": "rgba(13, 17, 23, 0.08)",
+        "glow": "rgba(245, 158, 11, 0.16)",
+        "shadow": "0 30px 70px -42px rgba(13, 17, 23, 0.35)"
+      },
+      "notes": [
+        "Reference names: --amber → accent, --sky → accent-2. Renamed so the template isn't tied to a hue.",
+        "Light theme darkens accent text (#b45309) for contrast while keeping the bright accent for fills.",
+        "color-mix(in srgb, var(--accent) N%, transparent) is used everywhere for tints, so one token change re-tints chips, tabs, indicators and glows."
+      ]
+    },
+    "particlePalette": {
+      "dark": ["#fbbf24", "#38bdf8", "#e6ebf2"],
+      "light": ["#d97706", "#0284c7", "#334155"],
+      "roles": ["accent (formation highlights, flows)", "secondary (outlines, rings)", "soft (connecting lines, glyph body)"],
+      "ambientMix": [0.25, 0.3, 0.45],
+      "blending": { "dark": "lighter (additive glow)", "light": "source-over (additive would wash to white)" }
+    },
+    "layout": {
+      "gutter": "clamp(16px, 4vw, 48px)",
+      "radius": "18px",
+      "shell": "1320px",
+      "nav-height": "72px"
+    },
+    "easing": {
+      "out": { "css": "cubic-bezier(0.16, 1, 0.3, 1)", "gsap": "expo.out", "use": "Anything arriving: reveals, headline chars, indicator slides, disclosure open." },
+      "io": { "css": "cubic-bezier(0.7, 0, 0.2, 1)", "gsap": "expo.inOut", "use": "Full-screen state changes: menu clip-path, theme reveal, intro rules and shutters." },
+      "in-strong": { "css": "cubic-bezier(0.55, 0.055, 0.675, 0.19)", "gsap": "power3.in", "use": "A wipe bar covering text (accelerates into the cover)." },
+      "out-strong": { "css": "cubic-bezier(0.215, 0.61, 0.355, 1)", "gsap": "power3.out", "use": "A wipe bar leaving; skew settling." },
+      "settle": { "css": "cubic-bezier(0.33, 1, 0.68, 1)", "gsap": "power2.out", "use": "Marquee timeScale easing back to cruise." },
+      "count": { "css": "cubic-bezier(0.45, 0, 0.55, 1)", "gsap": "power2.inOut", "use": "Intro 000 → 100 counter." },
+      "spring": { "css": "linear(0, 1.1 35%, 0.97 55%, 1.01 75%, 1)", "gsap": "elastic.out(1, 0.45)", "use": "Magnetic buttons returning to rest." },
+      "linear": { "css": "linear", "gsap": "none", "use": "Anything scrubbed to scroll, and marquee loops." }
+    },
+    "duration": {
+      "micro": { "css": "0.25s", "seconds": 0.25, "use": "Colour, border and gap changes on hover." },
+      "ui": { "css": "0.3s", "seconds": 0.3, "use": "Background and opacity changes on controls." },
+      "slide": { "css": "0.5s", "seconds": 0.5, "use": "Nav hide, indicator slide, intro characters." },
+      "panel": { "css": "0.7s", "seconds": 0.7, "use": "Menu clip reveal, content remount (enter-up), button shine." },
+      "reveal": { "css": "1.1s", "seconds": 1.1, "use": "Scroll reveals and headings." },
+      "hero": { "css": "1.15s", "seconds": 1.15, "use": "Headline characters." },
+      "theme": { "css": "0.75s", "seconds": 0.75, "use": "View Transition clip reveal." },
+      "scroll-to": { "css": "1.6s", "seconds": 1.6, "use": "Programmatic Lenis scrollTo." },
+      "failsafe": { "css": "3.5s", "seconds": 3.5, "use": "CSS shows JS-hidden entrance elements if JS never runs." },
+      "intro-failsafe": { "css": "6s", "seconds": 6, "use": "CSS hides the intro overlay if JS never runs." }
+    },
+    "stagger": {
+      "chars-hero": 0.035,
+      "chars-intro": 0.018,
+      "chars-wordmark": 0.04,
+      "words-heading": 0.07,
+      "words-scrub": 0.1,
+      "batch": 0.09,
+      "cards": 0.1,
+      "followers": 0.08,
+      "intro-rules": 0.06,
+      "intro-shutters": 0.055,
+      "menu-items-ms": 55,
+      "menu-items-base-ms": 150,
+      "diagram-labels": 0.05
+    },
+    "distance": {
+      "reveal-y": 44,
+      "follower-y": 28,
+      "card-y": 40,
+      "enter-up-y": 14,
+      "menu-item-y": 40,
+      "heading-yPercent": 60,
+      "char-yPercent": 70,
+      "intro-char-yPercent": 115,
+      "parallax-px-per-speed": 140,
+      "bob-px": 6
+    },
+    "scrollStarts": {
+      "eyebrow": "top 88%",
+      "heading": "top 86%",
+      "reveal": "top 90%",
+      "wordmark": "top 95%",
+      "scrub-start": "top 78%",
+      "scrub-end": "bottom 48%",
+      "pin": "top top",
+      "card-in-track": "left 98% → left 62%",
+      "nav-active-band": "rootMargin -45% 0px -50% 0px (the 5% band just above centre)"
+    },
+    "typography": {
+      "families": { "sans": "Geist (variable)", "mono": "Geist Mono" },
+      "display": { "size": "clamp(3.3rem, 7.4vw, 8.2rem)", "weight": 800, "tracking": "-0.066em", "leading": 0.92 },
+      "sectionTitle": { "size": "clamp(2.9rem, 6.6vw, 6.8rem)", "weight": 760, "tracking": "-0.058em", "leading": 0.95, "maxWidth": "12ch" },
+      "statement": { "size": "clamp(2rem, 4.2vw, 4.2rem)", "weight": 650, "tracking": "-0.045em", "leading": 1.08 },
+      "eyebrow": { "font": "mono 600 11px", "tracking": "0.18em", "case": "uppercase" },
+      "wordmark": { "size": "clamp(3rem, 11.2vw, 12.5rem)", "weight": "300 → 900 on proximity", "tracking": "-0.06em", "leading": 0.84 },
+      "hollow": "color: transparent; -webkit-text-stroke: max(1px, 0.02em) var(--text) — alternates with solid words for rhythm.",
+      "ghostIndex": "Huge outlined section number behind each heading (clamp(8rem, 22vw, 20rem), stroke var(--line)), drifting with parallax."
+    },
+    "zIndex": {
+      "ambient": -2,
+      "particles": -1,
+      "menu": 45,
+      "nav": 50,
+      "progress": 90,
+      "intro": 100,
+      "dialogs": 110
+    }
+  },
+
+  "patterns": [
+    {
+      "id": "document-flags",
+      "name": "Pre-paint document flags",
+      "category": "boot",
+      "summary": "An inline <head> script sets data-theme, data-motion and data-intro on <html> before first paint. Every other layer branches on them.",
+      "technique": "Synchronous ES5 IIFE with nested try/catch around storage. The server renders safe defaults, and suppressHydrationWarning lets React accept the changed attributes.",
+      "source": { "file": "src/components/live/flags.ts", "lines": "11-29", "symbol": "FLAGS_SCRIPT, applyDocumentFlags" },
+      "markup": { "html": "<html data-theme=\"dark\" data-motion=\"reduce\" data-intro=\"off\" suppressHydrationWarning>" },
+      "reducedMotion": "This is where reduced motion is decided: data-motion=\"reduce\" and data-intro=\"off\".",
+      "gotchas": [
+        "React Strict Mode in dev resets <html> attributes to their JSX values on remount, so re-apply in useLayoutEffect.",
+        "Never downgrade data-intro from 'done' when re-applying, or the intro replays mid-page.",
+        "A strict CSP needs a nonce on the inline script."
+      ],
+      "remix": ["Add more flags the same way: data-density, data-contrast, data-locale.", "Store the theme in a cookie and read it in the script to keep static prerendering (see the Next docs guide)."],
+      "connector": { "kind": "lib", "module": "lib/flags.ts", "export": "createFlagsScript" }
+    },
+    {
+      "id": "css-failsafes",
+      "name": "JS-hidden elements with CSS failsafes",
+      "category": "boot",
+      "summary": "Elements that JS will animate in are hidden by CSS only in full-motion mode, and a zero-duration keyframe with a delay un-hides them if JS never takes over.",
+      "technique": "animation: failsafe-show 0s 3.5s forwards. JS cancels it with gsap.set(el, { animation: 'none' }) the moment it owns visibility. The intro overlay uses the same trick to hide itself after 6s.",
+      "source": { "file": "src/app/globals.css", "lines": "411-422, 975-993", "symbol": "[data-motion=\"full\"] .hero-title, @keyframes failsafe-show / failsafe-fade / intro-failsafe" },
+      "markup": { "attributes": ["data-entrance=\"title\"", "data-entrance=\"fade\""] },
+      "params": { "headlineDelay": "3.5s", "introDelay": "6s" },
+      "reducedMotion": "Rules are scoped to [data-motion=\"full\"], so reduced motion never hides anything.",
+      "gotchas": ["Use visibility for the headline (keeps layout) and opacity for followers.", "Tune the delay above the slowest realistic hydration on 4G, or users see a pop then the animation."],
+      "remix": ["Use the same failsafe for skeleton states that JS is supposed to replace."],
+      "connector": { "kind": "css", "module": "lib/styles/motion.css", "className": "[data-entrance]" }
+    },
+    {
+      "id": "smooth-scroll-runtime",
+      "name": "Lenis on the GSAP ticker",
+      "category": "runtime",
+      "summary": "Lenis smooth scroll, driven by GSAP's ticker with priority, feeding ScrollTrigger.update on every scroll.",
+      "technique": "gsap.ticker.add(t => lenis.raf(t * 1000), false, true) and gsap.ticker.lagSmoothing(0). Lenis stops while the intro plays.",
+      "source": { "file": "src/components/live/motion.ts", "lines": "15-71", "symbol": "initLiveMotion" },
+      "params": { "lerp": 0.085, "anchors": true, "stopInertiaOnNavigate": true },
+      "reducedMotion": "Never created. Native scrolling.",
+      "performance": "One rAF loop for scroll, tweens and particles. lagSmoothing(0) avoids the time jumps that desync scrub positions.",
+      "gotchas": ["Nested scrollers (modals, code blocks, palettes) need data-lenis-prevent or Lenis eats their wheel events.", "Import lenis/dist/lenis.css; it sets the html.lenis-stopped overflow rule."],
+      "remix": ["Raise lerp toward 0.12 for a tighter feel on content-heavy sites; drop to 0.06 for a floatier showcase."],
+      "connector": { "kind": "lib", "module": "lib/runtime.ts", "export": "startMotion" }
+    },
+    {
+      "id": "scroll-holds",
+      "name": "Scroll locks for overlays",
+      "category": "runtime",
+      "summary": "Opening a modal, palette, menu or intro stops the page scroll. Programmatic scrollTo still works while closing an overlay.",
+      "technique": "Site: lockScroll(bool) → lenis.stop()/start(), and scrollToSection() calls lenis.start() first. Template: reference-counted holdScroll() returning a release, and scrollTo with { force: true }.",
+      "source": { "file": "src/components/live/scroll.ts", "lines": "1-27", "symbol": "lockScroll, scrollToSection" },
+      "params": { "scrollToDuration": 1.6 },
+      "reducedMotion": "Template toggles html.scroll-locked (overflow: hidden) when there is no Lenis.",
+      "gotchas": ["Two independent lockScroll(false) calls can unlock each other's overlays; the site avoided it by effect ordering. Ref counting removes the dependency.", "The palette navigated nowhere while its own lock was held, which PR #3 fixed."],
+      "connector": { "kind": "lib", "module": "lib/scroll.ts", "export": "holdScroll" }
+    },
+    {
+      "id": "motion-teardown",
+      "name": "Single teardown with static fallback",
+      "category": "runtime",
+      "summary": "All scenes run inside gsap.context() and gsap.matchMedia(). Extra listeners push cleanups. If setup throws, it reverts and flips to static.",
+      "source": { "file": "src/components/live/motion.ts", "lines": "30-60" },
+      "gotchas": ["Tweens created later in event callbacks are outside the context unless wrapped with ctx.add(fn). The template's afterIntro does this."],
+      "connector": { "kind": "lib", "module": "lib/runtime.ts", "export": "startMotion" }
+    },
+    {
+      "id": "title-sequence",
+      "name": "Kinetic title sequence",
+      "category": "intro",
+      "summary": "About 2.25 seconds. Vertical rules draw down, HUD text rises, a counter runs 000 → 100, and five words hard-cut on a 0.3s beat across coloured plates. Then the plates fade and six shutters lift in a stagger.",
+      "technique": "One gsap.timeline. The plate colour is set via CSS custom properties (--intro-bg/--intro-fg) with tl.set at each beat. Characters rise with fromTo yPercent 115 → 0. A labelled 'exit' point lets skip() seek straight to the outro.",
+      "source": { "file": "src/components/live/IntroSequence.tsx", "lines": "12-151", "symbol": "IntroSequence" },
+      "timeline": [
+        { "at": 0, "do": "rules scaleY 0 → 1", "duration": 0.8, "stagger": 0.06, "ease": "expo.inOut" },
+        { "at": 0.1, "do": "HUD children from yPercent 120, autoAlpha 0", "duration": 0.6, "stagger": 0.05, "ease": "expo.out" },
+        { "at": 0.1, "do": "counter 0 → 100 (padStart 3)", "duration": "exitAt - 0.2", "ease": "power2.inOut" },
+        { "at": "0.3 + i × 0.3", "do": "set plate colours; show word i; chars yPercent 115 → 0", "duration": 0.5, "stagger": 0.018, "ease": "expo.out" },
+        { "at": "0.3 + (i+1) × 0.3", "do": "hide word i (except the last)" },
+        { "at": "exit = 0.3 + n × 0.3 + 0.45", "do": "handOff(): remove intro-lock, dispatch intro-done" },
+        { "at": "exit", "do": "plate, stage, HUD, rules → autoAlpha 0", "duration": 0.3, "ease": "power2.out" },
+        { "at": "exit", "do": "shutters yPercent → -100", "duration": 0.95, "stagger": 0.055, "ease": "expo.inOut" }
+      ],
+      "params": { "beat": 0.3, "lead": 0.3, "hold": 0.45, "shutters": 6, "rules": 4 },
+      "skip": { "inputs": ["any key except Tab", "click on overlay", "wheel", "touchstart"], "behaviour": "handOff() then tl.seek('exit'). Scroll keys get preventDefault so skipping doesn't also jump the page." },
+      "persistence": "sessionStorage key set on complete; a palette command removes it and reloads to replay.",
+      "reducedMotion": "Never renders (data-intro is 'off').",
+      "accessibility": "Stage is aria-hidden. The skip button is real and focusable. Tab is not treated as a skip.",
+      "gotchas": ["Hand off at the exit label, not on complete, so the hero animates while the shutters lift (overlap equals polish).", "Keep the word count × beat under ~2s; return visitors in the same session never see it, but first-timers must not wait."],
+      "remix": ["Use the beat to count down a product launch.", "Replace words with logos or numbers.", "Use the shutters alone as a page-transition curtain."],
+      "connector": { "kind": "component", "module": "connectors/react.tsx", "export": "TitleSequence" }
+    },
+    {
+      "id": "hero-split-entrance",
+      "name": "Headline character flip",
+      "category": "entrance",
+      "summary": "Each headline line is split into characters that hinge up from below (rotateX -95 → 0 with perspective). Supporting elements fade up shortly after.",
+      "technique": "SplitText.create(lines, { type: 'words,chars' }). Characters are pre-set hidden with transformOrigin 50% 100% and transformPerspective 700. Plays on intro hand-off.",
+      "source": { "file": "src/components/live/motion.ts", "lines": "80-103", "symbol": "heroEntrance" },
+      "trigger": { "type": "event", "event": "intro-done (or immediately if no intro)" },
+      "markup": { "title": "h1[data-entrance=title] > span.title-line × n", "followers": "[data-entrance=fade]" },
+      "animation": { "from": { "yPercent": 70, "rotateX": -95, "autoAlpha": 0 }, "to": { "yPercent": 0, "rotateX": 0, "autoAlpha": 1 } },
+      "params": { "title": "[data-entrance=title]", "lines": ".title-line", "followers": "[data-entrance=fade]", "duration": 1.15, "stagger": 0.035, "followerDelay": 0.25, "ease": "expo.out" },
+      "reducedMotion": "Not run. The headline renders static.",
+      "gotchas": ["Split per line wrapper so a line never reflows into the next mid-animation.", "Give lines padding-bottom ≈ 0.04em so descenders aren't clipped (the 'hero headline clipping' fix)."],
+      "remix": ["Swap rotateX for a blur-free skewY rise for a more editorial feel.", "Stagger from 'center' for symmetrical wordmarks."],
+      "enabled": true,
+      "connector": { "kind": "scene", "module": "lib/scenes.ts", "export": "splitEntrance", "registryKey": "split-entrance" }
+    },
+    {
+      "id": "eyebrow-wipe",
+      "name": "Label colour-bar wipe",
+      "category": "scroll-reveal",
+      "summary": "An accent bar sweeps across a small label from the left, the text appears underneath while it's covered, and the bar exits to the right.",
+      "technique": "A timeline with set(text hidden) → bar scaleX 0 → 1 (origin left, power3.in) → set(text visible) → set(origin right) → bar scaleX 1 → 0 (power3.out).",
+      "source": { "file": "src/components/live/motion.ts", "lines": "105-119", "symbol": "eyebrowWipes" },
+      "trigger": { "type": "scroll-enter", "start": "top 88%", "toggleActions": "play none play none" },
+      "markup": { "label": "p.wipe-label > span (index) + span (text) + span.wipe" },
+      "params": { "selector": ".wipe-label", "bar": ".wipe", "start": "top 88%", "inDuration": 0.4, "outDuration": 0.45 },
+      "reducedMotion": "Bar stays at scaleX(0); text is visible.",
+      "remix": ["Use on table headers or pull quotes.", "Chain two bars in accent and accent-2 for a double wipe."],
+      "enabled": true,
+      "connector": { "kind": "scene", "module": "lib/scenes.ts", "export": "wipeLabels", "registryKey": "wipe-labels" }
+    },
+    {
+      "id": "section-heading-rise",
+      "name": "Section heading word rise",
+      "category": "scroll-reveal",
+      "summary": "Section titles split into words that rise 60% of their height with a 3° tilt and fade in.",
+      "source": { "file": "src/components/live/motion.ts", "lines": "121-134", "symbol": "sectionTitles" },
+      "trigger": { "type": "scroll-enter", "start": "top 86%", "toggleActions": "play none play none" },
+      "animation": { "from": { "yPercent": 60, "rotate": 3, "autoAlpha": 0 } },
+      "params": { "selector": ".section-title", "start": "top 86%", "duration": 1.1, "stagger": 0.07, "rotate": 3, "ease": "expo.out" },
+      "reducedMotion": "Not run.",
+      "gotchas": ["Hollow (text-stroke) words inside the title split fine; SplitText keeps the span's class."],
+      "enabled": true,
+      "connector": { "kind": "scene", "module": "lib/scenes.ts", "export": "splitHeadings", "registryKey": "split-headings" }
+    },
+    {
+      "id": "scrub-statement",
+      "name": "Scroll-scrubbed word highlight",
+      "category": "scroll-scrub",
+      "summary": "A manifesto line starts at 14% opacity and lights up word by word, exactly as fast as you scroll.",
+      "source": { "file": "src/components/live/motion.ts", "lines": "136-151", "symbol": "throughLine" },
+      "trigger": { "type": "scrub", "start": "top 78%", "end": "bottom 48%", "scrub": true },
+      "params": { "selector": "[data-scrub]", "dim": 0.14, "start": "top 78%", "end": "bottom 48%" },
+      "reducedMotion": "Full opacity.",
+      "remix": ["Scrub color instead of opacity for a highlighter effect.", "Pin the statement for one viewport to give it a moment."],
+      "enabled": true,
+      "connector": { "kind": "scene", "module": "lib/scenes.ts", "export": "scrubWords", "registryKey": "scrub-words" }
+    },
+    {
+      "id": "batch-reveal",
+      "name": "Batched fade-up reveals",
+      "category": "scroll-reveal",
+      "summary": "Any element with data-reveal fades up 44px. Elements entering on the same frame are batched and staggered.",
+      "technique": "ScrollTrigger.batch with onEnter and onEnterBack, overwrite: true.",
+      "source": { "file": "src/components/live/motion.ts", "lines": "153-162", "symbol": "reveals" },
+      "trigger": { "type": "batch", "start": "top 90%" },
+      "markup": { "attribute": "data-reveal" },
+      "params": { "selector": "[data-reveal]", "y": 44, "start": "top 90%", "duration": 1.1, "stagger": 0.09, "ease": "expo.out" },
+      "reducedMotion": "Not run.",
+      "gotchas": ["Don't put data-reveal on an element that is also a pin or the pinned section's child; use the pinned scene's own reveal."],
+      "enabled": true,
+      "connector": { "kind": "scene", "module": "lib/scenes.ts", "export": "batchReveal", "registryKey": "batch-reveal" }
+    },
+    {
+      "id": "velocity-marquee",
+      "name": "Scroll-velocity marquee",
+      "category": "marquee",
+      "summary": "Infinite tickers that speed up to 8×, reverse with scroll direction, and skew up to 7° with velocity, then ease back to cruising speed 0.18s after scrolling stops.",
+      "technique": "A repeat: -1 xPercent tween per track, pre-advanced by 200 loops so negative timeScale has room. One global ScrollTrigger reads getVelocity() and tweens timeScale and skewX with overwrite. A delayedCall settles back.",
+      "source": { "file": "src/components/live/motion.ts", "lines": "164-206", "symbol": "marquees" },
+      "markup": { "container": ".marquee[data-direction=1|-1][data-duration=seconds]", "track": ".marquee-track > .marquee-row × 2 (identical)" },
+      "params": { "selector": ".marquee", "track": ".marquee-track", "velocityDivisor": 350, "maxBoost": 7, "skewDivisor": 260, "maxSkew": 7, "settleAfter": 0.18 },
+      "reducedMotion": "Static rows (the tween never starts).",
+      "accessibility": "aria-hidden. The same words exist elsewhere as real content.",
+      "performance": "will-change: transform on the track; the mask-image edge fade is static.",
+      "remix": ["Alternate solid and hollow items (nth-child(even) text-stroke).", "Two rows in opposite directions at different durations (46s / 52s) avoid visual phase lock."],
+      "enabled": true,
+      "connector": { "kind": "scene", "module": "lib/scenes.ts", "export": "velocityMarquees", "registryKey": "velocity-marquees" }
+    },
+    {
+      "id": "parallax-index",
+      "name": "Parallax ghost numbers",
+      "category": "scroll-scrub",
+      "summary": "Huge outlined section numbers drift ±(speed × 140)px across their section's scroll range.",
+      "source": { "file": "src/components/live/motion.ts", "lines": "208-221", "symbol": "parallax" },
+      "trigger": { "type": "scrub", "start": "top bottom", "end": "bottom top", "triggerElement": "parent" },
+      "markup": { "attribute": "data-speed=\"0.35\"" },
+      "params": { "attribute": "data-speed", "distance": 140 },
+      "reducedMotion": "Not run.",
+      "gotchas": ["Use function values and invalidateOnRefresh so distances recompute on resize."],
+      "enabled": true,
+      "connector": { "kind": "scene", "module": "lib/scenes.ts", "export": "parallax", "registryKey": "parallax" }
+    },
+    {
+      "id": "wordmark-rise",
+      "name": "Footer wordmark character rise",
+      "category": "scroll-reveal",
+      "summary": "Giant footer letters, pre-split in JSX, rise from 100% below an overflow:hidden line.",
+      "source": { "file": "src/components/live/motion.ts", "lines": "223-233", "symbol": "footerWordmark" },
+      "trigger": { "type": "scroll-enter", "start": "top 95%", "toggleActions": "play none play none" },
+      "markup": { "container": "p.wordmark.split-line", "chars": "span.split-char (aria-hidden) + sr-only full text" },
+      "params": { "chars": ".wordmark .split-char", "trigger": ".wordmark", "start": "top 95%", "duration": 1.2, "stagger": 0.04 },
+      "reducedMotion": "Not run.",
+      "enabled": true,
+      "connector": { "kind": "scene", "module": "lib/scenes.ts", "export": "charsRise", "registryKey": "chars-rise" }
+    },
+    {
+      "id": "pinned-horizontal-track",
+      "name": "Pinned horizontal timeline",
+      "category": "scroll-pin",
+      "summary": "On screens ≥1024px the section pins and its card track scrolls sideways for exactly the overflow distance. A progress bar fills, and each card swings in on a 3D hinge (rotateY -14 → 0, scale 0.92 → 1) as it crosses the viewport.",
+      "technique": "x: () => -distance() with end: () => `+=${distance()}`, pin, scrub 0.8, anticipatePin 1, invalidateOnRefresh. Card tweens use containerAnimation: slide with start 'left 98%' and end 'left 62%'. Below 1024px, gsap.matchMedia swaps to a vertical stack with batch reveals.",
+      "source": { "file": "src/components/live/motion.ts", "lines": "235-286", "symbol": "experienceTrack" },
+      "markup": { "section": "[data-hscroll]", "viewport": ".h-viewport (overflow hidden, perspective 1400px)", "track": ".h-track (flex, width max-content)", "items": ".h-card", "progress": ".h-progress-fill" },
+      "params": { "section": "[data-hscroll]", "track": ".h-track", "viewport": ".h-viewport", "items": ".h-card", "progress": ".h-progress-fill", "minWidth": 1024, "scrub": 0.8 },
+      "reducedMotion": "Not run. Below 1024px CSS stacks the cards. At 1024px and up, the template makes .h-viewport natively horizontally scrollable with scroll-snap. The reference site had the same gap (cards 4–5 clipped out of reach at 1440px); fixed there on 2026-10-06 with the same rule (see gotchas: reduced-motion-clipped-track).",
+      "gotchas": ["Track padding uses max(gutter, (100vw - shell)/2) so the first card aligns with the page grid.", "End the track with a call-to-action card so the pin releases on purpose, not into nothing.", "Verify triggers below a pin with markers: true; create pins in page order or call ScrollTrigger.sort()."],
+      "remix": ["Product feature carousel.", "Case-study gallery.", "Changelog timeline."],
+      "enabled": true,
+      "connector": { "kind": "scene", "module": "lib/scenes.ts", "export": "pinnedHorizontal", "registryKey": "pinned-horizontal" }
+    },
+    {
+      "id": "scroll-progress-bar",
+      "name": "Reading progress bar (zero JS)",
+      "category": "scroll-scrub",
+      "summary": "A 2px accent → accent-2 gradient bar at the top scales from 0 to 1 with page scroll, driven entirely by a CSS scroll timeline.",
+      "source": { "file": "src/app/globals.css", "lines": "196-219", "symbol": ".progress" },
+      "technique": "@supports (animation-timeline: scroll()) { animation: progress linear both; animation-timeline: scroll(root); }",
+      "reducedMotion": "Exempt from the global override; it's position feedback, not decoration.",
+      "connector": { "kind": "css", "module": "lib/styles/motion.css", "className": "scroll-progress" }
+    },
+    {
+      "id": "magnetic-buttons",
+      "name": "Magnetic buttons",
+      "category": "pointer",
+      "summary": "Primary buttons lean toward the cursor (28% of the X offset, 40% of Y) and spring back elastically on leave.",
+      "technique": "gsap.quickTo per axis (one reusable tween instead of one per pointermove).",
+      "source": { "file": "src/components/live/motion.ts", "lines": "288-311", "symbol": "magnetic" },
+      "markup": { "attribute": "data-magnetic" },
+      "params": { "selector": "[data-magnetic]", "strengthX": 0.28, "strengthY": 0.4, "duration": 0.6, "ease": "elastic.out(1, 0.45)" },
+      "reducedMotion": "Not run. Also skipped on touch / coarse pointers.",
+      "remix": ["Apply to social icons in a footer row.", "Lower strength (0.12) on large cards for a subtle tilt-free 'lean'."],
+      "enabled": true,
+      "connector": { "kind": "scene", "module": "lib/pointer.ts", "export": "magnetic", "registryKey": "magnetic" }
+    },
+    {
+      "id": "variable-weight-proximity",
+      "name": "Variable-weight proximity wordmark",
+      "category": "pointer",
+      "summary": "Footer letters near the cursor swell from weight 250 to 900 with a squared falloff over 320px. A CSS transition on font-weight smooths it.",
+      "technique": "pointermove stores coordinates, and one rAF per frame reads rects and writes style.fontWeight.",
+      "source": { "file": "src/components/live/motion.ts", "lines": "313-344", "symbol": "variableWeight" },
+      "params": { "container": ".wordmark", "chars": ".split-char", "radius": 320, "min": 250, "max": 900 },
+      "reducedMotion": "Not run. Fine pointers only.",
+      "performance": "Weight changes reflow the line. Keep it to one short word in an overflow:hidden container.",
+      "remix": ["Drive font-stretch or a custom axis (e.g. 'wdth', 'slnt') instead of weight."],
+      "enabled": true,
+      "connector": { "kind": "scene", "module": "lib/pointer.ts", "export": "proximityWeight", "registryKey": "proximity-weight" }
+    },
+    {
+      "id": "glass-spotlight",
+      "name": "Glass card cursor glow",
+      "category": "pointer",
+      "summary": "Cards have a 420px radial glow that follows the cursor and fades in on hover; the border tints toward the accent.",
+      "technique": "One delegated window pointermove finds closest('.glass') and writes --mx/--my. CSS ::before uses radial-gradient(… at var(--mx) var(--my)). backdrop-filter only at ≥1024px with hover.",
+      "source": { "file": "src/components/live/LiveMotion.tsx", "lines": "33-46", "symbol": "useSpotlight" },
+      "cssSource": { "file": "src/app/globals.css", "lines": "360-394" },
+      "reducedMotion": "Runs (no motion, just a hover highlight). Transitions are instant.",
+      "connector": { "kind": "lib", "module": "lib/pointer.ts", "export": "trackSpotlight" }
+    },
+    {
+      "id": "particle-pointer",
+      "name": "Particle push, swirl and shockwave",
+      "category": "pointer",
+      "summary": "The cursor pushes particles outward with a 35% tangential swirl inside 120px (70px on touch). A click scatters everything within 280px, and springs pull it back.",
+      "source": { "file": "src/components/live/SignalField.tsx", "lines": "160-187, 337-350" },
+      "params": { "pointerRadiusFine": 120, "pointerRadiusCoarse": 70, "pushStrength": 5, "swirl": 0.35, "shockwaveRadius": 280, "shockwaveStrength": 16 },
+      "gotchas": ["Deactivate the pointer on touch pointerup or a finger leaves a permanent hole in the formation."],
+      "connector": { "kind": "engine", "module": "lib/particles/field.ts", "export": "createParticleField" }
+    },
+    {
+      "id": "circular-theme-reveal",
+      "name": "Circular theme reveal (View Transitions)",
+      "category": "transition",
+      "summary": "Switching theme grows the new theme from the toggle button in a circle that reaches the farthest corner in 750ms.",
+      "technique": "document.startViewTransition(apply) → transition.ready → root.animate({ clipPath: [circle(0 at x y), circle(r at x y)] }, { pseudoElement: '::view-transition-new(root)' }). CSS sets animation: none on the ::view-transition-old/new(root) pseudo-elements to drop the default cross-fade.",
+      "source": { "file": "src/components/live/theme.ts", "lines": "13-43", "symbol": "setTheme" },
+      "params": { "duration": 750, "easing": "cubic-bezier(0.7, 0, 0.2, 1)" },
+      "reducedMotion": "Instant swap. Also instant where the API is unsupported.",
+      "remix": ["Use circularReveal() for any whole-page state change: language, density, a 'focus mode'.", "direction: 'shrink' to collapse the old state into the button instead."],
+      "connector": { "kind": "lib", "module": "lib/theme.ts", "export": "circularReveal" }
+    },
+    {
+      "id": "menu-circle-reveal",
+      "name": "Mobile menu clip-path reveal",
+      "category": "transition",
+      "summary": "The full-screen menu opens as a circle growing from the burger button (0.7s, ease-io). Links rise in with a 55ms stagger after a 150ms delay.",
+      "technique": "clip-path: circle(0 at X Y) → circle(150% at X Y). Visibility transitions with 0s delay on open and 0.7s delay on close so the clip finishes before it hides. Link delay: calc(var(--i) * 55ms + 150ms).",
+      "source": { "file": "src/app/globals.css", "lines": "676-724", "symbol": ".menu" },
+      "accessibility": "inert while closed; Escape closes; scroll held while open.",
+      "connector": { "kind": "css", "module": "lib/styles/motion.css", "className": "reveal-overlay" }
+    },
+    {
+      "id": "nav-auto-hide",
+      "name": "Auto-hiding glass nav",
+      "category": "navigation",
+      "summary": "The nav is transparent at top, becomes glass after 40px, slides away while scrolling down past 480px, and returns on any upward scroll.",
+      "source": { "file": "src/components/live/SiteNav.tsx", "lines": "47-59", "symbol": "SiteNav scroll effect" },
+      "cssSource": { "file": "src/app/globals.css", "lines": "529-560" },
+      "params": { "threshold": 40, "hideAfter": 480, "jitter": 2 },
+      "gotchas": ["In the reference, any sub-2px move sets hidden=false, so the bar reappears as smooth-scroll inertia tails off (it hides only while moving fast). The template's useScrollDirection keeps the current state on tiny moves; pick whichever you want deliberately."],
+      "connector": { "kind": "hook", "module": "connectors/react.tsx", "export": "useScrollDirection", "className": "nav-auto" }
+    },
+    {
+      "id": "nav-active-indicator",
+      "name": "Sliding active-section pill",
+      "category": "navigation",
+      "summary": "An IntersectionObserver picks the section crossing a thin band just above the viewport centre. A pill slides (transform + width, 0.5s ease-out) under that link.",
+      "source": { "file": "src/components/live/SiteNav.tsx", "lines": "30-73" },
+      "params": { "rootMargin": "-45% 0px -50% 0px" },
+      "connector": { "kind": "hook", "module": "connectors/react.tsx", "export": "useActiveSection, useSlidingIndicator", "className": "nav-indicator" }
+    },
+    {
+      "id": "decode-title",
+      "name": "Decode-from-noise title",
+      "category": "state-change",
+      "summary": "When the user switches project, the title resolves left to right out of random glyphs over 650ms. It never runs on first render.",
+      "technique": "rAF loop. settled = floor(progress × length), and the remainder is random glyphs from 'A–Z0–9/<>_=+#'. Spaces stay spaces. Real text sits in an sr-only sibling and the animated span is aria-hidden.",
+      "source": { "file": "src/components/live/WorkScene.tsx", "lines": "9-46", "symbol": "DecodeTitle" },
+      "params": { "duration": 650, "glyphs": "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/<>_=+#" },
+      "reducedMotion": "Text swaps instantly.",
+      "connector": { "kind": "component", "module": "connectors/react.tsx", "export": "DecodeText" }
+    },
+    {
+      "id": "keyed-remount-enter",
+      "name": "Keyed remount entrance",
+      "category": "state-change",
+      "summary": "Content panels re-play a CSS entrance (opacity 0 → 1, translateY 14px → 0, 0.7s ease-out) whenever their React key changes. No JS animation code.",
+      "source": { "file": "src/components/live/WorkScene.tsx", "lines": "74, 210" },
+      "cssSource": { "file": "src/app/globals.css", "lines": "1492-1503, 1637-1640" },
+      "technique": "<div className=\"enter-up\" key={`${id}-${view}`}>…</div>. The key change forces a fresh element, so the animation restarts.",
+      "connector": { "kind": "css", "module": "lib/styles/motion.css", "className": "enter-up" }
+    },
+    {
+      "id": "grid-rows-disclosure",
+      "name": "Auto-height disclosure",
+      "category": "state-change",
+      "summary": "A 'case file' panel expands to its natural height by transitioning grid-template-rows 0fr → 1fr (0.6s ease-out). A disclosure arrow turns 90°.",
+      "source": { "file": "src/app/globals.css", "lines": "1584-1600", "symbol": ".casefile" },
+      "accessibility": "inert={!open}, aria-expanded and aria-controls on the trigger.",
+      "connector": { "kind": "css", "module": "lib/styles/motion.css", "className": "collapse" }
+    },
+    {
+      "id": "tab-rail",
+      "name": "Active tab rail",
+      "category": "state-change",
+      "summary": "The selected tab grows a 3px accent bar (scaleY from top), shifts its padding by 6px, tints its background, and turns its arrow 45°.",
+      "source": { "file": "src/app/globals.css", "lines": "1294-1380", "symbol": ".stage-tab" },
+      "accessibility": "role=tablist/tab, roving tabIndex, arrow keys, Home/End.",
+      "connector": { "kind": "css", "module": "lib/styles/motion.css", "className": "rail-tab" }
+    },
+    {
+      "id": "button-shine",
+      "name": "Button highlight sweep",
+      "category": "pointer",
+      "summary": "A diagonal white gradient slides across primary buttons on hover (translateX -120% → 120%, 0.7s).",
+      "source": { "file": "src/app/globals.css", "lines": "254-265" },
+      "connector": { "kind": "css", "module": "lib/styles/motion.css", "className": "btn-shine" }
+    },
+    {
+      "id": "link-nudge",
+      "name": "Arrow-link gap nudge",
+      "category": "pointer",
+      "summary": "Text links widen the gap before their arrow from 0.45rem to 0.7rem and shift the underline to the accent.",
+      "source": { "file": "src/app/globals.css", "lines": "294-313" },
+      "connector": { "kind": "css", "module": "lib/styles/motion.css", "className": "link-nudge" }
+    },
+    {
+      "id": "pip-pulse",
+      "name": "Live-status pip",
+      "category": "ambient",
+      "summary": "A 7px accent dot emits an expanding ring every 2.4s (box-shadow 0 → 9px, fading).",
+      "source": { "file": "src/app/globals.css", "lines": "145-163" },
+      "connector": { "kind": "css", "module": "lib/styles/motion.css", "className": "pip" }
+    },
+    {
+      "id": "satellite-bob",
+      "name": "Desynchronised bob",
+      "category": "ambient",
+      "summary": "Labels orbiting the hero float 6px on a 5s loop, desynced with negative delays (-1.7s, -3.3s). The independent `translate` property composes with their positioning transform.",
+      "source": { "file": "src/app/globals.css", "lines": "1040-1072" },
+      "connector": { "kind": "css", "module": "lib/styles/motion.css", "className": "bob" }
+    },
+    {
+      "id": "diagram-label-fade",
+      "name": "Staggered SVG label fade",
+      "category": "state-change",
+      "summary": "Diagram labels fade in with inline animationDelay 0.35s + i × 0.05s. A paint-order stroke halo in the page colour keeps them legible over particles.",
+      "source": { "file": "src/components/live/ProjectDiagram.tsx", "lines": "29-41" },
+      "cssSource": { "file": "src/app/globals.css", "lines": "1468-1490" },
+      "connector": { "kind": "css", "module": "lib/styles/motion.css", "className": "fade-in" }
+    },
+    {
+      "id": "ambient-backdrop",
+      "name": "Fixed blueprint backdrop",
+      "category": "ambient",
+      "summary": "body::before is fixed and holds two radial colour washes (accent top-left, accent-2 top-right) and a 56px grid, masked to fade out down the page. Content scrolls over it.",
+      "source": { "file": "src/app/globals.css", "lines": "93-105" },
+      "connector": { "kind": "css", "module": "lib/styles/motion.css", "className": "ambient" }
+    },
+    {
+      "id": "live-clock",
+      "name": "Live ticking clock",
+      "category": "ambient",
+      "summary": "A seconds-precision local clock in a fixed time zone, using tabular numerals so it doesn't jitter.",
+      "technique": "useSyncExternalStore with a 1s interval subscriber and a server snapshot of '--:--:--'.",
+      "source": { "file": "src/components/live/LiveClock.tsx", "lines": "1-32" },
+      "connector": { "kind": "component", "module": "connectors/react.tsx", "export": "(write your own with useSyncExternalStore; see the source)" }
+    },
+    {
+      "id": "signal-field",
+      "name": "Particle signal field",
+      "category": "particles",
+      "summary": "About 1,900 Canvas 2D particles behind the page. While an anchor element fills half the screen, they spring into its formation (monogram, system diagram, tree, orbit, arrow). Otherwise they drift through a flow field.",
+      "source": { "file": "src/components/live/SignalField.tsx", "lines": "1-401" },
+      "seeAlso": "particleEngine",
+      "connector": { "kind": "engine", "module": "lib/particles/field.ts", "export": "createParticleField" }
+    },
+    {
+      "id": "formation-morph",
+      "name": "Left-to-right formation morph",
+      "category": "particles",
+      "summary": "On anchor change, particles and targets are both sorted by x and paired in order, so the swarm sweeps across instead of tangling. Wake times stagger by target x (0–0.45s) plus jitter (0–0.25s), so the shape draws itself left to right.",
+      "source": { "file": "src/components/live/SignalField.tsx", "lines": "130-158" },
+      "connector": { "kind": "engine", "module": "lib/particles/field.ts", "export": "createParticleField" }
+    },
+    {
+      "id": "adaptive-particles",
+      "name": "Adaptive particle budget",
+      "category": "particles",
+      "summary": "FPS is measured every 500ms. Below 42, the pool shrinks 25% (floor 600) and the formation is rebuilt. The live count and FPS are written into [data-signal-stat].",
+      "source": { "file": "src/components/live/SignalField.tsx", "lines": "224-256" },
+      "connector": { "kind": "engine", "module": "lib/particles/field.ts", "export": "createParticleField" }
+    },
+    {
+      "id": "motion-trails",
+      "name": "Scroll-aware motion trails",
+      "category": "particles",
+      "summary": "Each frame erases the previous one only partly (destination-out at alpha 0.3 dark / 0.45 light), leaving short trails. The fade strengthens with scroll speed (+0.03 per px, max 0.9) so trails never smear across text while scrolling.",
+      "source": { "file": "src/components/live/SignalField.tsx", "lines": "263-270" },
+      "connector": { "kind": "engine", "module": "lib/particles/field.ts", "export": "createParticleField" }
+    },
+    {
+      "id": "static-svg-fallback",
+      "name": "Same-geometry SVG fallback",
+      "category": "fallback",
+      "summary": "Every particle anchor contains an SVG drawn from the same coordinates. In full motion the SVG is a faint guide (opacity 0.5) under the particles. In reduced motion it is the full diagram, with accent fills.",
+      "source": { "file": "src/components/live/ProjectDiagram.tsx", "lines": "15-44" },
+      "cssSource": { "file": "src/app/globals.css", "lines": "1442-1466" },
+      "connector": { "kind": "component", "module": "connectors/react.tsx", "export": "DiagramSvg (static) + diagramRecipe in lib/particles/formations.ts (particles)" }
+    },
+    {
+      "id": "hollow-type",
+      "name": "Hollow / solid type rhythm",
+      "category": "ambient",
+      "summary": "Key words in headings are outlined (transparent fill, text-stroke) against solid words, e.g. 'Projects with *purpose.*'. Marquee items alternate solid and hollow.",
+      "source": { "file": "src/app/globals.css", "lines": "140-143, 1259-1262" },
+      "connector": { "kind": "css", "module": "lib/styles/motion.css", "className": "hollow" }
+    },
+    {
+      "id": "reduced-motion-override",
+      "name": "Global reduced-motion override",
+      "category": "fallback",
+      "summary": "Under prefers-reduced-motion, every animation and transition is clamped to 0.01ms and one iteration, except the scroll progress bar.",
+      "source": { "file": "src/app/globals.css", "lines": "2417-2426" },
+      "connector": { "kind": "css", "module": "lib/styles/motion.css", "className": "@media (prefers-reduced-motion: reduce)" }
+    },
+    {
+      "id": "copy-confirm",
+      "name": "Copy-to-clipboard confirmation",
+      "category": "state-change",
+      "summary": "The copy button swaps icon and label to 'Email copied' for 2s. It announces via aria-live=polite and falls back to mailto: on failure.",
+      "source": { "file": "src/components/live/sections.tsx", "lines": "203-243" },
+      "connector": { "kind": "component", "module": "connectors/react.tsx", "export": "(pattern only)" }
+    }
+  ],
+
+  "particleEngine": {
+    "overview": "A struct-of-arrays particle simulation on one fixed canvas, ticking on gsap.ticker after Lenis. Anchors in the DOM declare formations. The engine fits the active formation into the anchor's live bounding rect every frame, so formations scroll with the page and respond to layout.",
+    "dataLayout": {
+      "Float32Array": ["px", "py", "vx", "vy", "size", "phase", "spring", "damping", "wake", "baseAlpha", "drawAlpha"],
+      "Uint8Array": ["ambientColor", "drawColor"],
+      "Int32Array": ["assign (target index or -1)"],
+      "Uint32Array": ["order (shuffled participation order)"],
+      "why": "No per-frame allocation and cache-friendly loops. One pre-allocated pos tuple is reused for target evaluation."
+    },
+    "budget": { "desktop": 1900, "touch": 1100, "phone(<768px)": 850, "floor": 600, "fpsFloor": 42, "shrinkFactor": 0.75, "maxDpr": 1.75 },
+    "particleInit": {
+      "size": "6% are 'stars' at 2.6px; the rest 1.1–2.2px",
+      "spring": "0.016–0.046 (per particle)",
+      "damping": "0.80–0.88 (per particle)",
+      "baseAlpha": "0.2–0.5",
+      "ambientColor": "25% accent, 30% secondary, 45% soft"
+    },
+    "anchorSelection": {
+      "selector": "[data-signal]",
+      "score": "visibleHeight / min(elementHeight, viewportHeight)",
+      "hysteresis": "+0.25 for the currently active anchor",
+      "threshold": 0.5,
+      "result": "Best anchor or null (drift mode)."
+    },
+    "fitting": "scale = min(rect.w / formation.w, rect.h / formation.h); offset centres the formation in the rect. Recomputed each frame from getBoundingClientRect().",
+    "physics": {
+      "inFormation": "Spring toward target + breathing jitter (sin/cos 0.7px). velocity *= damping^(dt×60). Alpha pulses ±0.2 around 0.62 (dark) / 0.78 (light).",
+      "drift": "Curl-like flow field angle = sin(x·0.0021 + t·0.13)·2.1 + cos(y·0.0017 − t·0.11)·2.1 + sin((x+y)·0.0009 + t·0.07). Acceleration is 0.03 along the angle plus a ±0.025 random walk. Damping 0.965^(dt×60). Edges wrap at a 20px margin.",
+      "scrollCoupling": "Formation particles move 1:1 with scroll delta; drifting dust moves at 0.35× (parallax depth).",
+      "frameIndependence": "dt clamped to 50ms; all forces scaled by f = dt × 60."
+    },
+    "targets": {
+      "point": "Static coordinate.",
+      "spin": "Orbits (cx, cy) at radius r with angular speed (rad/s); used for rotating dashed rings and comet arcs.",
+      "flow": "Travels a polyline at `speed` path-lengths/s in packets. Fades in over the first 8% and out over the last 8%, and teleports back to the source below u=0.03 so the spring doesn't drag it across the diagram."
+    },
+    "primitives": [
+      { "name": "segment(x1,y1,x2,y2,c,thickness=1.2)", "use": "Lines and edges with perpendicular jitter." },
+      { "name": "rectOutline(x,y,w,h,c)", "use": "Box outlines, uniform along the perimeter." },
+      { "name": "rectFill(x,y,w,h,c)", "use": "Faint filled cores for accent boxes." },
+      { "name": "ring(cx,cy,r,c,thickness=1.5)", "use": "Static circles." },
+      { "name": "disc(cx,cy,r,c)", "use": "Filled circles (sqrt for uniform density)." },
+      { "name": "spin(cx,cy,r,speed,c,dashes=0,arc=TAU)", "use": "Rotating rings, dashed rings, comet arcs." },
+      { "name": "flow(pts,speed,c,packets=4)", "use": "Data packets moving through a diagram." },
+      { "name": "glyphCloud(points,{accentShare,base,jitter})", "use": "Text sampled from the live web font (template)." }
+    ],
+    "referenceRecipes": [
+      { "key": "mj", "space": "600×600", "share": 0.9, "seed": 11, "content": "Monogram glyph (weight 60), outer dashed spin r262 @0.07 rad/s with 64 dashes (17), inner spin r214 @-0.11 (8), comet arc r262 @0.4 (2.5), three satellite discs (2 each)." },
+      { "key": "contact", "space": "600×600", "share": 0.72, "seed": 29, "content": "Dashed spin r250 (24), ring r196 (12), and a 26px-thick arrow from three segments (30 + 16 + 16)." },
+      { "key": "sys", "space": "640×420", "share": 1, "seed": 3, "content": "Controller box outline and fill, trunk and bus lines, three unit boxes, four-packet flows from controller to each unit." },
+      { "key": "tree", "space": "640×420", "share": 1, "seed": 5, "content": "Seven node rings (search path accented and filled), trimmed edges, a three-packet flow along the search path." },
+      { "key": "orbit", "space": "640×420", "share": 1, "seed": 7, "content": "Counter-rotating dashed rings (r148 @0.12, r82 @-0.22), core ring and disc, comet arc, three satellites with spokes." }
+    ],
+    "determinism": "mulberry32(seed) makes each formation identical on every visit and at every pool size.",
+    "lifecycle": {
+      "startGate": "Waits for both intro hand-off and document.fonts.ready (or a 1.5s timeout).",
+      "openingBurst": "All particles start at the hero anchor's centre with radial velocity 3–19px/frame. The springs then pull them into the monogram.",
+      "release": "When no anchor qualifies, assignments clear and each particle gets a ±1.5 random kick so the release is visible.",
+      "teardown": "Removes the ticker callback and all window/document listeners and clears the font timeout."
+    },
+    "rendering": {
+      "fade": "destination-out fill per frame for trails (see motion-trails).",
+      "blend": "'lighter' on dark, 'source-over' on light.",
+      "batching": "Draw by colour: one fillStyle per palette entry, then fillRect per particle with per-particle globalAlpha.",
+      "dpr": "Canvas backing store = CSS size × min(devicePixelRatio, 1.75); ctx.setTransform(dpr, …)."
+    },
+    "templateGeneralisations": [
+      "Formations are passed in as a Record<string, FormationRecipe>, not a hard-coded union.",
+      "Palettes can have any number of entries; ambientMix sets the drift distribution.",
+      "diagramRecipe(diagram) auto-converts SVG shapes into weighted primitives, so a new diagram needs no hand-tuned recipe.",
+      "helpers.glyph(text, options) samples any string in the page font, cached per text and options."
+    ]
+  },
+
+  "choreography": {
+    "firstVisit": [
+      { "t": "0.00s", "event": "Intro rules draw; HUD rises; counter starts." },
+      { "t": "0.30s", "event": "Word 1 on plate 1." },
+      { "t": "0.60s → 1.50s", "event": "Words 2–5 hard-cut on 0.3s beats with plate colour changes." },
+      { "t": "2.25s", "event": "Exit label: hand-off event, plates fade (0.3s), shutters lift (0.95s + 5 × 0.055s stagger)." },
+      { "t": "2.25s", "event": "Lenis starts; headline chars begin flipping (1.15s, 0.035s stagger)." },
+      { "t": "2.25s (+fonts)", "event": "Particle burst from the hero centre into the monogram." },
+      { "t": "2.50s", "event": "Hero kicker, lede, CTAs, facts, visual rise (1s each, 0.08s stagger)." },
+      { "t": "≈3.5s", "event": "Intro timeline completes; overlay unmounts; session flag saved." }
+    ],
+    "returnVisit": "No intro. Headline flips immediately on mount; particles burst once fonts are ready.",
+    "scrollMap": [
+      { "section": "Hero", "effects": ["particle monogram (anchor mj)", "satellite bob", "live clock", "magnetic CTAs"] },
+      { "section": "Statement", "effects": ["eyebrow wipe", "scrubbed word highlight", "velocity marquee"] },
+      { "section": "Work", "effects": ["ghost index parallax", "eyebrow wipe", "heading word rise", "aside reveal", "stage reveal", "particles morph to each project's diagram", "decode title on tab change", "keyed remount", "grid-rows case file"] },
+      { "section": "Experience", "effects": ["pin + horizontal track (≥1024px)", "progress fill", "3D card hinge", "batch reveal (<1024px)", "glass spotlight"] },
+      { "section": "About", "effects": ["heading rise", "story cards batch reveal", "glass spotlight", "now panel reveal"] },
+      { "section": "Toolkit", "effects": ["two opposite velocity marquees (46s / 52s)", "skill groups batch reveal"] },
+      { "section": "Contact", "effects": ["heading rise", "magnetic email link", "particles form an arrow (anchor contact)", "copy confirmation"] },
+      { "section": "Footer", "effects": ["wordmark character rise", "variable-weight proximity"] }
+    ],
+    "rhythmRules": [
+      "Entrances are 1.0–1.2s; UI feedback is 0.2–0.5s. Nothing in between, so the two registers never blur.",
+      "Stagger scales with element count: characters 0.018–0.04, words 0.07–0.1, blocks 0.08–0.1.",
+      "Overlap the next act with the end of the previous one (hand off at the exit label, followers at +0.25s).",
+      "Scrubbed effects use ease: 'none'; the scroll is the easing.",
+      "Return-to-rest motions are springy (elastic) or slow (1.2s power2.out); departures are fast."
+    ]
+  },
+
+  "accessibility": {
+    "reducedMotion": [
+      "Decided before paint via the flags script; the server default is already 'reduce'.",
+      "Lenis, scroll scenes, the particle field and the intro never start.",
+      "SVG diagrams render in full with accent fills. Captions switch via .live-only / .static-only ('Static mode · reduced motion').",
+      "Theme switch, decode text and the menu reveal become instant.",
+      "The global CSS override clamps any remaining animation and transition; the progress bar is exempt as position feedback.",
+      "useSyncExternalStore subscribes to the media query, so toggling the OS setting live tears motion down."
+    ],
+    "noJavaScript": [
+      "The server markup is complete and readable: all text, static SVGs, real links.",
+      "CSS failsafes reveal JS-hidden headline elements after 3.5s and hide the intro overlay after 6s.",
+      "Server flags are 'reduce' / 'off', so no motion-only CSS applies unless the inline script runs."
+    ],
+    "screenReaders": [
+      "Split text keeps the full string in an sr-only element and marks split spans aria-hidden (wordmark, decode title).",
+      "Decorative layers (canvas, marquees, HUD frames, intro stage, ghost numbers) are aria-hidden.",
+      "Diagrams have role=img and a descriptive aria-label from the shared geometry.",
+      "The live clock has an aria-label naming its time zone; the copy button uses aria-live=polite."
+    ],
+    "keyboard": [
+      "Project tabs: roving tabIndex, arrows, Home/End, focus follows selection.",
+      "The intro skips on any key except Tab; scroll keys are prevented while skipping.",
+      "Escape closes the menu, palette and modal; Ctrl/⌘K toggles the palette.",
+      "Closed overlays and collapsed panels are inert.",
+      ":focus-visible uses a 2px accent outline with 3px offset."
+    ],
+    "pointer": [
+      "Hover-only effects (magnetic, proximity weight) are gated on (hover: hover) and (pointer: fine).",
+      "Touch pointerup clears the particle repulsion so a lifted finger leaves no hole."
+    ]
+  },
+
+  "performance": {
+    "budgets": {
+      "targetFps": 60,
+      "particleFpsFloor": 42,
+      "maxDpr": 1.75,
+      "maxParticles": 1900,
+      "minParticles": 600
+    },
+    "techniques": [
+      "One requestAnimationFrame owner (gsap.ticker) for Lenis, tweens and particles.",
+      "Transforms and opacity only for scroll animations. No animated filters or blur (a rule set in PR #1).",
+      "backdrop-filter only on ≥1024px hover-capable screens and on the nav once scrolled.",
+      "will-change: transform only on marquee tracks.",
+      "gsap.quickTo for pointer-follow instead of creating tweens per event.",
+      "rAF-coalesced pointer handlers (proximity weight).",
+      "Passive listeners for pointermove, scroll, wheel and touch.",
+      "Draw particles batched by colour; typed arrays; no per-frame allocation in the hot loop except the anchor query.",
+      "Cache formations by key and pool size; rebuild only when the pool shrinks.",
+      "CSS scroll timeline for the progress bar (off main thread where supported).",
+      "Canvas fade (destination-out) instead of clearRect + redraw history for trails."
+    ],
+    "knownCosts": [
+      "pickAnchor() runs querySelectorAll + getBoundingClientRect per anchor per frame. Cheap with ~5 anchors; cache the NodeList if you add dozens.",
+      "Variable-weight proximity reflows the wordmark line on every frame the cursor moves over it.",
+      "Sorting participants and targets on each morph is O(n log n) for ~1,900 items; fine on a section change, too slow per frame."
+    ]
+  },
+
+  "gotchas": [
+    { "id": "once-true-refresh-crash", "symptom": "Loading /#contact crashed the page.", "cause": "A ScrollTrigger with once: true killed itself during ScrollTrigger.refresh(), mutating the trigger list mid-iteration.", "fix": "Use toggleActions 'play none play none' (or idempotent onEnter callbacks) for one-shot reveals.", "source": "src/components/live/motion.ts:73-78" },
+    { "id": "space-skip-scrolls", "symptom": "Pressing Space to skip the intro also scrolled down a screen.", "cause": "The keydown default action still ran.", "fix": "preventDefault for scroll keys (Space, arrows, Page/Home/End) inside the skip handler.", "source": "src/components/live/IntroSequence.tsx:89-95" },
+    { "id": "palette-nav-locked", "symptom": "Command palette navigation did nothing.", "cause": "scrollTo was called while the palette's own scroll lock was still active.", "fix": "Start Lenis before scrollTo (site) or scrollTo with { force: true } (template).", "source": "src/components/live/scroll.ts:13-17" },
+    { "id": "modal-wont-scroll", "symptom": "Résumé modal content wouldn't scroll.", "cause": "Lenis intercepts wheel events for the whole document.", "fix": "Add data-lenis-prevent to any nested scroll container.", "source": "src/components/ResumeModal.tsx:107, src/components/CommandPalette.tsx:155, WorkScene <pre>" },
+    { "id": "strict-mode-flags", "symptom": "Theme or motion flags reverted in dev.", "cause": "Strict Mode remount resets <html> to its JSX attributes.", "fix": "Re-apply flags in useLayoutEffect; never downgrade intro 'done'.", "source": "src/components/live/flags.ts:13-29" },
+    { "id": "stale-palette-search", "symptom": "Palette reopened with the old query.", "cause": "Component stayed mounted while closed.", "fix": "Mount only while open: {open && <Palette />}.", "source": "src/components/live/LiveMotion.tsx:102-103" },
+    { "id": "flow-drag", "symptom": "Flow particles streaked back across the diagram when looping.", "cause": "The spring dragged them from sink to source.", "fix": "Fade at both ends and teleport (zero velocity) when u < 0.03.", "source": "src/components/live/SignalField.tsx:306-317" },
+    { "id": "trails-smear-text", "symptom": "Particle trails smeared over text while scrolling.", "cause": "A constant fade alpha left long streaks during fast scroll.", "fix": "Fade alpha rises with scroll delta (min(0.9, base + |dScroll| × 0.03)).", "source": "src/components/live/SignalField.tsx:263-270" },
+    { "id": "font-glyph-fallback", "symptom": "The monogram traced the fallback font.", "cause": "Glyph sampled before the web font loaded.", "fix": "Sample after document.fonts.ready, with a 1.5s timeout, and clear the formation cache.", "source": "src/components/live/SignalField.tsx:214-222" },
+    { "id": "touch-hole", "symptom": "A permanent hole in the formation on phones.", "cause": "The pointer stayed 'active' after the finger lifted.", "fix": "On non-mouse pointerup/pointercancel, set pointer.active = false.", "source": "src/components/live/SignalField.tsx:170-173" },
+    { "id": "headline-clipping", "symptom": "Descenders and the period clipped during the char flip.", "cause": "Tight line-height with overflow on line wrappers.", "fix": "padding-bottom: 0.04em on each line; width: max-content.", "source": "commit 325819b; src/app/globals.css .hero-line" },
+    { "id": "intro-lenis-coupling", "symptom": "(latent) Page stays scroll-locked after the intro if there is no hero title.", "cause": "Lenis restart lived inside heroEntrance's play().", "fix": "Template restarts Lenis from the runtime on the intro event.", "source": "src/components/live/motion.ts:81-103" },
+    { "id": "reduced-motion-clipped-track", "symptom": "(fixed in the reference site 2026-10-06) At ≥1024px with reduced motion or without JS, the experience track showed only the first three cards at 1440px; the rest were unreachable.", "cause": ".xp-viewport is overflow:hidden for the pinned scene, and no [data-motion=\"reduce\"] rule replaces the pin.", "fix": "[data-motion=\"reduce\"] .h-viewport { overflow-x: auto } (template motion.css) or stack the cards at every width in static mode.", "source": "src/app/globals.css (.xp-viewport + @media (min-width: 1024px) [data-motion=reduce] rule)" },
+    { "id": "nav-tiny-delta", "symptom": "(behavioural) Nav reappears whenever smooth scroll slows below 2px/frame.", "cause": "setHidden(y > 480 && y > last + 2) evaluates false on tiny deltas.", "fix": "Keep the previous state on |delta| ≤ 2 (template useScrollDirection), or keep as intended 'show at rest'.", "source": "src/components/live/SiteNav.tsx:48-59" }
+  ],
+
+  "qa": {
+    "checklist": [
+      "npm run lint, npx tsc --noEmit and npm run build pass.",
+      "First visit: the intro plays once; reload in the same tab does not replay; a new tab does.",
+      "Skip the intro with Space, Enter, Escape, click, wheel and touch; the page doesn't jump.",
+      "Tab during the intro moves focus to the skip button instead of skipping.",
+      "Deep link /#contact (and every section id) loads without errors and lands correctly.",
+      "Ctrl/⌘K opens the palette; navigating from it scrolls; reopening shows an empty search.",
+      "The mobile menu opens from the burger, Escape closes it, and the page can't scroll behind it.",
+      "Scroll inside every modal, palette and code block with the wheel.",
+      "Toggle the theme: the circle grows from the button and particles recolour on the next frame.",
+      "OS reduced motion on: no intro, no canvas, static SVG diagrams, instant transitions, page fully readable.",
+      "JavaScript disabled: page complete; headline visible within 3.5s; no stuck overlay.",
+      "Resize across 1024px: the pinned track switches cleanly to the stacked list and back.",
+      "Throttle CPU 4–6× in DevTools: the particle count drops and FPS recovers above the floor.",
+      "Real phone check: touch drag leaves no hole; no horizontal overflow; marquees don't jank.",
+      "Screen reader pass: headline, wordmark and decode title read once, as real words."
+    ],
+    "toolsUsedOnReference": ["eslint", "tsc --noEmit", "next build", "headless Chrome scripted checks (21)", "screenshots: desktop, mobile, light, reduced motion"]
+  },
+
+  "recipes": [
+    {
+      "id": "product-launch",
+      "goal": "A product launch page that counts down and assembles the product from particles.",
+      "use": ["document-flags", "title-sequence (words = countdown, beat 0.45)", "hero-split-entrance", "signal-field with glyph formation of the product name + diagramRecipe for an architecture figure", "pinned-horizontal-track for features", "velocity-marquee for partner logos", "circular-theme-reveal"],
+      "avoid": ["Running the intro on every visit; keep it once per session."]
+    },
+    {
+      "id": "studio-portfolio",
+      "goal": "A design studio site where each case study has its own formation.",
+      "use": ["signal-field with one formation per case-study cover (data-signal on each)", "section-heading-rise", "batch-reveal", "decode-title on filter change", "keyed-remount-enter", "magnetic-buttons", "variable-weight-proximity footer"],
+      "avoid": ["More than ~8 anchors without caching the anchor NodeList."]
+    },
+    {
+      "id": "docs-or-blog",
+      "goal": "Calm reading experience with tasteful motion.",
+      "use": ["document-flags", "scroll-progress-bar", "eyebrow-wipe on section labels", "batch-reveal (y 24, duration 0.8)", "nav-auto-hide", "nav-active-indicator", "circular-theme-reveal"],
+      "avoid": ["Lenis on long-form reading pages if users rely on find-in-page jumps; or keep lerp ≥ 0.12.", "Particles behind body text."]
+    },
+    {
+      "id": "saas-dashboard-marketing",
+      "goal": "Explain a data pipeline visually.",
+      "use": ["diagramRecipe with flows for the pipeline", "static-svg-fallback", "scrub-statement for the value proposition", "pinned-horizontal-track for step-by-step", "grid-rows-disclosure for FAQs"]
+    },
+    {
+      "id": "event-page",
+      "goal": "A conference or meetup page with energy.",
+      "use": ["title-sequence with speaker names", "two opposite velocity-marquees for sponsors", "menu-circle-reveal", "live-clock in the venue time zone", "copy-confirm for the address"]
+    }
+  ],
+
+  "remix": {
+    "variationAxes": [
+      { "axis": "Ease voice", "reference": "expo.out everywhere", "alternatives": ["power4.out for a heavier, editorial feel", "back.out(1.4) for playful brands", "circ.out for crisp tech"] },
+      { "axis": "Entrance geometry", "reference": "rotateX hinge for chars, yPercent rise for words", "alternatives": ["clip-path inset wipes per line", "scale from 0.96 with letter-spacing tighten", "skewY 6° rise"] },
+      { "axis": "Particle language", "reference": "Square 1–2.6px dots, additive on dark", "alternatives": ["Short line segments oriented to velocity", "Circles with radius by depth", "Glyph particles (0/1, punctuation)"] },
+      { "axis": "Transition shape", "reference": "Circle from the trigger", "alternatives": ["Diagonal wipe (polygon clip-path)", "Vertical shutters (reuse the intro's)", "Pixel dissolve via a mask-image of noise"] },
+      { "axis": "Scroll feel", "reference": "Lenis lerp 0.085", "alternatives": ["Native scroll + CSS scroll-driven animations only (lightest)", "Lenis duration-based (duration 1.2, custom easing)"] }
+    ],
+    "keepInvariant": [
+      "Pre-paint flags and the static-first server render.",
+      "A reduced-motion path for every pattern.",
+      "One ticker for scroll-coupled work.",
+      "Single teardown and a fail-to-static catch.",
+      "Real text in the DOM for anything visually split or scrambled."
+    ]
+  },
+
+  "connectors": {
+    "description": "Files in website-template/ that connect this JSON to running code.",
+    "files": [
+      { "path": "connectors/spec.ts", "role": "Imports this JSON, validates the shape code depends on, and exports typed `motionSpec`, `getPattern`, `patternsByCategory`." },
+      { "path": "connectors/registry.ts", "role": "Maps connector.registryKey → scene factory. `scenesFromSpec()` turns enabled scene patterns and their params into a Scene[] for startMotion()." },
+      { "path": "connectors/react.tsx", "role": "Client hooks and components: useFullMotion, useDocumentFlags, useMotionScenes, useScrollHold, useTheme, useActiveSection, useScrollDirection, useSlidingIndicator, MotionRoot, ParticleCanvas, SplitChars, DecodeText, Marquee, DiagramSvg, HudFrame, ThemeToggle, TitleSequence." },
+      { "path": "connectors/next.tsx", "role": "Server components for app/layout.tsx: FlagsScript (inline head script with optional nonce) and htmlFlagProps()." },
+      { "path": "scripts/build-tokens.mjs", "role": "Generates lib/styles/tokens.css from tokens.color / layout / easing / duration." },
+      { "path": "examples/motion.config.ts", "role": "Example brand config: FLAGS, a Diagram, glyph / diagram / hand-built formations, palettes, intro words." },
+      { "path": "examples/layout.example.tsx", "role": "Example app/layout.tsx using FlagsScript and htmlFlagProps." },
+      { "path": "examples/experience.example.tsx", "role": "Example client shell exercising every scene pattern's markup contract." }
+    ],
+    "libraries": [
+      { "path": "lib/flags.ts", "exports": ["createFlagsScript", "serverFlags", "applyDocumentFlags", "readFlags", "markIntroSeen", "resetIntro", "subscribeReducedMotion", "prefersFullMotion", "INTRO_DONE_EVENT"] },
+      { "path": "lib/scroll.ts", "exports": ["setSmoothScroll", "getSmoothScroll", "holdScroll", "isScrollHeld", "scrollToTarget"] },
+      { "path": "lib/theme.ts", "exports": ["getTheme", "subscribeTheme", "circularReveal", "setTheme", "toggleTheme", "centerOf"] },
+      { "path": "lib/runtime.ts", "exports": ["startMotion", "type Scene", "type MotionContext"] },
+      { "path": "lib/scenes.ts", "exports": ["splitEntrance", "wipeLabels", "splitHeadings", "scrubWords", "batchReveal", "charsRise", "parallax", "velocityMarquees", "pinnedHorizontal", "EXPO", "PLAY_ONCE"] },
+      { "path": "lib/pointer.ts", "exports": ["magnetic", "proximityWeight", "trackSpotlight"] },
+      { "path": "lib/text.ts", "exports": ["decodeText", "toChars", "countTo", "DECODE_GLYPHS"] },
+      { "path": "lib/intro.ts", "exports": ["playTitleSequence"] },
+      { "path": "lib/particles/formations.ts", "exports": ["segment", "rectOutline", "rectFill", "ring", "disc", "spin", "flow", "glyphCloud", "assemble", "buildFormation", "sampleText", "diagramRecipe", "defineFormation", "mulberry32", "trim", "polyline", "pointOnPolyline", "evalTarget"] },
+      { "path": "lib/particles/field.ts", "exports": ["createParticleField"] },
+      { "path": "lib/styles/motion.css", "exports": ["CSS classes: ambient, hollow, diagram, shape(-accent|-faint|-dashed), diagram-label(-lg), sr-only, live-only, static-only, signal-static, signal-canvas, hud, scroll-progress, pip, bob, glass, btn-shine, link-nudge, turn, nav-auto, nav-indicator, reveal-overlay, reveal-item, collapse, rail-tab, enter-up, fade-in, wipe-label, wipe, marquee, h-viewport, h-track, h-progress-fill, split-line, split-char, intro-*"] }
+      ],
+    "markupContract": {
+      "data-entrance": "title | fade — hidden in full motion until a scene reveals it (with CSS failsafe).",
+      "data-reveal": "batch-reveal target.",
+      "data-scrub": "scrub-statement target.",
+      "data-speed": "parallax speed (0.1–0.6 is tasteful).",
+      "data-magnetic": "magnetic target.",
+      "data-hscroll": "pinned horizontal section root.",
+      "data-signal": "particle anchor; value is a formation key.",
+      "data-signal-stat": "element that receives 'N PARTICLES · F FPS'.",
+      "data-direction / data-duration": "marquee direction (1 | -1) and loop seconds.",
+      "data-lenis-prevent": "nested scroll container that Lenis must ignore."
+    }
+  },
+
+  "glossary": [
+    { "term": "Anchor", "definition": "A DOM element with data-signal whose box the particle field fits a formation into." },
+    { "term": "Formation", "definition": "A set of targets in its own coordinate space, built from weighted primitives." },
+    { "term": "Primitive", "definition": "A weighted sampler that returns one random target on a shape (segment, ring, spin, flow…)." },
+    { "term": "Hand-off", "definition": "The moment the intro dispatches intro-done and the page takes over, while the intro's exit is still animating." },
+    { "term": "Scene", "definition": "A function that wires one effect inside the motion runtime and optionally returns a cleanup." },
+    { "term": "PLAY_ONCE", "definition": "toggleActions 'play none play none': play on enter and on re-enter from below, never reverse, never self-kill." },
+    { "term": "containerAnimation", "definition": "ScrollTrigger option that maps an element's position inside a horizontally tweened track to scroll progress." },
+    { "term": "Failsafe", "definition": "A zero-duration delayed CSS keyframe that restores visibility if JavaScript never takes over." },
+    { "term": "Hold", "definition": "A reference-counted scroll lock taken by an overlay and released only by that overlay." },
+    { "term": "Static mode", "definition": "data-motion='reduce': the server-rendered page with SVG fallbacks and no JS motion." }
+  ]
+}
