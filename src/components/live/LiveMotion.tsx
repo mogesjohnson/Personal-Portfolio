@@ -52,6 +52,11 @@ export default function LiveMotion() {
 
   useLayoutEffect(() => {
     applyDocumentFlags();
+    // Follow the OS setting mid-visit so motion-only CSS (the hidden-until-revealed
+    // headline) switches off with the scenes. data-intro is left alone on purpose.
+    return subscribeMotion(() => {
+      document.documentElement.dataset.motion = window.matchMedia(REDUCE_QUERY).matches ? "reduce" : "full";
+    });
   }, []);
 
   useEffect(() => {
