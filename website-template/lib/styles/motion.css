@@ -1,0 +1,790 @@
+/*
+ * Motion CSS library.
+ *
+ * Everything here is keyed off the document flags (data-theme, data-motion,
+ * data-intro) set before first paint by lib/flags.ts. Tokens come from
+ * tokens.css, which scripts/build-tokens.mjs generates from motion-system.json.
+ *
+ * Import once, globally:  @import "../website-template/lib/styles/motion.css";
+ */
+
+@import "./tokens.css";
+
+/* ================================================================== */
+/* Base                                                                 */
+/* ================================================================== */
+
+html {
+  background: var(--bg);
+}
+
+/* Held by the title sequence (lib/intro.ts) and by holdScroll() without Lenis. */
+html.intro-lock,
+html.scroll-locked {
+  overflow: hidden;
+}
+
+/* Ambient wash + a fixed blueprint grid that content scrolls over. */
+.ambient::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(900px 520px at 6% -10%, color-mix(in srgb, var(--accent) 13%, transparent), transparent 65%),
+    radial-gradient(820px 520px at 100% -4%, color-mix(in srgb, var(--accent-2) 11%, transparent), transparent 60%),
+    linear-gradient(var(--grid) 1px, transparent 1px) 0 0 / 56px 56px,
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px) 0 0 / 56px 56px;
+  mask-image: linear-gradient(to bottom, black 30%, transparent 95%);
+}
+
+/* Outlined display type; pairs with solid words for rhythm. */
+.hollow {
+  color: transparent;
+  -webkit-text-stroke: max(1px, 0.02em) var(--text);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ================================================================== */
+/* Live / static switches                                               */
+/* ================================================================== */
+
+.live-only {
+  display: inline;
+}
+
+.static-only,
+.signal-static {
+  display: none;
+}
+
+[data-motion="reduce"] .live-only {
+  display: none;
+}
+
+[data-motion="reduce"] .static-only {
+  display: inline;
+}
+
+[data-motion="reduce"] .signal-static {
+  display: block;
+}
+
+/* ================================================================== */
+/* Failsafes: hidden for JS to reveal, but never hidden forever        */
+/* ================================================================== */
+
+/* Elements that JS animates in start hidden only in full-motion mode. If the bundle
+   never runs, the failsafe animation shows them after a short delay. JS cancels the
+   failsafe with `animation: none` the moment it takes over. */
+[data-motion="full"] [data-entrance="title"] {
+  visibility: hidden;
+  animation: failsafe-show 0s var(--dur-failsafe) forwards;
+}
+
+[data-motion="full"] [data-entrance="fade"] {
+  opacity: 0;
+  animation: failsafe-fade 0s var(--dur-failsafe) forwards;
+}
+
+@keyframes failsafe-show {
+  to {
+    visibility: visible;
+  }
+}
+
+@keyframes failsafe-fade {
+  to {
+    opacity: 1;
+  }
+}
+
+/* ================================================================== */
+/* Particle canvas                                                      */
+/* ================================================================== */
+
+.signal-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Diagram SVG (connectors/react.tsx DiagramSvg): a faint guide under live particles,
+   the whole figure in static mode. */
+.diagram {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.diagram .shape {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1.2;
+  opacity: 0.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.diagram .shape-faint {
+  opacity: 0.3;
+}
+
+.diagram .shape-dashed {
+  stroke-dasharray: 4 6;
+}
+
+[data-motion="reduce"] .diagram .shape {
+  opacity: 1;
+  stroke: var(--text-2);
+}
+
+[data-motion="reduce"] .diagram .shape-accent {
+  fill: color-mix(in srgb, var(--accent) 12%, transparent);
+  stroke: var(--accent);
+}
+
+.diagram-label {
+  fill: var(--text-2);
+  font: 600 11px var(--font-mono, monospace);
+  letter-spacing: 0.08em;
+  /* A halo in the page colour keeps labels legible over particles. */
+  paint-order: stroke;
+  stroke: var(--bg);
+  stroke-width: 5px;
+  stroke-linejoin: round;
+  animation: fade-in 0.7s both;
+}
+
+.diagram-label-lg {
+  fill: var(--text);
+  font-size: 17px;
+  font-weight: 700;
+}
+
+/* Corner brackets around a signal anchor. */
+.hud i {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 0 solid var(--line-strong);
+}
+
+.hud i:nth-child(1) {
+  top: 0;
+  left: 0;
+  border-width: 1px 0 0 1px;
+}
+
+.hud i:nth-child(2) {
+  top: 0;
+  right: 0;
+  border-width: 1px 1px 0 0;
+}
+
+.hud i:nth-child(3) {
+  bottom: 0;
+  left: 0;
+  border-width: 0 0 1px 1px;
+}
+
+.hud i:nth-child(4) {
+  right: 0;
+  bottom: 0;
+  border-width: 0 1px 1px 0;
+}
+
+/* ================================================================== */
+/* Scroll progress (pure CSS, scroll-driven animation)                  */
+/* ================================================================== */
+
+.scroll-progress {
+  position: fixed;
+  z-index: 90;
+  inset: 0 0 auto;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  pointer-events: none;
+}
+
+/* Browsers without scroll timelines just don't show the bar. */
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    animation: scroll-progress linear both;
+    animation-timeline: scroll(root);
+  }
+}
+
+@keyframes scroll-progress {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* ================================================================== */
+/* Ambient loops                                                        */
+/* ================================================================== */
+
+/* A live-status dot with a ring that pulses outward. */
+.pip {
+  display: inline-block;
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pip 2.4s infinite;
+}
+
+@keyframes pip {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 9px transparent;
+  }
+}
+
+/* Gentle float. Uses the independent `translate` property so it composes with any
+   transform already on the element. Negative delays desync siblings. */
+.bob {
+  animation: bob 5s ease-in-out infinite;
+}
+
+.bob:nth-of-type(2) {
+  animation-delay: -1.7s;
+}
+
+.bob:nth-of-type(3) {
+  animation-delay: -3.3s;
+}
+
+@keyframes bob {
+  50% {
+    translate: 0 -6px;
+  }
+}
+
+/* ================================================================== */
+/* Glass card with a cursor-following glow (lib/pointer.ts trackSpotlight) */
+/* ================================================================== */
+
+.glass {
+  position: relative;
+  isolation: isolate;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  background: var(--glass);
+  box-shadow: var(--shadow);
+  transition: border-color var(--dur-ui);
+}
+
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), var(--glow), transparent 65%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s;
+}
+
+.glass:hover {
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--glass-border));
+}
+
+.glass:hover::before {
+  opacity: 1;
+}
+
+/* Blur is expensive while scrolling; only pay for it where it's likely to be smooth. */
+@media (min-width: 1024px) and (hover: hover) {
+  .glass {
+    backdrop-filter: blur(12px) saturate(1.25);
+  }
+}
+
+/* ================================================================== */
+/* Buttons and links                                                    */
+/* ================================================================== */
+
+/* A diagonal highlight sweeps across on hover. */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shine::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.5) 50%, transparent 65%);
+  transform: translateX(-120%);
+  transition: transform 0.7s ease;
+  pointer-events: none;
+}
+
+.btn-shine:hover::after {
+  transform: translateX(120%);
+}
+
+/* The gap widens so the arrow steps away from the label. */
+.link-nudge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  transition:
+    color var(--dur-micro),
+    border-color var(--dur-micro),
+    gap var(--dur-micro);
+}
+
+.link-nudge:hover {
+  gap: 0.7rem;
+  color: var(--accent-text);
+}
+
+/* Disclosure arrow: rotate a quarter turn when open. */
+.turn {
+  transition: transform 0.4s var(--ease-out);
+}
+
+.turn.is-turned {
+  transform: rotate(90deg);
+}
+
+/* ================================================================== */
+/* Navigation                                                           */
+/* ================================================================== */
+
+/* Glass once the page has scrolled; slides away while reading downward. */
+.nav-auto {
+  position: fixed;
+  z-index: 50;
+  inset: 0 0 auto;
+  border-bottom: 1px solid transparent;
+  transition:
+    transform 0.5s var(--ease-out),
+    background-color var(--dur-ui),
+    border-color var(--dur-ui);
+}
+
+.nav-auto.is-scrolled {
+  border-bottom-color: var(--line);
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  backdrop-filter: blur(14px) saturate(1.3);
+}
+
+.nav-auto.is-hidden {
+  transform: translateY(-100%);
+}
+
+/* A pill that slides under the active link; JS sets width and translateX. */
+.nav-indicator {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 0;
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.5s var(--ease-out),
+    width 0.5s var(--ease-out),
+    opacity var(--dur-ui);
+}
+
+/* ================================================================== */
+/* Overlay menu: circular clip-path reveal from the trigger             */
+/* ================================================================== */
+
+/* Set --reveal-x / --reveal-y to the trigger's centre (defaults: top-right burger).
+   Visibility flips instantly on open and only after the clip closes on exit. */
+.reveal-overlay {
+  --reveal-x: calc(100% - var(--gutter) - 19px);
+  --reveal-y: 36px;
+  position: fixed;
+  z-index: 45;
+  inset: 0;
+  background: var(--bg);
+  clip-path: circle(0 at var(--reveal-x) var(--reveal-y));
+  visibility: hidden;
+  transition:
+    clip-path 0.7s var(--ease-io),
+    visibility 0s 0.7s;
+}
+
+.reveal-overlay.is-open {
+  clip-path: circle(150% at var(--reveal-x) var(--reveal-y));
+  visibility: visible;
+  transition:
+    clip-path 0.7s var(--ease-io),
+    visibility 0s;
+}
+
+/* Children stagger in by index: style="--i: 0", "--i: 1", ... */
+.reveal-overlay .reveal-item {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    transform 0.6s var(--ease-out),
+    opacity 0.6s;
+  transition-delay: calc(var(--i, 0) * 55ms + 150ms);
+}
+
+.reveal-overlay.is-open .reveal-item {
+  opacity: 1;
+  transform: none;
+}
+
+/* ================================================================== */
+/* Disclosure: animate to auto height with grid rows                    */
+/* ================================================================== */
+
+/* Pair with the `inert` attribute while closed so hidden content can't take focus. */
+.collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.6s var(--ease-out);
+}
+
+.collapse.is-open {
+  grid-template-rows: 1fr;
+}
+
+.collapse > * {
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* ================================================================== */
+/* Tab rail: accent bar grows, item shifts, arrow turns                 */
+/* ================================================================== */
+
+.rail-tab {
+  position: relative;
+  transition:
+    background-color var(--dur-ui),
+    color var(--dur-ui),
+    padding 0.45s var(--ease-out);
+}
+
+.rail-tab::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--accent);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.45s var(--ease-out);
+}
+
+.rail-tab.is-active {
+  padding-left: 28px;
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+
+.rail-tab.is-active::before {
+  transform: scaleY(1);
+}
+
+.rail-tab svg {
+  opacity: 0.4;
+  transition:
+    opacity var(--dur-ui),
+    transform 0.4s var(--ease-out);
+}
+
+.rail-tab.is-active svg {
+  opacity: 1;
+  transform: rotate(45deg);
+}
+
+/* ================================================================== */
+/* Content swaps: remount with a React `key` and this plays again       */
+/* ================================================================== */
+
+.enter-up {
+  animation: enter-up 0.7s var(--ease-out) both;
+}
+
+@keyframes enter-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/* Per-item fades; set animation-delay inline for a stagger. */
+.fade-in {
+  animation: fade-in 0.7s both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ================================================================== */
+/* Scroll-scene scaffolding (lib/scenes.ts)                             */
+/* ================================================================== */
+
+/* Label with a wipe bar (wipeLabels). */
+.wipe-label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wipe-label .wipe {
+  position: absolute;
+  inset: 0 -6px;
+  background: var(--accent);
+  transform: scaleX(0);
+  pointer-events: none;
+}
+
+/* Infinite ticker (velocityMarquees). Two identical rows inside the track. */
+.marquee {
+  position: relative;
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+}
+
+.marquee-row {
+  display: flex;
+  flex: none;
+}
+
+/* Pinned horizontal track (pinnedHorizontal). */
+.h-viewport {
+  overflow: hidden;
+  perspective: 1400px;
+}
+
+.h-track {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+}
+
+/* Without the pin (reduced motion, no JS) the overflow must stay reachable. */
+[data-motion="reduce"] .h-viewport {
+  overflow-x: auto;
+  perspective: none;
+  scroll-snap-type: x mandatory;
+}
+
+[data-motion="reduce"] .h-track > * {
+  scroll-snap-align: start;
+}
+
+.h-progress-fill {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+/* Pre-split characters for charsRise / proximityWeight. */
+.split-line {
+  display: flex;
+  overflow: hidden;
+  padding-bottom: 0.04em;
+  white-space: nowrap;
+}
+
+.split-char {
+  display: inline-block;
+  transition: font-weight 0.45s var(--ease-out);
+}
+
+/* ================================================================== */
+/* Title sequence (lib/intro.ts)                                        */
+/* ================================================================== */
+
+.intro {
+  --intro-bg: var(--bg);
+  --intro-fg: var(--text);
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  color: var(--intro-fg);
+  cursor: pointer;
+}
+
+[data-intro="on"] .intro {
+  display: block;
+  /* If JavaScript never arrives, get out of the way. */
+  animation: intro-failsafe 0s var(--dur-intro-failsafe) forwards;
+}
+
+@keyframes intro-failsafe {
+  to {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+
+.intro-shutters {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--shutters, 6), 1fr);
+}
+
+.intro-shutter {
+  margin-right: -1px;
+  background: var(--bg);
+}
+
+.intro-plate {
+  position: absolute;
+  inset: 0;
+  background: var(--intro-bg);
+}
+
+.intro-rules {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--rules, 4), 1fr);
+  pointer-events: none;
+}
+
+.intro-rule {
+  border-left: 1px solid color-mix(in srgb, var(--intro-fg) 16%, transparent);
+  transform-origin: top;
+}
+
+.intro-hud {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto 1fr auto;
+  padding: clamp(16px, 3vw, 36px);
+  font: 600 11px/1.2 var(--font-mono, monospace);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.intro-count {
+  grid-row: 3;
+  align-self: end;
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.intro-skip {
+  grid-row: 3;
+  grid-column: 2;
+  align-self: end;
+  padding: 0.65rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--intro-fg) 35%, transparent);
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+}
+
+.intro-stage {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.intro-word {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  visibility: hidden;
+}
+
+.intro-line {
+  display: block;
+  overflow: hidden;
+  padding: 0.04em 0.02em;
+  font-size: clamp(3rem, 11vw, 12rem);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.055em;
+  white-space: nowrap;
+}
+
+.intro-char {
+  display: inline-block;
+}
+
+/* ================================================================== */
+/* View Transitions (lib/theme.ts circularReveal)                       */
+/* ================================================================== */
+
+/* The clip-path animation replaces the default cross-fade. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition {
+  pointer-events: none;
+}
+
+/* ================================================================== */
+/* Reduced motion                                                       */
+/* ================================================================== */
+
+/* Belt and braces: the flags already stop JS motion. The progress bar is exempt
+   because a scroll-linked indicator is position feedback, not decoration. */
+@media (prefers-reduced-motion: reduce) {
+  *:not(.scroll-progress),
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
