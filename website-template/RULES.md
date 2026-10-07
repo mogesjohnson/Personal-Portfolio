@@ -1,11 +1,13 @@
 # Rules
 
-Binding on every build and every edit in this folder. Numbered so they can be cited (`R4`).
+Binding on every build and every edit in this folder, for every agent and model. Numbered so they can be cited (`R4`).
+
+**Precedence.** These rules are the user's standing defaults. An explicit instruction from the user in the current request overrides any of them; record each override in the build's `BRIEF.md`.
 
 ## Originality
 
-- **R1. Every build is an original.** Its copy, composition, palette, type pairing, particle formations and signature move are made for that build's subject.
-- **R2. Share techniques, never compositions.** Use `lib/`, `connectors/` and any `motion-system.json` pattern freely. The way the reference site arranges them is its own. Hard guardrail: reproduce nothing from `../src/`, which means none of the following:
+- **R1. Every build is an original.** Its copy, composition, palette, type pairing, particle formations and signature move are made for that build's subject. The one way earlier work enters a build is a vault component the user names (R7).
+- **R2. Share techniques, never compositions.** Use `lib/`, `connectors/` and any `motion-system.json` pattern freely. The way the reference site arranges them is its own. Hard guardrail: reproduce nothing from the repo-root `src/`, which means none of the following:
   - its copy or section names
   - its "MJ" monogram or owner-name wordmark
   - its system, tree or orbit diagrams
@@ -20,14 +22,14 @@ Binding on every build and every edit in this folder. Numbered so they can be ci
 **Originality check.** Run it at the Verify station. Every box must be ticked:
 
 - [ ] Accent colours differ from `tokens.color.*.accent` and `accent-2` in `motion-system.json`.
-- [ ] `grep -rniE "moges|curiosity\.|engineered\.|through line|built in practice|projects with purpose|more than the code|always evolving|have a good problem" builds/<slug>` returns nothing.
+- [ ] `grep -rniE "moges|curiosity\.|engineered\.|through line|built in practice|projects with purpose|more than the code|always evolving|have a good problem" website-template/builds/<slug>` returns nothing. Named vault components are exempt (R7).
 - [ ] Every formation is new geometry. None reuses the reference recipes `mj`, `contact`, `sys`, `tree`, `orbit` or their coordinates.
 - [ ] The signature move (page) or the shifted axes (section) are written in `SCORE.md`.
 - [ ] Every cited inspiration is reduced to a principle sentence in `CONCEPT.md`.
 
 ## Vault
 
-- **R7. Named use only.** A vault component enters a build only when the user names it in the current request, and only the components named.
+- **R7. Named use only.** A vault component enters a build only when the user names it in the current request, and only the components named. A named component is exempt from R1–R3, whatever site it was harvested from, the reference site included.
 - **R8. The user fills the vault.** Harvest only when the user asks, under the name the user gives.
 - **R9. Vault originals stay pristine.** Copy a component into the build, then adapt the copy.
 
@@ -38,8 +40,8 @@ Binding on every build and every edit in this folder. Numbered so they can be ci
 
 ## Repo
 
-- **R12. The reference site is read-only during factory work.** `../src/` changes only on an explicit request for the site itself.
-- **R13. The kit changes for every build or not at all.** Build-specific code stays in `builds/<slug>/`. Changes to `lib/`, `connectors/` or the spec go on their own `feat/template-*` or `fix/template-*` branch, with `node website-template/scripts/smoke.mjs` passing.
+- **R12. The reference site is read-only during factory work.** The repo-root `src/` changes only on an explicit request for the site itself.
+- **R13. Keep the kit general.** Build-specific code stays in `builds/<slug>/`. Changes to `lib/`, `connectors/` or the spec go on their own `feat/template-*` or `fix/template-*` branch, with `node website-template/scripts/smoke.mjs` passing.
 - **R14. Git.**
   - Branches: one branch per build (`build/<slug>`).
   - Commits: Conventional Commits, scoped to the build (`feat(build-<slug>): …`).
