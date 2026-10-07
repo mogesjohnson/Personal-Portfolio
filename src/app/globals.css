@@ -1877,6 +1877,22 @@ body::before {
   list-style: none;
 }
 
+/* Static mode (reduced motion, no JS, or a failed motion setup) has no pin to slide
+   the track, so the cards past the viewport must stay reachable by native scrolling. */
+@media (min-width: 1024px) {
+  [data-motion="reduce"] .xp-viewport {
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    perspective: none;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: max(var(--gutter), calc((100vw - 1320px) / 2));
+  }
+
+  [data-motion="reduce"] .xp-card {
+    scroll-snap-align: start;
+  }
+}
+
 .xp-card {
   display: flex;
   flex: none;
