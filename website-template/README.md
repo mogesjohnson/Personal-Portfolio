@@ -6,44 +6,11 @@ It is a **kit, not a clone**. The techniques and tuned numbers are kept. Every p
 
 ## What's here
 
-```
-website-template/
-├── motion-system.json          The blueprint: 43 patterns, tokens, architecture, choreography,
-│                               particle engine, accessibility, performance, gotchas, QA, recipes
-├── motion-system.schema.json   JSON Schema for the blueprint (editor validation)
-├── connectors/
-│   ├── spec.ts                 Loads + validates the JSON, typed access
-│   ├── registry.ts             JSON pattern → running GSAP scene (scenesFromSpec)
-│   ├── react.tsx               Hooks + components (MotionRoot, ParticleCanvas, TitleSequence, …)
-│   └── next.tsx                FlagsScript + htmlFlagProps for app/layout.tsx
-├── lib/
-│   ├── flags.ts                Pre-paint data-theme / data-motion / data-intro
-│   ├── scroll.ts               Lenis handle, reference-counted scroll holds, scrollToTarget
-│   ├── runtime.ts              startMotion(): Lenis on the GSAP ticker, context, teardown, fail-to-static
-│   ├── scenes.ts               Scroll scenes (split entrance, wipes, scrub, batch, marquee, pin, parallax)
-│   ├── pointer.ts              Magnetic, variable-weight proximity, card spotlight
-│   ├── text.ts                 Decode-from-noise, count-up, char splitting
-│   ├── theme.ts                Circular View Transition reveal, theme store
-│   ├── intro.ts                Once-per-session kinetic title sequence
-│   ├── particles/
-│   │   ├── formations.ts       Primitives, seeded assembly, glyph sampling, diagram → particles
-│   │   └── field.ts            The particle engine
-│   └── styles/
-│       ├── tokens.css          Generated from motion-system.json (don't edit)
-│       └── motion.css          Transitions, keyframes, failsafes, reduced-motion, intro styles
-├── examples/                   Type-checked starting point for a new site
-│   ├── motion.config.ts        Flags, diagram, formations, palettes, intro words
-│   ├── layout.example.tsx      app/layout.tsx with pre-paint flags
-│   └── experience.example.tsx  One-page shell using every scene's markup contract
-├── scripts/
-│   ├── build-tokens.mjs        motion-system.json tokens → tokens.css
-│   └── smoke.mjs               16 logic checks (spec, registry, formations, flags, text)
-└── docs/
-    ├── ANIMATION-AUDIT.md      How the live site uses animation and transitions, with findings
-    ├── BUILD-HISTORY.md        How the site was made, from the git and PR record
-    ├── CHOREOGRAPHY.md         The motion language: eases, durations, staggers, timing maps
-    └── INTEGRATION.md          Wiring the kit into a new Next.js 16 app, step by step
-```
+The file map lives in [GRAPH.md](GRAPH.md). In short: `motion-system.json` is the blueprint, `lib/` holds the libraries, `connectors/` glues them to React, Next.js and the JSON, `examples/` is a type-checked starter, and `docs/` holds the audit and guides.
+
+## Factory
+
+This folder also runs as a factory that produces new, original pages and sections. Agents start at [AGENT.md](AGENT.md) (Claude loads it through [CLAUDE.md](CLAUDE.md)). The rules are in [RULES.md](RULES.md), the build stations in [METHODS.md](METHODS.md), and the vault of hand-picked sections in [COMPONENTS.md](COMPONENTS.md).
 
 ## How the JSON connects to code
 
