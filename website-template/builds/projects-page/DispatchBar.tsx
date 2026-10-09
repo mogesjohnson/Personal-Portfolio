@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
+import { externalPages } from "../../../src/data/externalPages";
 import ThemeToggle from "../../../src/components/live/ThemeToggle";
 import { cls } from "../../../src/components/live/ui";
 import { holdScroll } from "../../lib/scroll";
@@ -15,7 +16,11 @@ const MAIN_SECTIONS = [
   { label: "Contact", href: "/#contact" },
 ];
 
-export function DispatchBar() {
+function indexLabel(index: number) {
+  return String(index + 1).padStart(2, "0");
+}
+
+export function DispatchBar({ current = "/projects", mark = "AI-first work" }: { current?: string; mark?: string }) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -36,7 +41,7 @@ export function DispatchBar() {
       <header className="dispatch-bar">
         <Link href="/">Main website</Link>
         <div className="dispatch-bar-end">
-          <p>AI-first work</p>
+          <p>{mark}</p>
           <ThemeToggle />
           <button
             type="button"
@@ -44,27 +49,35 @@ export function DispatchBar() {
             onClick={() => setOpen((value) => !value)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
-            aria-controls="projects-menu"
+            aria-controls="dispatch-menu"
           >
             {open ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
       </header>
 
-      <div id="projects-menu" className={cls("menu", "dispatch-menu", open && "is-open")} inert={!open}>
+      <div id="dispatch-menu" className={cls("menu", "dispatch-menu", open && "is-open")} inert={!open}>
         <nav aria-label="Pages">
           <p className="menu-label menu-group-start">Main website</p>
           {MAIN_SECTIONS.map((item, index) => (
             <a key={item.href} href={item.href} onClick={() => setOpen(false)} style={{ "--i": index } as React.CSSProperties}>
-              <span>0{index + 1}</span>
+              <span>{indexLabel(index)}</span>
               {item.label}
             </a>
           ))}
           <p className="menu-label">External site pages</p>
-          <Link href="/projects" aria-current="page" onClick={() => setOpen(false)} style={{ "--i": 0 } as React.CSSProperties}>
-            <span>01</span>
-            Projects
-          </Link>
+          {externalPages.map((item, index) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-current={item.href === current ? "page" : undefined}
+              onClick={() => setOpen(false)}
+              style={{ "--i": index } as React.CSSProperties}
+            >
+              <span>{indexLabel(index)}</span>
+              {item.label}
+            </Link>
+          ))}
         </nav>
       </div>
     </>

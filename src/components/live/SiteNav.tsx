@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight, Command, Menu, X } from "lucide-react";
+import { externalPages } from "@/data/externalPages";
 import ThemeToggle from "./ThemeToggle";
 import { lockScroll } from "./scroll";
 import { cls } from "./ui";
@@ -14,8 +15,6 @@ const LINKS = [
   { id: "stack", label: "Toolkit" },
   { id: "contact", label: "Contact" },
 ];
-
-const EXTERNAL_PAGES = [{ label: "Projects", href: "/projects" }];
 
 function MenuLinks({
   items,
@@ -55,7 +54,6 @@ interface SiteNavProps {
 export default function SiteNav({ onOpenResume, onOpenPalette }: SiteNavProps) {
   const [active, setActive] = useState("");
   const [scrolled, setScrolled] = useState(false);
-  const [hidden, setHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const linksRef = useRef<HTMLElement>(null);
   const indicatorRef = useRef<HTMLSpanElement>(null);
@@ -77,16 +75,10 @@ export default function SiteNav({ onOpenResume, onOpenPalette }: SiteNavProps) {
     return () => observer.disconnect();
   }, []);
 
-  // Glass after the first scroll; tuck away while reading downward.
+  // Glass after the first scroll. The bar stays on screen.
   useEffect(() => {
-    let last = window.scrollY;
-    const onScroll = () => {
-      const y = window.scrollY;
-      setScrolled(y > 40);
-      setHidden(y > 480 && y > last + 2);
-      if (y < last - 2) setHidden(false);
-      last = y;
-    };
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
@@ -117,7 +109,7 @@ export default function SiteNav({ onOpenResume, onOpenPalette }: SiteNavProps) {
 
   return (
     <>
-      <header className={cls("nav", scrolled && "is-scrolled", hidden && !menuOpen && "is-hidden", menuOpen && "is-menu")}>
+      <header className={cls("nav", scrolled && "is-scrolled", menuOpen && "is-menu")}>
         <a href="#top" className="nav-brand" aria-label="Moges Johnson, back to top">
           <span className="nav-mark">
             MJ
@@ -134,9 +126,17 @@ export default function SiteNav({ onOpenResume, onOpenPalette }: SiteNavProps) {
           ))}
           <span ref={indicatorRef} className="nav-indicator" aria-hidden="true" />
         </nav>
-        <Link href="/projects" className="nav-external">
-          Projects
-        </Link>
+        <div className="nav-external-group">
+          {externalPages.map((page) => (
+            <Link
+              key={page.href}
+              href={page.href}
+              className={page.href === "/projects" ? "nav-external" : "nav-external nav-external-prototype"}
+            >
+              {page.label}
+            </Link>
+          ))}
+        </div>
 
         <div className="nav-actions">
           <button type="button" className="nav-icon nav-command" onClick={onOpenPalette} aria-label="Open command menu" title="Command menu (Ctrl/⌘ K)">
@@ -168,7 +168,7 @@ export default function SiteNav({ onOpenResume, onOpenPalette }: SiteNavProps) {
             onNavigate={() => setMenuOpen(false)}
           />
           <p className="menu-label">External site pages</p>
-          <MenuLinks items={EXTERNAL_PAGES} onNavigate={() => setMenuOpen(false)} />
+          <MenuLinks items={[...externalPages]} onNavigate={() => setMenuOpen(false)} />
         </nav>
         <div className="menu-foot">
           <button

@@ -11,7 +11,6 @@
   line-height: 1.6;
 }
 
-.dispatch-bar,
 .dispatch-intro,
 .dispatch-section {
   width: min(100% - 2.5rem, 72rem);
@@ -19,11 +18,19 @@
 }
 
 .dispatch-bar {
+  /* Above the page and above .menu (z-index 45), so the theme control and the menu button stay usable. */
+  position: sticky;
+  top: 0;
+  z-index: 50;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.25rem 0;
+  width: 100%;
+  margin: 0;
+  padding: 1.1rem max(1.25rem, calc((100% - 72rem) / 2));
   border-bottom: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(14px) saturate(1.2);
   font-family: var(--font-dispatch-mono), ui-monospace, monospace;
   font-size: 0.82rem;
   letter-spacing: 0.04em;
