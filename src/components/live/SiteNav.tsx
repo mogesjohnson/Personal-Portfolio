@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { ArrowUpRight, Command, Menu, X } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 import { lockScroll } from "./scroll";
@@ -13,6 +14,38 @@ const LINKS = [
   { id: "stack", label: "Toolkit" },
   { id: "contact", label: "Contact" },
 ];
+
+const EXTERNAL_PAGES = [{ label: "Projects", href: "/projects" }];
+
+function MenuLinks({
+  items,
+  onNavigate,
+}: {
+  items: { label: string; href: string }[];
+  onNavigate: () => void;
+}) {
+  return items.map((item, index) => {
+    const style = { "--i": index } as React.CSSProperties;
+    const inner = (
+      <>
+        <span>0{index + 1}</span>
+        {item.label}
+      </>
+    );
+    if (item.href.startsWith("/#") || item.href.startsWith("#")) {
+      return (
+        <a key={item.href} href={item.href} onClick={onNavigate} style={style}>
+          {inner}
+        </a>
+      );
+    }
+    return (
+      <Link key={item.href} href={item.href} onClick={onNavigate} style={style}>
+        {inner}
+      </Link>
+    );
+  });
+}
 
 interface SiteNavProps {
   onOpenResume: () => void;
@@ -93,7 +126,7 @@ export default function SiteNav({ onOpenResume, onOpenPalette }: SiteNavProps) {
           <span className="nav-name">Moges Johnson</span>
         </a>
 
-        <nav ref={linksRef} className="nav-links" aria-label="Sections">
+        <nav ref={linksRef} className="nav-links" aria-label="Main website">
           {LINKS.map((link) => (
             <a key={link.id} href={`#${link.id}`} aria-current={active === link.id ? "true" : undefined}>
               {link.label}
@@ -101,6 +134,9 @@ export default function SiteNav({ onOpenResume, onOpenPalette }: SiteNavProps) {
           ))}
           <span ref={indicatorRef} className="nav-indicator" aria-hidden="true" />
         </nav>
+        <Link href="/projects" className="nav-external">
+          Projects
+        </Link>
 
         <div className="nav-actions">
           <button type="button" className="nav-icon nav-command" onClick={onOpenPalette} aria-label="Open command menu" title="Command menu (Ctrl/⌘ K)">
@@ -126,12 +162,13 @@ export default function SiteNav({ onOpenResume, onOpenPalette }: SiteNavProps) {
 
       <div id="mobile-menu" className={cls("menu", menuOpen && "is-open")} inert={!menuOpen}>
         <nav aria-label="Mobile">
-          {LINKS.map((link, i) => (
-            <a key={link.id} href={`#${link.id}`} onClick={() => setMenuOpen(false)} style={{ "--i": i } as React.CSSProperties}>
-              <span>0{i + 1}</span>
-              {link.label}
-            </a>
-          ))}
+          <p className="menu-label menu-group-start">Main website</p>
+          <MenuLinks
+            items={LINKS.map((link) => ({ label: link.label, href: `#${link.id}` }))}
+            onNavigate={() => setMenuOpen(false)}
+          />
+          <p className="menu-label">External site pages</p>
+          <MenuLinks items={EXTERNAL_PAGES} onNavigate={() => setMenuOpen(false)} />
         </nav>
         <div className="menu-foot">
           <button

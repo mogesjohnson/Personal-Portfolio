@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Search, FileText, GitBranch, Mail, CornerDownLeft, FolderGit2, Briefcase, Wrench, User, ExternalLink, SunMoon, Clapperboard } from "lucide-react";
 import { personalInfo } from "@/data/portfolio";
 import { scrollToSection } from "@/components/live/scroll";
@@ -13,6 +14,7 @@ interface CommandPaletteProps {
 }
 
 export default function CommandPalette({ isOpen, onClose, onOpenResume }: CommandPaletteProps) {
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -33,11 +35,21 @@ export default function CommandPalette({ isOpen, onClose, onOpenResume }: Comman
       },
     },
     {
-      id: "projects",
-      title: "Explore Projects & Architecture",
+      id: "work",
+      title: "Explore selected work",
       category: "Navigation",
       icon: FolderGit2,
       run: () => navigateTo("work"),
+    },
+    {
+      id: "projects-page",
+      title: "Open Projects",
+      category: "Navigation",
+      icon: FolderGit2,
+      run: () => {
+        onClose();
+        router.push("/projects");
+      },
     },
     {
       id: "experience",
