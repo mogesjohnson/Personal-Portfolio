@@ -10,7 +10,7 @@ The file map lives in [GRAPH.md](GRAPH.md). In short: `motion-system.json` is th
 
 ## Factory
 
-This folder also runs as a factory that produces new, original pages and sections. Agents start at [AGENT.md](AGENT.md) (Claude loads it through [CLAUDE.md](CLAUDE.md)). The rules are in [RULES.md](RULES.md), the build stations in [METHODS.md](METHODS.md), and the vault of hand-picked sections in [COMPONENTS.md](COMPONENTS.md).
+This folder also runs as a factory that produces new, original pages and sections. Agents start at [AGENT.md](AGENT.md) (Claude loads it through [CLAUDE.md](CLAUDE.md)). The rules are in [RULES.md](RULES.md), the build stations in [METHODS.md](METHODS.md), the vault of hand-picked sections in [COMPONENTS.md](COMPONENTS.md), and the owner's host, palette, nav, and pull-request decisions in [CONNECTIONS.md](CONNECTIONS.md).
 
 ## How the JSON connects to code
 
