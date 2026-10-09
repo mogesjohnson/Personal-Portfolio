@@ -1,0 +1,230 @@
+.dispatch {
+  --ink: var(--text);
+  --paper: var(--bg);
+  --copper: var(--amber-text);
+  --muted: var(--muted);
+  --rule: var(--line);
+  min-height: 100vh;
+  background: transparent;
+  color: var(--ink);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.dispatch-bar,
+.dispatch-intro,
+.dispatch-section {
+  width: min(100% - 2.5rem, 72rem);
+  margin-inline: auto;
+}
+
+.dispatch-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--font-dispatch-mono), ui-monospace, monospace;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+}
+
+.dispatch-bar-end {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.dispatch .dispatch-burger {
+  display: inline-flex;
+}
+
+.dispatch-bar a {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--copper);
+}
+
+.dispatch-bar p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.dispatch-intro {
+  padding: 4.5rem 0 2rem;
+}
+
+.dispatch-kicker,
+.dispatch-index {
+  margin: 0;
+  font-family: var(--font-dispatch-mono), ui-monospace, monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--copper);
+}
+
+.dispatch-intro h1,
+.dispatch-title {
+  margin: 0.35rem 0 0;
+  max-width: 14ch;
+  font-family: var(--font-dispatch-serif), Georgia, serif;
+  font-weight: 450;
+  font-size: clamp(2.6rem, 7vw, 5.4rem);
+  letter-spacing: -0.03em;
+  line-height: 0.96;
+}
+
+.dispatch-lead {
+  max-width: 38rem;
+  margin: 1.5rem 0 0;
+  font-family: var(--font-dispatch-serif), Georgia, serif;
+  font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+  line-height: 1.35;
+}
+
+.dispatch-section {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  gap: 1rem;
+  padding: 3.5rem 0;
+  border-top: 1px solid var(--rule);
+}
+
+.dispatch-title {
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+}
+
+.dispatch-legacy {
+  margin: 1rem 0 0;
+  color: var(--copper);
+  font-family: var(--font-dispatch-mono), ui-monospace, monospace;
+  font-size: 0.92rem;
+}
+
+.dispatch-copy p,
+.dispatch-soldiers {
+  max-width: 40rem;
+}
+
+.dispatch-copy p {
+  margin: 1rem 0 0;
+}
+
+.dispatch-soldiers {
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dispatch-soldiers li {
+  padding: 0.45rem 0;
+  border-top: 1px solid var(--rule);
+}
+
+.dispatch-soldiers li:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+
+.dispatch code {
+  font-family: var(--font-dispatch-mono), ui-monospace, monospace;
+  font-size: 0.88em;
+}
+
+.dispatch-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin: 1.5rem 0 0;
+}
+
+.dispatch-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--ink);
+  font-family: var(--font-dispatch-mono), ui-monospace, monospace;
+  font-size: 0.86rem;
+  text-decoration: none;
+  border-bottom: 1px solid var(--copper);
+  transition: gap 0.2s ease;
+}
+
+.dispatch-link:hover {
+  gap: 0.7rem;
+  color: var(--copper);
+}
+
+.dispatch-origin,
+.dispatch-slot,
+.dispatch-note {
+  width: 12.5rem;
+  min-height: 7.5rem;
+}
+
+.dispatch-origin {
+  display: none;
+  margin-top: 1.5rem;
+  border: 1px dashed var(--copper);
+}
+
+html[data-motion="full"] .dispatch-origin {
+  display: block;
+}
+
+.dispatch-desk {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1.25rem 2rem;
+  margin-top: 2rem;
+}
+
+.dispatch-slot {
+  outline: 1px dashed transparent;
+}
+
+html[data-motion="full"] .dispatch-slot {
+  outline-color: color-mix(in srgb, var(--amber) 55%, transparent);
+}
+
+.dispatch-note {
+  margin: 0;
+  padding: 1.1rem 1rem 1.2rem;
+  background: color-mix(in srgb, var(--text) 7%, var(--bg));
+  color: var(--ink);
+  border: 1px solid var(--line-strong);
+  box-shadow: var(--shadow);
+  font-family: var(--font-dispatch-serif), Georgia, serif;
+  font-size: 1.35rem;
+  line-height: 1.25;
+}
+
+.dispatch-note::before {
+  content: "";
+  display: block;
+  width: 0.65rem;
+  height: 0.65rem;
+  margin: 0 auto 0.85rem;
+  border-radius: 50%;
+  background: var(--copper);
+}
+
+.dispatch-caption {
+  max-width: 18rem;
+  margin: 0;
+  color: var(--muted);
+  font-family: var(--font-dispatch-mono), ui-monospace, monospace;
+  font-size: 0.86rem;
+}
+
+@media (max-width: 700px) {
+  .dispatch-section {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .dispatch-intro h1 {
+    max-width: 10ch;
+  }
+}
