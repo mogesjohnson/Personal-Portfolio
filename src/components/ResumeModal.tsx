@@ -105,34 +105,34 @@ Liberty University Intramural Sports
       aria-modal="true"
       aria-label="Resume of Moges Johnson"
       data-lenis-prevent
-      className="resume-dialog fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4 sm:p-6 overflow-y-auto"
+      className="resume-dialog fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto"
     >
       <div
-        className="resume-panel relative w-full max-w-4xl max-h-[92vh] flex flex-col rounded-2xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xl overflow-hidden"
+        className="resume-panel relative w-full max-w-4xl max-h-[92vh] flex flex-col rounded-2xl border shadow-2xl overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Top Control Bar */}
-        <div className="resume-toolbar flex items-center justify-between px-6 py-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/60 font-mono text-xs">
+        <div className="resume-toolbar flex items-center justify-between px-6 py-4 border-b font-mono text-xs">
           <div className="flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-amber-400" />
-            <span className="font-bold text-slate-800 dark:text-slate-200">Moges Johnson / Résumé</span>
+            <span className="resume-dot h-2 w-2 rounded-full" />
+            <span className="font-bold">Moges Johnson / Résumé</span>
           </div>
 
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={handleCopyText}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:border-slate-400 dark:hover:border-slate-600 transition-colors"
+              className="resume-copy inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border transition-colors"
               title="Copy raw text resume"
             >
-              {copied ? <Check className="h-3.5 w-3.5 text-emerald-500" /> : <Copy className="h-3.5 w-3.5" />}
+              {copied ? <Check className="resume-copied h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
               <span>{copied ? "Copied" : "Copy Text"}</span>
             </button>
 
             <button
               type="button"
               onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md btn-primary text-slate-950 font-bold transition-colors shadow-sm"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md btn-primary font-bold transition-colors shadow-sm"
               title="Print or Save as PDF"
             >
               <Printer className="h-3.5 w-3.5" />
@@ -142,7 +142,7 @@ Liberty University Intramural Sports
             <button
               type="button"
               onClick={onClose}
-              className="p-1.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 rounded-md transition-colors"
+              className="resume-close p-1.5 rounded-md transition-colors"
               aria-label="Close resume modal"
             >
               <X className="h-5 w-5" />
@@ -151,34 +151,34 @@ Liberty University Intramural Sports
         </div>
 
         {/* Printable Resume Content (Formatted matching Moges' uploaded document) */}
-        <div className="resume-content flex-1 overflow-y-auto p-6 sm:p-10 font-sans text-slate-800 dark:text-slate-200 print:p-0 print:text-black">
+        <div className="resume-content flex-1 overflow-y-auto p-6 sm:p-10 font-sans print:p-0 print:text-black">
           {/* Header */}
-          <div className="border-b border-slate-200 dark:border-slate-800 pb-5 mb-6 text-center sm:text-left">
-            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-slate-50 uppercase">
+          <div className="border-b resume-rule pb-5 mb-6 text-center sm:text-left">
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight uppercase">
               {personalInfo.name}
             </h1>
 
-            <div className="mt-2 flex flex-wrap items-center justify-center sm:justify-start gap-x-3 gap-y-1 text-xs font-mono text-slate-600 dark:text-slate-400">
+            <div className="mt-2 flex flex-wrap items-center justify-center sm:justify-start gap-x-3 gap-y-1 text-xs font-mono">
               <span className="flex items-center gap-1">
                 <MapPin className="h-3 w-3" />
                 {personalInfo.location}
               </span>
               <span>|</span>
-              <a href={`tel:${personalInfo.phone}`} className="flex items-center gap-1 hover:underline text-slate-900 dark:text-slate-200 font-medium">
+              <a href={`tel:${personalInfo.phone}`} className="flex items-center gap-1 hover:underline font-medium">
                 <Phone className="h-3 w-3" />
                 {personalInfo.phone}
               </a>
               <span>|</span>
-              <a href={`mailto:${personalInfo.socialLinks.email}`} className="flex items-center gap-1 hover:underline text-slate-900 dark:text-slate-200 font-medium">
+              <a href={`mailto:${personalInfo.socialLinks.email}`} className="flex items-center gap-1 hover:underline font-medium">
                 <Mail className="h-3 w-3" />
                 {personalInfo.socialLinks.email}
               </a>
               <span>|</span>
-              <a href={personalInfo.socialLinks.github} target="_blank" rel="noreferrer" className="hover:underline text-slate-900 dark:text-slate-200 font-medium">
+              <a href={personalInfo.socialLinks.github} target="_blank" rel="noreferrer" className="hover:underline font-medium">
                 github.com/mogesjohnson
               </a>
               <span>|</span>
-              <a href={personalInfo.socialLinks.linkedin} target="_blank" rel="noreferrer" className="hover:underline text-slate-900 dark:text-slate-200 font-medium">
+              <a href={personalInfo.socialLinks.linkedin} target="_blank" rel="noreferrer" className="hover:underline font-medium">
                 linkedin.com/in/mogesjohnson
               </a>
             </div>
@@ -186,25 +186,25 @@ Liberty University Intramural Sports
 
           {/* Education */}
           <div className="mb-6">
-            <h2 className="text-xs font-mono uppercase tracking-wider text-sky-700 dark:text-sky-400 font-bold border-b border-slate-200 dark:border-slate-800 pb-1 mb-2.5 flex items-center gap-1.5">
+            <h2 className="text-xs font-mono uppercase tracking-wider resume-accent font-bold border-b resume-rule pb-1 mb-2.5 flex items-center gap-1.5">
               <GraduationCap className="h-3.5 w-3.5" />
               <span>Education</span>
             </h2>
 
             <div className="space-y-1 text-xs">
               <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between text-sm">
-                <span className="font-bold text-slate-900 dark:text-slate-100">
+                <span className="font-bold">
                   {personalInfo.education[0]?.institution} &bull; {personalInfo.education[0]?.location}
                 </span>
-                <span className="font-mono text-xs text-slate-500 font-medium">
+                <span className="font-mono text-xs resume-meta font-medium">
                   {personalInfo.education[0]?.timeline}
                 </span>
               </div>
-              <p className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+              <p className="text-xs font-semibold">
                 {personalInfo.education[0]?.degreeOrHonor}
               </p>
-              <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed pt-1">
-                <strong className="text-slate-800 dark:text-slate-200">Notable Coursework: </strong>
+              <p className="text-xs leading-relaxed pt-1">
+                <strong>Notable Coursework: </strong>
                 {personalInfo.education[0]?.coursework.join(", ")}.
               </p>
             </div>
@@ -212,30 +212,30 @@ Liberty University Intramural Sports
 
           {/* Technical Skills */}
           <div className="mb-6">
-            <h2 className="text-xs font-mono uppercase tracking-wider text-sky-700 dark:text-sky-400 font-bold border-b border-slate-200 dark:border-slate-800 pb-1 mb-2.5 flex items-center gap-1.5">
+            <h2 className="text-xs font-mono uppercase tracking-wider resume-accent font-bold border-b resume-rule pb-1 mb-2.5 flex items-center gap-1.5">
               <Award className="h-3.5 w-3.5" />
               <span>Technical Skills</span>
             </h2>
 
             <div className="space-y-1 text-xs leading-relaxed">
               <p>
-                <strong className="text-slate-800 dark:text-slate-200">Programming Languages: </strong>
-                <span className="font-mono text-[11px] text-slate-700 dark:text-slate-300">C++, TypeScript, JavaScript, SQL, HTML5 &amp; CSS3</span>
+                <strong>Programming Languages: </strong>
+                <span className="font-mono text-[11px]">C++, TypeScript, JavaScript, SQL, HTML5 &amp; CSS3</span>
               </p>
               <p>
-                <strong className="text-slate-800 dark:text-slate-200">Operating Systems: </strong>
-                <span className="font-mono text-[11px] text-slate-700 dark:text-slate-300">Windows 11, Linux (Ubuntu), Windows Server 2022</span>
+                <strong>Operating Systems: </strong>
+                <span className="font-mono text-[11px]">Windows 11, Linux (Ubuntu), Windows Server 2022</span>
               </p>
               <p>
-                <strong className="text-slate-800 dark:text-slate-200">Developer Tools &amp; Administration: </strong>
-                <span className="font-mono text-[11px] text-slate-700 dark:text-slate-300">VS Code, Git &amp; GitHub, Active Directory, Group Policy Management, Windows Server 2022, Next.js, React</span>
+                <strong>Developer Tools &amp; Administration: </strong>
+                <span className="font-mono text-[11px]">VS Code, Git &amp; GitHub, Active Directory, Group Policy Management, Windows Server 2022, Next.js, React</span>
               </p>
             </div>
           </div>
 
           {/* Work Experience */}
           <div className="mb-6">
-            <h2 className="text-xs font-mono uppercase tracking-wider text-sky-700 dark:text-sky-400 font-bold border-b border-slate-200 dark:border-slate-800 pb-1 mb-2.5 flex items-center gap-1.5">
+            <h2 className="text-xs font-mono uppercase tracking-wider resume-accent font-bold border-b resume-rule pb-1 mb-2.5 flex items-center gap-1.5">
               <Briefcase className="h-3.5 w-3.5" />
               <span>Work Experience</span>
             </h2>
@@ -245,12 +245,12 @@ Liberty University Intramural Sports
               <div className="space-y-1">
                 <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between text-sm">
                   <div>
-                    <span className="font-bold text-slate-900 dark:text-slate-100">Handshake</span>
-                    <span className="text-slate-600 dark:text-slate-400 font-medium"> &bull; Handshake AI Fellow</span>
+                    <span className="font-bold">Handshake</span>
+                    <span className="font-medium"> &bull; Handshake AI Fellow</span>
                   </div>
-                  <span className="font-mono text-xs text-slate-500">Aug 2026 – Present &bull; Remote</span>
+                  <span className="font-mono text-xs resume-meta">Aug 2026 – Present &bull; Remote</span>
                 </div>
-                <ul className="list-disc list-outside pl-4 space-y-1 text-slate-600 dark:text-slate-300 leading-relaxed pt-0.5">
+                <ul className="list-disc list-outside pl-4 space-y-1 leading-relaxed pt-0.5">
                   <li>Selected for applied AI fellowship exploring emerging developer tooling, LLM workflows, and modern software engineering practices.</li>
                   <li>Collaborated on technical problem solving, evaluation metrics, and integrating AI capabilities into student-employer workflows.</li>
                 </ul>
@@ -260,12 +260,12 @@ Liberty University Intramural Sports
               <div className="space-y-1">
                 <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between text-sm">
                   <div>
-                    <span className="font-bold text-slate-900 dark:text-slate-100">NonProfitly, Inc.</span>
-                    <span className="text-slate-600 dark:text-slate-400 font-medium"> &bull; Software Engineer Intern</span>
+                    <span className="font-bold">NonProfitly, Inc.</span>
+                    <span className="font-medium"> &bull; Software Engineer Intern</span>
                   </div>
-                  <span className="font-mono text-xs text-slate-500">May 2026 – Aug 2026 &bull; Harrisonburg, VA</span>
+                  <span className="font-mono text-xs resume-meta">May 2026 – Aug 2026 &bull; Harrisonburg, VA</span>
                 </div>
-                <ul className="list-disc list-outside pl-4 space-y-1 text-slate-600 dark:text-slate-300 leading-relaxed pt-0.5">
+                <ul className="list-disc list-outside pl-4 space-y-1 leading-relaxed pt-0.5">
                   <li>Engineered software features supporting non-profit operational workflows and community outreach tools.</li>
                   <li>Utilized Git for feature branching, code reviews, and version control across team repositories.</li>
                   <li>Applied structured problem solving to resolve application bugs, refine user-facing workflows, and enhance system stability.</li>
@@ -276,12 +276,12 @@ Liberty University Intramural Sports
               <div className="space-y-1">
                 <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between text-sm">
                   <div>
-                    <span className="font-bold text-slate-900 dark:text-slate-100">Quincy&apos;s Original Lobster Rolls</span>
-                    <span className="text-slate-600 dark:text-slate-400 font-medium"> &bull; Assistant Manager</span>
+                    <span className="font-bold">Quincy&apos;s Original Lobster Rolls</span>
+                    <span className="font-medium"> &bull; Assistant Manager</span>
                   </div>
-                  <span className="font-mono text-xs text-slate-500">May 2024 – Aug 2024 &amp; Jun 2023 – Aug 2023 &bull; Ocean County, NJ</span>
+                  <span className="font-mono text-xs resume-meta">May 2024 – Aug 2024 &amp; Jun 2023 – Aug 2023 &bull; Ocean County, NJ</span>
                 </div>
-                <ul className="list-disc list-outside pl-4 space-y-1 text-slate-600 dark:text-slate-300 leading-relaxed pt-0.5">
+                <ul className="list-disc list-outside pl-4 space-y-1 leading-relaxed pt-0.5">
                   <li><strong>Coordination &amp; Scheduling:</strong> Assisted the General Manager in developing weekly shift schedules for employees to ensure optimal coverage during peak hours.</li>
                   <li><strong>Personnel Training:</strong> Mentored and trained new hires on standard operating procedures, POS systems, and the TapMango rewards platform.</li>
                   <li><strong>Inventory Management:</strong> Monitored stock levels and managed inventory tracking to procure essential supplies and prevent shortages.</li>
@@ -294,12 +294,12 @@ Liberty University Intramural Sports
               <div className="space-y-1">
                 <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between text-sm">
                   <div>
-                    <span className="font-bold text-slate-900 dark:text-slate-100">Gold Coast Landscape &amp; Irrigation</span>
-                    <span className="text-slate-600 dark:text-slate-400 font-medium"> &bull; Landscaper</span>
+                    <span className="font-bold">Gold Coast Landscape &amp; Irrigation</span>
+                    <span className="font-medium"> &bull; Landscaper</span>
                   </div>
-                  <span className="font-mono text-xs text-slate-500">Jun 2022 – Sep 2022 &bull; Ocean County, NJ</span>
+                  <span className="font-mono text-xs resume-meta">Jun 2022 – Sep 2022 &bull; Ocean County, NJ</span>
                 </div>
-                <ul className="list-disc list-outside pl-4 space-y-1 text-slate-600 dark:text-slate-300 leading-relaxed pt-0.5">
+                <ul className="list-disc list-outside pl-4 space-y-1 leading-relaxed pt-0.5">
                   <li>Maintained commercial and residential outdoor spaces through manual labor and equipment operation during the summer season.</li>
                 </ul>
               </div>
@@ -308,7 +308,7 @@ Liberty University Intramural Sports
 
           {/* Technical Projects */}
           <div className="mb-6">
-            <h2 className="text-xs font-mono uppercase tracking-wider text-sky-700 dark:text-sky-400 font-bold border-b border-slate-200 dark:border-slate-800 pb-1 mb-2.5 flex items-center gap-1.5">
+            <h2 className="text-xs font-mono uppercase tracking-wider resume-accent font-bold border-b resume-rule pb-1 mb-2.5 flex items-center gap-1.5">
               <Code className="h-3.5 w-3.5" />
               <span>Technical Projects</span>
             </h2>
@@ -317,15 +317,15 @@ Liberty University Intramural Sports
               {/* Project 1: Active Directory */}
               <div className="space-y-1">
                 <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between text-sm">
-                  <span className="font-bold text-slate-900 dark:text-slate-100">
+                  <span className="font-bold">
                     Active Directory &amp; Systems Administration Lab (Team Project)
                   </span>
-                  <span className="font-mono text-[11px] text-slate-500">2024</span>
+                  <span className="font-mono text-[11px] resume-meta">2024</span>
                 </div>
-                <p className="font-mono text-[11px] text-sky-700 dark:text-sky-400 font-medium">
+                <p className="font-mono text-[11px] resume-accent font-medium">
                   Tools: Windows Server 2022, Active Directory, Group Policy Management
                 </p>
-                <ul className="list-disc list-outside pl-4 space-y-1 text-slate-600 dark:text-slate-300 leading-relaxed pt-0.5">
+                <ul className="list-disc list-outside pl-4 space-y-1 leading-relaxed pt-0.5">
                   <li>Collaborated with a team of two to configure a Windows 2022 Server environment, managing centralized network resources and security.</li>
                   <li>Designed and implemented an Organizational Unit (OU) structure for efficient user and group management.</li>
                   <li>Coordinated with team members to ensure consistent policy application via Group Policy Management.</li>
@@ -335,15 +335,15 @@ Liberty University Intramural Sports
               {/* Project 2: Data Structures C++ */}
               <div className="space-y-1">
                 <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between text-sm">
-                  <span className="font-bold text-slate-900 dark:text-slate-100">
+                  <span className="font-bold">
                     Data Structures and Algorithms Coursework
                   </span>
-                  <span className="font-mono text-[11px] text-slate-500">2024</span>
+                  <span className="font-mono text-[11px] resume-meta">2024</span>
                 </div>
-                <p className="font-mono text-[11px] text-sky-700 dark:text-sky-400 font-medium">
+                <p className="font-mono text-[11px] resume-accent font-medium">
                   Tools: C++, AVL Trees, Splay Trees, Graphs, Big-O Analysis
                 </p>
-                <ul className="list-disc list-outside pl-4 space-y-1 text-slate-600 dark:text-slate-300 leading-relaxed pt-0.5">
+                <ul className="list-disc list-outside pl-4 space-y-1 leading-relaxed pt-0.5">
                   <li>Developed solutions focusing on efficient data storage and retrieval using complex tree structures and graph theory.</li>
                   <li>Applied Big-O Analysis to optimize code performance and algorithmic efficiency.</li>
                 </ul>
@@ -352,15 +352,15 @@ Liberty University Intramural Sports
               {/* Project 3: AI Development: Developer Portfolio & Systems */}
               <div className="space-y-1">
                 <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between text-sm">
-                  <span className="font-bold text-slate-900 dark:text-slate-100">
+                  <span className="font-bold">
                     AI Development: Developer Portfolio &amp; Engineering Systems
                   </span>
-                  <span className="font-mono text-[11px] text-slate-500">2026</span>
+                  <span className="font-mono text-[11px] resume-meta">2026</span>
                 </div>
-                <p className="font-mono text-[11px] text-sky-700 dark:text-sky-400 font-medium">
+                <p className="font-mono text-[11px] resume-accent font-medium">
                   Tools: Next.js 16, React 19, TypeScript, Tailwind CSS v4, GitHub, LinkedIn
                 </p>
-                <ul className="list-disc list-outside pl-4 space-y-1 text-slate-600 dark:text-slate-300 leading-relaxed pt-0.5">
+                <ul className="list-disc list-outside pl-4 space-y-1 leading-relaxed pt-0.5">
                   <li>Designed and engineered a centralized developer platform connecting verified technical projects, authentic personal background (&apos;who I am&apos;), GitHub repositories, and LinkedIn experience.</li>
                   <li>Built an interactive command palette (Cmd+K), project case notes, and a printable resume view with no third-party UI framework.</li>
                 </ul>
@@ -370,14 +370,14 @@ Liberty University Intramural Sports
 
           {/* Activities */}
           <div>
-            <h2 className="text-xs font-mono uppercase tracking-wider text-sky-700 dark:text-sky-400 font-bold border-b border-slate-200 dark:border-slate-800 pb-1 mb-2.5 flex items-center gap-1.5">
+            <h2 className="text-xs font-mono uppercase tracking-wider resume-accent font-bold border-b resume-rule pb-1 mb-2.5 flex items-center gap-1.5">
               <Award className="h-3.5 w-3.5" />
               <span>Activities &amp; Leadership</span>
             </h2>
 
-            <div className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+            <div className="text-xs leading-relaxed">
               <p>
-                <strong className="text-slate-800 dark:text-slate-200">Liberty University Intramural Sports: </strong>
+                <strong>Liberty University Intramural Sports: </strong>
                 Maintained a full-time academic course load while consistently participating in team-based intramural sports, demonstrating time management and collaborative skills.
               </p>
             </div>
