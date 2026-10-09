@@ -16,6 +16,7 @@ This folder is a factory. It turns a request into a new, original webpage or pag
 - `METHODS.md` holds the build stations (branch → brief → concept → score → build → verify → ship → harvest). Run them in order for any request to make a page or section.
 - `GRAPH.md` maps every file and folder to what it holds and how they connect. Use it to find things.
 - `COMPONENTS.md` is the vault. Open it when the user names a vault component.
+- `CONNECTIONS.md` holds owner decisions the other docs leave unstated: the portfolio host path, the live palette, the nav groups, and the external GitHub pull-request layout. Read it before linking a build into the portfolio, changing colors or navigation, or opening a pull request.
 - `motion-system.json` holds the patterns, tokens, accessibility, performance and QA reference. Patterns are chosen from it by `id`.
 
 ## Defaults

@@ -9,6 +9,7 @@ website-template/
 ├─ RULES.md               binding rules R1–R14 + originality check
 ├─ METHODS.md             build stations 0–7 + originality methods
 ├─ COMPONENTS.md          vault index (YAML frontmatter only)
+├─ CONNECTIONS.md         owner decisions: host path, palette, nav, pull requests
 ├─ GRAPH.md               this map
 ├─ README.md              human overview
 ├─ motion-system.json     43 patterns, tokens, engine, choreography, a11y, perf, QA, recipes, remix
