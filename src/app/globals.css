@@ -2426,6 +2426,68 @@ body::before {
   box-shadow: var(--shadow) !important;
 }
 
+.resume-panel {
+  background: var(--bg);
+  color: var(--text);
+  border-color: var(--line-strong);
+}
+
+.resume-toolbar {
+  background: color-mix(in srgb, var(--text) 6%, var(--bg));
+  border-color: var(--line);
+  color: var(--text);
+}
+
+.resume-dot {
+  background: var(--amber);
+}
+
+.resume-copy {
+  border-color: var(--line-strong);
+  background: color-mix(in srgb, var(--bg) 55%, transparent);
+  color: var(--text);
+}
+
+.resume-copy:hover {
+  border-color: var(--text-2);
+}
+
+.resume-copied {
+  color: var(--ok);
+}
+
+.resume-close {
+  color: var(--muted);
+}
+
+.resume-close:hover {
+  color: var(--text);
+}
+
+.resume-content {
+  color: var(--text-2);
+}
+
+.resume-content h1,
+.resume-content a,
+.resume-content strong,
+.resume-content .font-bold {
+  color: var(--text);
+}
+
+.resume-content h2.resume-accent,
+.resume-content .resume-accent {
+  color: var(--sky-text);
+}
+
+.resume-rule {
+  border-color: var(--line);
+}
+
+.resume-meta {
+  color: var(--muted);
+}
+
 /* ================================================================== */
 /* Motion preferences + print                                          */
 /* ================================================================== */
