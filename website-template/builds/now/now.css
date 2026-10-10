@@ -1,0 +1,120 @@
+.now-log {
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+
+.now-log .dispatch-burger {
+  display: inline-flex;
+}
+
+.now-log .dispatch-menu a[aria-current="page"] {
+  color: var(--amber-text);
+}
+
+.now-sheet {
+  width: min(100% - 2.5rem, 68rem);
+  margin-inline: auto;
+  padding: 3.2rem 0 4.5rem;
+}
+
+.now-head {
+  display: block;
+}
+
+.now-kicker {
+  margin: 0;
+  color: var(--amber-text);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.now-head h1 {
+  margin: 0.35rem 0 0;
+  color: var(--text);
+  font-size: clamp(2.4rem, 6vw, 3.6rem);
+  font-weight: 560;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  text-transform: none;
+}
+
+.now-lead {
+  margin: 0.85rem 0 0;
+  max-width: 36rem;
+  color: var(--text);
+  font-size: 1.05rem;
+  text-transform: none;
+}
+
+.now-rule {
+  display: block;
+  width: 100%;
+  height: 1px;
+  margin-top: 1.35rem;
+  background: var(--amber-text);
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+.now-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.75rem 3.25rem;
+  margin-top: 1.6rem;
+}
+
+.now-cols h2 {
+  margin: 0 0 0.65rem;
+  color: var(--amber-text);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.now-cols p {
+  margin: 0 0 0.75rem;
+  color: var(--text-2);
+}
+
+.now-cols code {
+  color: var(--text);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.86em;
+}
+
+.now-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem 1.1rem;
+}
+
+.now-links a {
+  color: var(--text);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+  border-bottom: 1px solid var(--amber-text);
+}
+
+@media (max-width: 760px) {
+  .now-sheet {
+    padding-top: 2.4rem;
+  }
+
+  .now-cols {
+    grid-template-columns: 1fr;
+    gap: 2.1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .now-rule {
+    transform: none;
+  }
+}
