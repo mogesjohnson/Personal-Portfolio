@@ -131,7 +131,7 @@ export default function SiteNav({ onOpenResume, onOpenPalette }: SiteNavProps) {
             <Link
               key={page.href}
               href={page.href}
-              className={page.href === "/projects" ? "nav-external" : "nav-external nav-external-prototype"}
+              className={page.prototype ? "nav-external nav-external-prototype" : "nav-external"}
             >
               {page.label}
             </Link>
