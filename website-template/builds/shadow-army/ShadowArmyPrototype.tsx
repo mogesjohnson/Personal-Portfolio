@@ -1,62 +1,94 @@
 import { PrototypeHeader } from "../prototype-headers/PrototypeHeader";
-import type { EnvironmentCommand, SoldierCard } from "../prototype-headers/Environment";
+import type { Scene, SessionScript } from "../prototype-headers/script";
 
-const lines = [
+const scenes: Scene[] = [
   {
-    who: "Claude",
-    text: "/send Iron Read the claim and name the files you will edit.",
-  },
-  {
-    who: "Iron",
-    text: "I will edit only the claimed paths. The full report stays on disk.",
-  },
-  {
-    who: "Post office",
-    text: "One more turn in Iron's open session. No new process starts.",
-  },
-];
-
-const soldiers: SoldierCard[] = [
-  {
-    name: "Iron",
-    model: "claude-sonnet",
-    note: "The pane is empty. The report stays on disk.",
-  },
-  { name: "Igris", model: "codex", note: "The pane is empty." },
-  { name: "Beru", model: "grok", note: "The pane is empty. Beru never reviews." },
-  { name: "Tusk", model: "agy", note: "The pane is empty. Tusk never writes." },
-];
-
-const commands: EnvironmentCommand[] = [
-  {
-    command: "/army",
-    lines: soldiers.map((soldier) => ({
-      who: soldier.name,
-      text: `${soldier.model}. ${soldier.note}`,
-    })),
-  },
-  ...soldiers.flatMap((soldier) => {
-    const key = soldier.name.toLowerCase();
-    return [
-      { command: `/pane ${key}`, lines: [{ who: soldier.name, text: soldier.note }] },
-      { command: `/stop ${key}`, lines: [{ who: soldier.name, text: "The turn ends. The session stays open." }] },
+    key: "1",
+    label: "Create the pull request",
+    detail: "Iron posts it from his own session, then reports back.",
+    steps: [
+      { kind: "claude", text: "Sending Iron to create the pull request." },
+      { kind: "summon", soldier: "Iron" },
       {
-        command: `/fresh ${key}`,
-        lines: [{ who: soldier.name, text: "A new session starts. The standing instructions are appended." }],
+        kind: "work",
+        soldier: "Iron",
+        ms: 7000,
+        meterTo: 4,
+        words: ["Reading the branch", "Making the pull request", "Posting", "Updating you"],
       },
-    ];
-  }),
-  {
-    command: "/send iron read the claim and name the files you will edit",
-    lines: [lines[1], lines[2]],
+      {
+        kind: "report",
+        soldier: "Iron",
+        lines: ["Posted. The pull request is up.", "I made it in this session.", "The body stays on disk."],
+      },
+      {
+        kind: "claude",
+        text: "Iron has completed the pull request. A review can be done by Opus 5.5 or GPT-6 Astra.",
+      },
+    ],
   },
-  { command: "clear", lines: [], effect: "clear" },
-  { command: "/clear", lines: [], effect: "clear" },
-  { command: "theme", lines: [{ who: "Theme", text: "The site theme switches." }], effect: "theme" },
-  { command: "/theme", lines: [{ who: "Theme", text: "The site theme switches." }], effect: "theme" },
-  { command: "exit", lines: [{ who: "Exit", text: "The main website." }], effect: "exit", exitHref: "/" },
-  { command: "/exit", lines: [{ who: "Exit", text: "The main website." }], effect: "exit", exitHref: "/" },
+  {
+    key: "2",
+    label: "Name the files in the claim",
+    detail: "Igris reads the claim and returns the paths.",
+    steps: [
+      { kind: "claude", text: "Sending Igris to read the claim and name the files." },
+      { kind: "summon", soldier: "Igris" },
+      {
+        kind: "work",
+        soldier: "Igris",
+        ms: 5200,
+        meterTo: 3,
+        words: ["Opening the claim", "Reading the paths", "Writing five lines"],
+      },
+      {
+        kind: "report",
+        soldier: "Igris",
+        lines: [
+          "Claimed paths: src/session.ts, src/post-office.ts, src/claim.ts.",
+          "I will edit only those paths.",
+          "The full report stays on disk.",
+        ],
+      },
+      { kind: "claude", text: "Igris named three claimed files and nothing outside them." },
+    ],
+  },
+  {
+    key: "3",
+    label: "Review the diff",
+    detail: "Tusk reviews. Tusk does not write.",
+    steps: [
+      { kind: "claude", text: "Sending Tusk to review the diff. Tusk does not write." },
+      { kind: "summon", soldier: "Tusk" },
+      {
+        kind: "work",
+        soldier: "Tusk",
+        ms: 5600,
+        meterTo: 3,
+        words: ["Reading the diff", "Checking the claim", "Writing the review"],
+      },
+      {
+        kind: "report",
+        soldier: "Tusk",
+        lines: ["Review only. No files written.", "The claim matches the diff.", "Two notes are enough to return."],
+      },
+      { kind: "claude", text: "Tusk finished the review and wrote nothing. The session stays open." },
+    ],
+  },
 ];
+
+const script: SessionScript = {
+  initialSoldier: "Beru",
+  opening: "The session is open. Beru is on the pane, idle.\n\nSelect 1-3.\n\n1  Create the pull request\n2  Name the files in the claim\n3  Review the diff",
+  hint: "Type 1, 2, or 3. /clear resets the session. /theme switches the site theme. /exit returns to the main website.",
+  soldiers: [
+    { name: "Iron", model: "claude-sonnet", note: "Writes and opens the pull request." },
+    { name: "Igris", model: "codex", note: "Reads the claim and names files." },
+    { name: "Beru", model: "grok", note: "Never reviews." },
+    { name: "Tusk", model: "agy", note: "Never writes." },
+  ],
+  scenes,
+};
 
 export function ShadowArmyPrototype() {
   return (
@@ -67,17 +99,7 @@ export function ShadowArmyPrototype() {
       title="Shadow Army"
       note="This is the v2 Claude component."
       lead="A mock-up of the session. These turns are a fixed script. Nothing on this page calls a live model."
-      lines={lines}
-      environment={{
-        soldiers,
-        hint: "Known commands: /army, /pane, /stop, and /fresh for Iron, Igris, Beru, and Tusk, the send line above, clear, theme, and exit.",
-        refuse: "That command is not in this script.",
-        commands,
-        blocked: [
-          { includes: ["/send beru", "review"], text: "Beru does not review. Nothing was sent." },
-          { includes: ["/send tusk", "write"], text: "Tusk does not write. Nothing was sent." },
-        ],
-      }}
+      script={script}
     />
   );
 }
