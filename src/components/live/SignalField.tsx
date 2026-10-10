@@ -3,12 +3,15 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { buildFormation, pointOnPolyline, sampleMonogram, type Formation, type FormationKey, type Target } from "./formations";
+import { FLOCK_CELL, applyFlock, createFlockGrid, flockScale, makePacketMask, resizeFlockGrid } from "./flock";
 
 /**
  * The Live Motion signal field: one full-screen canvas of particles that follows
  * the reader down the page. Elements marked `data-signal="<formation>"` act as
  * anchors — while one is on screen the particles assemble into its formation,
  * fitted to the element's box. Between anchors they drift through a flow field.
+ * Drifting dust separates slightly, and a stable subset flocks until a formation
+ * claims it. Held formations stay on the springs.
  */
 
 const PALETTES = {
@@ -59,6 +62,10 @@ export default function SignalField() {
     const drawAlpha = new Float32Array(MAX);
     const assign = new Int32Array(MAX).fill(-1);
     const order = new Uint32Array(MAX);
+    const cellNext = new Int32Array(MAX);
+    const flockW = new Float32Array(MAX);
+    const packet = makePacketMask(MAX);
+    const flockGrid = createFlockGrid();
 
     for (let i = 0; i < MAX; i++) {
       order[i] = i;
@@ -289,13 +296,63 @@ export default function SignalField() {
 
       const R = coarse ? 70 : 120;
       const R2 = R * R;
+
+      if (dScroll !== 0) {
+        for (let i = 0; i < pool; i++) {
+          const a = assign[i];
+          // Formation particles scroll with the page; drifting dust gets parallax.
+          py[i] += dScroll * (a >= 0 ? 1 : 0.35);
+        }
+      }
+
+      resizeFlockGrid(flockGrid, w, h);
+      const flockHead = flockGrid.head;
+      const flockCols = flockGrid.cols;
+      const flockRows = flockGrid.rows;
+      flockHead.fill(-1, 0, flockGrid.numCells);
+      for (let i = 0; i < pool; i++) {
+        const a = assign[i];
+        const inForm = a >= 0 && formation !== null && now >= wake[i];
+        let dist2 = 0;
+        let speed2 = 0;
+        let flow = false;
+        if (inForm && formation) {
+          const t = formation.targets[a];
+          flow = t.kind === "flow";
+          if (!flow) {
+            evalTarget(t, now, pos);
+            const tx = ox + pos[0] * sc;
+            const ty = oy + pos[1] * sc;
+            const dx = tx - px[i];
+            const dy = ty - py[i];
+            dist2 = dx * dx + dy * dy;
+            speed2 = vx[i] * vx[i] + vy[i] * vy[i];
+          }
+        }
+        const weight = flockScale(inForm, flow, packet[i] === 1, dist2, speed2);
+        flockW[i] = weight;
+        if (weight < 0.01) continue;
+        let cx = Math.floor(px[i] / FLOCK_CELL);
+        let cy = Math.floor(py[i] / FLOCK_CELL);
+        if (cx < 0) cx = 0;
+        else if (cx >= flockCols) cx = flockCols - 1;
+        if (cy < 0) cy = 0;
+        else if (cy >= flockRows) cy = flockRows - 1;
+        const cell = cx + cy * flockCols;
+        cellNext[i] = flockHead[cell];
+        flockHead[cell] = i;
+      }
+
+      for (let i = 0; i < pool; i++) {
+        if (flockW[i] < 0.01) continue;
+        applyFlock(i, px, py, vx, vy, flockW, packet, flockHead, cellNext, flockCols, flockRows, f);
+      }
+
       for (let i = 0; i < pool; i++) {
         let x = px[i];
         let y = py[i];
         const a = assign[i];
         const inForm = a >= 0 && formation !== null && now >= wake[i];
-        // Formation particles scroll with the page; drifting dust gets parallax.
-        y += dScroll * (a >= 0 ? 1 : 0.35);
 
         if (inForm && formation) {
           const t = formation.targets[a];
@@ -325,9 +382,10 @@ export default function SignalField() {
         } else {
           const angle =
             Math.sin(x * 0.0021 + now * 0.13) * 2.1 + Math.cos(y * 0.0017 - now * 0.11) * 2.1 + Math.sin((x + y) * 0.0009 + now * 0.07);
-          // Flow field plus a little random walk so the dust never settles into clumps.
-          vx[i] += (Math.cos(angle) * 0.03 + (Math.random() - 0.5) * 0.05) * f;
-          vy[i] += (Math.sin(angle) * 0.03 + (Math.random() - 0.5) * 0.05) * f;
+          // Packet members wander less so cohesion can hold a swarm. Dust keeps the old kick.
+          const wander = packet[i] === 1 ? 0.028 : 0.05;
+          vx[i] += (Math.cos(angle) * 0.03 + (Math.random() - 0.5) * wander) * f;
+          vy[i] += (Math.sin(angle) * 0.03 + (Math.random() - 0.5) * wander) * f;
           const d = Math.pow(0.965, f);
           vx[i] *= d;
           vy[i] *= d;
