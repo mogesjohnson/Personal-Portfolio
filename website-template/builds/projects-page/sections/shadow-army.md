@@ -4,6 +4,8 @@
 
 This section is v1, and v1 is legacy. A Claude-first design comes next.
 
+The prototype is a v2 mock-up of the Claude component. The session is at /shadow-army. The protocol is at /agent-protocol.
+
 Shadow Army is a personal CLI that commands other AI coding CLIs with isolated context. The v1 README's tagline is "One monarch. Many shadows. Zero shared baggage." That README describes v1 as the `sa` CLI that starts a new process for every message, and it says this v1 line is frozen at the tag `v1.0.0`.
 
 The binaries are `sa` and `shadow`. One Monarch plans and delegates. Each Soldier receives a Brief with only what the task needs, and returns a Report. Soldiers never see each other's transcripts. Shared notes live in the Shadow Vault (`.shadow/`). A Formation is a saved preset of a monarch and soldiers for a kind of job.
@@ -41,7 +43,7 @@ Read 2026-10-09 with `gh` against `mogesjohnson/shadow-army` only. The CLI was n
 - That the package version is 1.0.0.
 - That roadmap items F1–F9 are done, or that the empty boxes prove the CLI was never built. This read was not a test run.
 - The soldier model names as products this page verified. If they appear, attribute them to the v1 README.
-- The contents of `docs/claude-first.md`, the v2 spec, or the ADRs. One sentence that a Claude-first design comes next is the limit.
+- The contents of `docs/claude-first.md`, the v2 spec, or the ADRs. The visitor copy may say that a Claude-first design comes next, and that the prototype is a v2 mock-up of the Claude component at `/shadow-army` and `/agent-protocol`. It does not explain the design.
 - That the `v1.0.0` tag's own README already called v1 legacy. It called the status pre-alpha.
 - Setup steps, token or secret names, permission-bypass flags, or the git commands the README gives for keeping or undoing a run.
 - That a visitor without access can open the code. The repository is private, and the public API returns 404.

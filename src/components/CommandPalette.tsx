@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search, FileText, GitBranch, Mail, CornerDownLeft, FolderGit2, Briefcase, Wrench, User, ExternalLink, SunMoon, Clapperboard } from "lucide-react";
+import { externalPages } from "@/data/externalPages";
 import { personalInfo } from "@/data/portfolio";
 import { scrollToSection } from "@/components/live/scroll";
 import { toggleTheme } from "@/components/live/theme";
@@ -28,6 +29,7 @@ export default function CommandPalette({ isOpen, onClose, onOpenResume }: Comman
       id: "resume",
       title: "View & Download Resume / CV",
       category: "Documents",
+      keywords: "",
       icon: FileText,
       run: () => {
         onClose();
@@ -41,16 +43,17 @@ export default function CommandPalette({ isOpen, onClose, onOpenResume }: Comman
       icon: FolderGit2,
       run: () => navigateTo("work"),
     },
-    {
-      id: "projects-page",
-      title: "Open Projects",
+    ...externalPages.map((page) => ({
+      id: page.id,
+      title: page.command,
       category: "Navigation",
+      keywords: page.keywords,
       icon: FolderGit2,
       run: () => {
         onClose();
-        router.push("/projects");
+        router.push(page.href);
       },
-    },
+    })),
     {
       id: "experience",
       title: "View Work Experience & Timeline",
@@ -125,11 +128,10 @@ export default function CommandPalette({ isOpen, onClose, onOpenResume }: Comman
   ];
 
   const filtered = query.trim()
-    ? actions.filter(
-        (a) =>
-          a.title.toLowerCase().includes(query.toLowerCase()) ||
-          a.category.toLowerCase().includes(query.toLowerCase())
-      )
+    ? actions.filter((action) => {
+        const haystack = `${action.title} ${action.category} ${"keywords" in action ? action.keywords : ""}`.toLowerCase();
+        return haystack.includes(query.toLowerCase());
+      })
     : actions;
 
   useEffect(() => {
@@ -165,16 +167,15 @@ export default function CommandPalette({ isOpen, onClose, onOpenResume }: Comman
       aria-modal="true"
       aria-label="Command Palette"
       data-lenis-prevent
-      className="palette-dialog fixed inset-0 z-50 flex items-start justify-center bg-slate-950/70 backdrop-blur-sm p-4 pt-20 sm:pt-28"
+      className="palette-dialog fixed inset-0 z-50 flex items-start justify-center p-4 pt-20 sm:pt-28"
       onClick={onClose}
     >
       <div
-        className="palette-panel w-full max-w-xl rounded-xl border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xl overflow-hidden font-sans"
+        className="palette-panel w-full max-w-xl overflow-hidden font-sans"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Search Input Bar */}
-        <div className="flex items-center gap-3 px-4 py-3.5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950/40">
-          <Search className="h-4 w-4 text-slate-400" />
+        <div className="palette-search">
+          <Search className="palette-icon" />
           <input
             autoFocus
             type="text"
@@ -184,19 +185,14 @@ export default function CommandPalette({ isOpen, onClose, onOpenResume }: Comman
               setSelectedIndex(0);
             }}
             placeholder="Type a command or jump to section..."
-            className="flex-1 bg-transparent text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none font-medium"
+            className="palette-input"
           />
-          <kbd className="hidden sm:inline-block font-mono text-[10px] text-slate-400 dark:text-slate-500 border border-slate-300 dark:border-slate-700 px-1.5 py-0.5 rounded">
-            ESC
-          </kbd>
+          <kbd className="palette-kbd">ESC</kbd>
         </div>
 
-        {/* Results List */}
-        <div className="max-h-80 overflow-y-auto p-2">
+        <div className="palette-list">
           {filtered.length === 0 ? (
-            <div className="p-6 text-center text-xs font-mono text-slate-500">
-              No matching commands found.
-            </div>
+            <div className="palette-empty">No matching commands found.</div>
           ) : (
             filtered.map((action, idx) => {
               const Icon = action.icon;
@@ -207,30 +203,23 @@ export default function CommandPalette({ isOpen, onClose, onOpenResume }: Comman
                   type="button"
                   onClick={action.run}
                   onMouseEnter={() => setSelectedIndex(idx)}
-                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-lg text-left text-xs transition-colors ${
-                    isSelected
-                      ? "bg-amber-400 text-slate-950 font-bold shadow-sm"
-                      : "text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/80"
-                  }`}
+                  className={isSelected ? "palette-row is-selected" : "palette-row"}
                 >
-                  <div className="flex items-center gap-3">
-                    <Icon className={`h-4 w-4 ${isSelected ? "text-slate-950" : "text-slate-400"}`} />
+                  <span className="palette-row-main">
+                    <Icon className="palette-icon" />
                     <span>{action.title}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className={`font-mono text-[10px] uppercase tracking-wider ${isSelected ? "text-slate-800" : "text-slate-400"}`}>
-                      {action.category}
-                    </span>
-                    {isSelected && <CornerDownLeft className="h-3 w-3 text-slate-950" />}
-                  </div>
+                  </span>
+                  <span className="palette-row-meta">
+                    <span className="palette-meta">{action.category}</span>
+                    {isSelected && <CornerDownLeft className="palette-icon" />}
+                  </span>
                 </button>
               );
             })
           )}
         </div>
 
-        {/* Footer info */}
-        <div className="px-4 py-2 border-t border-slate-200 dark:border-slate-800/80 bg-slate-50 dark:bg-slate-950/60 flex items-center justify-between text-[11px] font-mono text-slate-400">
+        <div className="palette-foot">
           <span>Navigate with &uarr; &darr;</span>
           <span>Select with Enter &crarr;</span>
         </div>

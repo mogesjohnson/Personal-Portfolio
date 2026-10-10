@@ -26,6 +26,7 @@ export function ProjectsPage() {
               This section is v1, and v1 is legacy. A Claude-first design comes next.
             </p>
             <div className="dispatch-copy">
+              <p data-reveal>The prototype is a v2 mock-up of the Claude component.</p>
               <p data-reveal>
                 Shadow Army is a personal CLI that commands other AI coding CLIs with isolated context. The v1 README’s
                 tagline is “One monarch. Many shadows. Zero shared baggage.” That README describes v1 as the <code>sa</code>{" "}
@@ -71,6 +72,12 @@ export function ProjectsPage() {
             <p className="dispatch-links" data-reveal>
               <a className="dispatch-link" target="_blank" rel="noreferrer" href="https://github.com/mogesjohnson/shadow-army">
                 mogesjohnson/shadow-army
+              </a>
+              <a className="dispatch-link" href="/shadow-army">
+                v2 session mock-up
+              </a>
+              <a className="dispatch-link" href="/agent-protocol">
+                v2 protocol mock-up
               </a>
             </p>
           </div>
