@@ -1,9 +1,6 @@
 import { DispatchBar } from "../projects-page/DispatchBar";
-import { Environment, type EnvironmentProps, type ScriptLine } from "./Environment";
-
-type HeaderEnvironment = Omit<EnvironmentProps, "lines">;
-
-export type { ScriptLine };
+import { Environment } from "./Environment";
+import type { SessionScript } from "./script";
 
 export function PrototypeHeader({
   current,
@@ -12,8 +9,7 @@ export function PrototypeHeader({
   title,
   note,
   lead,
-  lines,
-  environment,
+  script,
 }: {
   current: string;
   mark: string;
@@ -21,8 +17,7 @@ export function PrototypeHeader({
   title: string;
   note?: string;
   lead: string;
-  lines: ScriptLine[];
-  environment: HeaderEnvironment;
+  script: SessionScript;
 }) {
   return (
     <article className="dispatch">
@@ -32,7 +27,7 @@ export function PrototypeHeader({
         <h1>{title}</h1>
         {note ? <p className="dispatch-legacy">{note}</p> : null}
         <p className="dispatch-lead">{lead}</p>
-        <Environment {...environment} lines={lines} />
+        <Environment script={script} />
       </header>
     </article>
   );

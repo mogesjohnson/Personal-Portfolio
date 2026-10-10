@@ -20,6 +20,11 @@
   --sv-igris: #f5b84a;
   --sv-beru: #4cc9f0;
   --sv-tusk: #7b96ff;
+  --sv-claude: #d77757;
+  --sv-shimmer: #eb9f7f;
+  --sv-ok: #4eba65;
+  --sv-you: #373737;
+  --sv-you-text: #faf9f5;
   max-width: none;
   margin: 1.75rem 0 0;
   padding: 0 0 3rem;
@@ -43,6 +48,11 @@
   --sv-igris: #a15c07;
   --sv-beru: #0e7490;
   --sv-tusk: #3446c9;
+  --sv-claude: #d77757;
+  --sv-shimmer: #c45c3e;
+  --sv-ok: #2c7a39;
+  --sv-you: #eeeeee;
+  --sv-you-text: #141413;
 }
 
 .split-plate {
@@ -341,6 +351,233 @@
   color: var(--muted);
   font-size: 12px;
   line-height: 1.45;
+}
+
+html[data-motion="full"] .split-preroll {
+  display: none;
+}
+
+.split-body {
+  white-space: pre-wrap;
+}
+
+.split-you {
+  margin: 0.85rem 0 0;
+  padding: 0.32rem 0.6rem;
+  background: var(--sv-you);
+  color: var(--sv-you-text);
+}
+
+.split-prompt span,
+.split-prompt button,
+.split-keys span {
+  color: var(--sv-claude);
+}
+
+.split-msg {
+  margin: 0.8rem 0 0;
+}
+
+.split-tool {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.45rem;
+  margin: 0.7rem 0 0;
+  min-height: 1.45em;
+  color: var(--sv-dim);
+}
+
+.split-tool[aria-busy="true"]::after {
+  content: "";
+  flex-basis: 100%;
+  height: 2px;
+  margin-top: 0.2rem;
+  background-image: linear-gradient(90deg, transparent, var(--sv-claude), var(--sv-shimmer), transparent);
+  background-size: 200% 100%;
+  animation: split-shimmer 1.05s linear infinite;
+}
+
+.split-tool-who {
+  font-weight: 700;
+}
+
+.split-verb {
+  color: var(--sv-claude);
+}
+
+html[data-motion="full"] .split-verb {
+  animation: split-verb 1.05s ease-in-out infinite;
+}
+
+.split-clock {
+  color: var(--sv-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.split-ok,
+.split-asterisk.is-done,
+.split-state.is-done,
+.split-note {
+  color: var(--sv-ok);
+}
+
+.split-asterisk {
+  color: var(--sv-claude);
+  font-family: "Segoe UI Symbol", "Segoe UI Emoji", sans-serif;
+  font-weight: 700;
+}
+
+.split-asterisk.is-live {
+  display: inline-block;
+  animation: split-asterisk 1.2s ease-in-out infinite;
+}
+
+.split-note,
+.split-idle {
+  margin: 0.45rem 0 0;
+}
+
+.split-idle {
+  color: var(--sv-faint);
+}
+
+.split-soldier-note {
+  margin: 0;
+  padding: 0.28rem 0.75rem 0;
+  color: var(--sv-dim);
+  font-size: 12px;
+}
+
+.split-meter-on {
+  color: var(--sv-soldier, var(--sv-claude));
+}
+
+.split-pane.is-working {
+  animation: split-breathe 2s ease-in-out infinite;
+}
+
+.split-tab.is-summoned {
+  animation: split-summon 0.7s ease;
+}
+
+.split-tab[aria-selected="true"] .split-asterisk {
+  color: inherit;
+  animation: none;
+}
+
+.split-strip .is-working .split-asterisk {
+  color: var(--sv-soldier, var(--sv-claude));
+}
+
+.split-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin-top: 0.7rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid var(--sv-edge);
+}
+
+.split-choices > p {
+  margin: 0 0 0.15rem;
+  color: var(--sv-dim);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.split-choice {
+  display: grid;
+  grid-template-columns: 1.25rem minmax(0, 1fr);
+  gap: 0.05rem 0.55rem;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 0.32rem 0.3rem;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.split-choice b {
+  color: var(--sv-claude);
+}
+
+.split-choice small {
+  grid-column: 2;
+  color: var(--sv-dim);
+  font-size: 12px;
+}
+
+.split-choice:hover:not(:disabled),
+.split-choice.is-on {
+  background: color-mix(in srgb, var(--sv-claude) 14%, transparent);
+}
+
+.split-choice:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.split-choice.is-on:disabled {
+  opacity: 1;
+}
+
+.split-live-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+@keyframes split-shimmer {
+  from { background-position: 100% 0; }
+  to { background-position: -100% 0; }
+}
+
+@keyframes split-verb {
+  0%, 100% { color: var(--sv-claude); }
+  50% { color: var(--sv-shimmer); }
+}
+
+@keyframes split-asterisk {
+  0%, 100% { color: var(--sv-claude); }
+  50% { color: var(--sv-shimmer); }
+}
+
+@keyframes split-breathe {
+  0%, 100% { border-color: var(--sv-brand); box-shadow: none; }
+  50% {
+    border-color: var(--sv-soldier, var(--sv-claude));
+    box-shadow: 0 0 22px color-mix(in srgb, var(--sv-soldier, var(--sv-claude)) 28%, transparent);
+  }
+}
+
+@keyframes split-summon {
+  0% { transform: translateY(5px); filter: brightness(1.45); }
+  100% { transform: none; filter: none; }
+}
+
+html[data-motion="reduce"] .split-verb,
+html[data-motion="reduce"] .split-asterisk.is-live,
+html[data-motion="reduce"] .split-pane.is-working,
+html[data-motion="reduce"] .split-tab.is-summoned,
+html[data-motion="reduce"] .split-tool[aria-busy="true"]::after {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .split-verb,
+  .split-asterisk.is-live,
+  .split-pane.is-working,
+  .split-tab.is-summoned,
+  .split-tool[aria-busy="true"]::after {
+    animation: none;
+  }
 }
 
 @media (max-width: 860px) {
