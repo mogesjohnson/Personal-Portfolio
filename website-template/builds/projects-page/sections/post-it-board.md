@@ -4,6 +4,8 @@ Its own section. Visitor copy describes the board. It does not explain How to po
 
 Verified 2026-10-09 against `main` of [mogesjohnson/post-it-board](https://github.com/mogesjohnson/post-it-board): the README (raw), `supabase/schema.sql`, `store.js`, `app.js`, `index.html`, the shape of `config.js` (values not copied), the GitHub Pages API, and the branch-rules API.
 
+Updated 2026-10-11 from the owner's current facts: the Topics view, the mobile layout, the test suite, and the confirmed security setup (public sign-ups off, no service-role key). The builder notes below are still the 2026-10-09 reading unless marked.
+
 ## Visitor copy
 
 Post-it Board is a small static website that looks like a middle-school classroom corkboard. It is plain HTML, CSS, and JavaScript. There is no framework and no build step.
@@ -12,19 +14,23 @@ Each day gets its own board. Each topic is one pin, a sticky note in yellow, pin
 
 A link can open one page. The hash looks like the README’s example: `#day=2026-10-05&pin=<id>&page=2`.
 
+A Topics view lists every topic across all days, most recently updated first, each with one living summary. It opens at `#view=topics`. The layout works on a phone.
+
 Anyone can read the board. A lock icon is where the owner signs in. Everyone else gets a read-only board. The owner tools add a day, a pin, or a page, and they rename, select, and delete. Select mode marks a whole pin or a single page. Delete asks for confirmation, and it is permanent. Deleting a pin deletes its pages. There is no recycle bin.
 
-The shared board stores notes in Supabase. The README says the free plan is enough: Postgres tables, row level security, and Auth, and no Edge Functions. The tables are `days`, `pins`, `pages`, and `board_owners`. The public site can read. A write is kept only for a signed-in board owner. The repository’s setup turns public sign-ups off.
+The shared board stores notes in Supabase on the free plan, with row level security on the tables `days`, `pins`, `pages`, and `board_owners`. The public key can only read. Writes are kept only for signed-in owner accounts. Public sign-ups are off, and no service-role key is used.
 
 If `config.js` is empty, the board runs in demo mode in that browser only. Notes stay in `localStorage`, and a banner says Supabase is not connected. The live site is not that demo. GitHub Pages serves it from the `main` branch.
 
-Changes to `main` go through a pull request.
+Changes to `main` go through a pull request. A test suite covers the board, the inbox workflow, and the Topics view.
 
 ## Links
 
 GitHub: https://github.com/mogesjohnson/post-it-board
 
 Live: https://mogesjohnson.github.io/post-it-board/
+
+Topics view: https://mogesjohnson.github.io/post-it-board/#view=topics
 
 ## Builder notes
 
@@ -50,7 +56,7 @@ Who can do what:
 - Schema: anon and any signed-in user can select `days`, `pins`, and `pages`. Insert, update, and delete on those tables require `is_board_owner()` for an authenticated user. `board_owners` is not readable with the anon key. A signed-in user can see only their own row.
 - README: the anon key is meant to be public, and row level security keeps it read-only. Do not put a key in the page copy.
 - `app.js`: owner tools show when `store.mode === "local"` or any user is signed in. The README also says a signed-in account that is not in `board_owners` still sees the tools, and the database rejects the change. Do not tighten the visitor line into “the buttons are hidden unless you are a board owner.”
-- Public sign-ups: the README and the schema tell the owner to turn “Allow new users to sign up” off. This pass did not read that switch back from the live project.
+- Public sign-ups: the README and the schema tell the owner to turn “Allow new users to sign up” off. Confirmed off by the owner on 2026-10-11. No service-role key is used anywhere.
 
 Demo mode versus the live site:
 
@@ -66,6 +72,13 @@ Links and publishing:
 
 For the other writer: an `inbox` branch exists on this repository. This section does not say what it is for.
 
+Added 2026-10-11 (owner's facts):
+
+- Topics view at `#view=topics`: every topic across days, most recently updated first, each with one living summary. Those summaries are written by the transcript poller; this section does not say so. The How to post it and connection sections own that.
+- Mobile layout works.
+- Tests: `node tests/run.mjs`, `bash tests/workflow.sh`, and `node tests/topics.mjs`. The page says a test suite exists. It does not quote test counts.
+- `main` is protected by a ruleset; `inbox` stays open by design. The connection section owns the inbox line.
+
 ## Do not say
 
 - The bot account email, any password, the names of Actions secrets, token scopes, or steps for pushing to the inbox.
@@ -79,6 +92,6 @@ For the other writer: an `inbox` branch exists on this repository. This section 
 
 ## Open questions
 
-- `[[placeholder: confirm on the live Supabase project that public sign-ups are off]]`. The repo documents that step. This pass did not read the live Auth setting.
+- Resolved 2026-10-11: public sign-ups are off (owner-confirmed).
 - `[[placeholder: a real day and pin from the live board, if the page should quote one]]`. The hash date above is the README’s example of the shape, not proof that the day is posted.
 - `[[placeholder: a license name, if the page should state one]]`. The repo does not name one.

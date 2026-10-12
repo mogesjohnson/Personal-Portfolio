@@ -1,30 +1,34 @@
 # How to post it
 
-Its own section. It names the Post-it Board as the place notes are meant to land. It does not explain how a note is accepted. That join is the connection section.
+Its own section. It names the Post-it Board as the place notes land. It does not explain how the board accepts a note. That join is the connection section.
 
-Source: `mogesjohnson/how-to-post-it` on `main`, read 2026-10-09 with `gh repo view`, the README API, and the docs the README status table points at (`docs/transcript-automation.md`, `docs/ara-instructions.md`, `docs/ai-studio-prompt.md`), plus `docs/main-workflow-goal.md` and `docs/risks.md`. No other repository was opened.
+Updated 2026-10-11 from the owner's current facts and `mogesjohnson/how-to-post-it` on `main` (README, `docs/`, `poller/`). This replaces the 2026-10-09 reading, which described the transcript path as designed but not built, with an 8-second silence threshold. That reading is kept at the end of this file, marked superseded.
 
 ## Visitor copy
 
-How to post it is a documentation and spec repository. Its subject is a conversation with Grok in a Tesla, and the place that conversation is meant to land is the Post-it Board. This repository is not a live car workflow.
+How to post it holds the docs and the code for getting a conversation with Grok in a Tesla onto the Post-it Board. The docs start at `docs/main-workflow-goal.md`. The code is the transcript poller in `poller/`: Node, no dependencies, and 41 unit tests.
 
-The goal is zero friction while driving. One pin per topic. One page per conversation. No screens, no typing, no taps.
+The goal is zero friction while driving. No screens, no typing, no taps. One pin per topic, and one living summary for each topic.
 
-Two ways of posting are written down. Neither is live. The board is the live product. These two paths are not.
+Transcript automation is the primary path, and it has been live since October 11, 2026. The Grok phone app mirrors voice conversations with Ara, the car's Grok, into grok.com history, with timestamps. A poller on an always-on Linux machine reads that history, picks out the voice chats, and waits until a chat has been quiet for 10 minutes. Then it summarizes the chat and sends the result to the board.
 
-The recommended way is transcript automation. The design is: when a conversation goes quiet, summarize it and pin it, even if nobody said "post it." Quiet means 8 seconds by default, and that wait can be set from 5 to 30 seconds. Eight seconds is a minimum quiet time in the design, not a promise that a note appears then. The design is written. The method for reading a transcript is unverified, and the automation is not built.
+The summary comes from a free open-weights model that runs locally: Qwen3.5-2B, CPU only, through llama.cpp. It uses about 1.5–2 GB of RAM and takes roughly 5–20 seconds per summary. It was chosen after testing Gemma 4 E2B and Qwen3.5 0.8B and 4B. An earlier plan to use GitHub Models was retired.
 
-The second way is to say "post it" to Ara, the car's Grok. Instructions for that are written. They are untested. The repository does not establish that Ara can write to GitHub.
+Each topic is one running summary, capped at 1,500 characters. A new chat is merged into the topic it matches, or it starts a new topic. Matching is conservative: a miss makes a separate topic rather than a wrong merge. Every Sunday, a compaction pass trims any summary over 1,500 characters to about 1,000. A health check and twice-daily monitoring watch the poller.
 
-A custom Android voice app was considered earlier. It is superseded, and it was not built.
+On October 11, 2026, a script outside the browser read full voice-chat text with millisecond timestamps (issue #2). The history requests it relies on are private and undocumented, so the design accepts the terms-of-service risk and the risk that they break.
+
+The second way is to say "post it" to Ara, who can post directly by pushing a file to the board's inbox. That path has not been tested in the car yet.
+
+Superseded: the earlier plan for a custom Android voice app, running its own Ara session through xAI's voice API and built from a Google AI Studio prompt, was never built. Its 8-second silence timer is gone too. Quiet now means 10 minutes.
 
 The license is MIT.
-
-https://github.com/mogesjohnson/how-to-post-it
 
 ## Links
 
 - This repository: https://github.com/mogesjohnson/how-to-post-it
+- Start here: https://github.com/mogesjohnson/how-to-post-it/blob/main/docs/main-workflow-goal.md
+- Poller: https://github.com/mogesjohnson/how-to-post-it/tree/main/poller
 - License file: https://github.com/mogesjohnson/how-to-post-it/blob/main/LICENSE
 - The board named as the destination, which is not a site for this repo: https://mogesjohnson.github.io/post-it-board/
 
@@ -32,34 +36,37 @@ This repo has no homepage URL. Do not invent one.
 
 ## Builder notes
 
-- The README calls this a documentation and spec repo, with no app and no secrets. That holds for an application. The tree on `main` is the README, `LICENSE`, `.gitignore`, seven docs, three JSON templates, and one shell helper, `scripts/send-test-command.sh`. A scan of those files found no secret-shaped strings. The only branch is `main`. GitHub reports the language as Shell because of the helper. The page does not mention the helper, the templates, or how to run anything. The helper talks to the board. That is not a live car path.
-- The GitHub description still says "voice app spec, AI Studio prompt, and architecture." It is behind the README. Do not use it as the lede. The voice app is the superseded path.
-- Status table in the README, matched by the docs: the board is live; transcript automation is designed, its transcript-reading method is unverified, and it is not built; Ara's "post it" instructions are written, and her GitHub access is unverified; the Android voice app is superseded, the generation prompt is kept, and the app was not built.
-- `docs/transcript-automation.md` says the reading step is unverified and that the silence loop, summary, and dedup after that step are specified, including pseudocode. Specified is not built. Issue #4, "Build the transcript poller," is open.
-- Silence, from the README and the transcript doc: default 8 seconds, tunable from 5 to 30. The same docs say this is a minimum quiet time, checked on a poll, not a deadline. A GitHub Actions cron cannot run more often than every 5 minutes, so cron cannot mean "posted within 8 seconds." The written design checks from an always-on machine while a conversation looks active, on a 5–10 second poll. Those are design figures, not measured results. Visitor copy keeps the 8 second default and the 5–30 range, and it does not quote the poll or the cron.
-- The Ara instruction file also answers "pin it" and "post that." Visitor copy says "post it" only. The same file tells her to say "Posted." and to honor "don't post this." None of that has been tested. The doc records that no `ara-` result has appeared yet. This section does not describe result files.
-- The transcript design is meant to update the same page if the conversation continues, and not to pin twice. Say that only as design, and do not specify the command. The connection section owns the join.
-- Issue #2 is open: whether an outside script can read the Grok app's conversation transcript. Issue #3 is an open, documentation-only fallback if that read fails. The page does not describe either fallback, including the Android prompt.
-- License file: MIT. Copyright (c) 2026 Moges Johnson. Created 2026-10-06, updated 2026-10-07. Public.
-- `docs/main-workflow-goal.md` is the plain-language overview. Its "start here" title is a pointer at a pinned Grok chat. The page does not repeat that title.
+- Status as of 2026-10-11: transcript automation is live; Ara's "post it" is written and untested in the car; the Android voice app is superseded and was never built.
+- The README now says the repo holds the documentation and spec plus the poller (`poller/`). It contains no secrets: the poller reads them from a local file on the machine that runs it.
+- Read path: the poller uses grok.com's own web requests (the conversation list and the load-responses request). These are private and undocumented. The page names the risk. It does not give request details.
+- Quiet threshold: 10 minutes. This is a wait before summarizing, not a promised posting time. Do not quote a measured end-to-end time; none was supplied.
+- Model figures (about 1.5–2 GB RAM, roughly 5–20 seconds per summary) are the owner's numbers. Do not add others.
+- Topic papers: one running summary per topic, capped at 1,500 characters; weekly Sunday compaction trims summaries over 1,500 to about 1,000.
+- Issue #2 ("Can an outside script read the Grok app's conversation transcript?") is still open on GitHub. The owner verified the read on 2026-10-11. Say "verified (issue #2)"; do not say the issue is closed.
+- The GitHub repo description still reads "voice app spec, AI Studio prompt, and architecture." It is behind the README. Do not use it as the lede.
+- `docs/ai-studio-prompt.md` is marked superseded, optional legacy, in the repo. One sentence on the page is enough.
+- Cost: the whole system runs at $0. The connection section carries that line, since it spans both repos.
 
 ## Do not say
 
-- That the car posting is live, that a transcript can be read, or that Ara can write to GitHub.
-- That a note appears 8 seconds after silence, or any measured posting time. The 8 seconds is a designed quiet threshold. The path is not built.
-- The bot email, token recipes, secret names, or keystore notes.
-- Undocumented endpoint instructions, or how a transcript would be read.
-- The inbox protocol: ops, statuses, typo matching, and which branch owns the inbox.
+- Secrets, cookie or token details, request headers, or how to call the grok.com requests.
+- The Supabase project ref or URL, the bot or owner account emails, or Actions secret names.
+- Any private chat content, including the title of the pinned Grok chat that `docs/main-workflow-goal.md` points at.
+- That Ara's "post it" path has been tested in the car.
+- That a note appears a set number of seconds or minutes after a chat ends.
+- Anything beyond one sentence on the Android voice app. Do not spec the widget, the voice session, or the AI Studio prompt.
 - How the test script or the JSON templates work.
-- Anything beyond one sentence on the custom Android voice app. Do not spec the widget, the voice session, Bluetooth, or the generation prompt.
-- The GitHub description's voice-app-first framing.
-- Setup chores from the checklist, including passwords, tokens, and where a machine should run.
 
 ## Open questions
 
-- Whether a car voice conversation comes back as text, or only as a title and timestamps. The docs leave this unverified. Issue #2 is open. Do not answer it on the page.
-- Whether timestamps are precise enough for an 8 second threshold. The docs say minute-level or "2 min ago" times would not do, and that this has not been checked on a real car conversation.
-- Whether Ara can create a file in GitHub. Instructions exist. They are untested.
-- Issue #4 is the build of the transcript poller, and it is open. There is no tuned silence value from real drives. The documented default remains 8 seconds, inside 5–30, until then.
-- The always-on machine in the design is not named.
-- Issue #3, the fallback if a transcript cannot be read, is documentation only. The overview says that if the text cannot be read at all, that fallback still needs some other way to get the text. The page does not present it as a ready path.
+- Whether Ara can push the inbox file from the car. The instructions exist. They are untested.
+- The always-on machine is not named on the page.
+
+## Superseded: the 2026-10-09 reading
+
+Kept for history. None of this is current.
+
+- The repo was documentation only, with no application code. Transcript automation was "designed," its transcript-reading method unverified, and the poller (issue #4) not built.
+- Silence threshold: default 8 seconds, tunable from 5 to 30, checked from an always-on machine on a 5–10 second poll. Replaced by the 10-minute quiet window.
+- The goal line read "one pin per topic, one page per conversation." Replaced by one living summary per topic.
+- The custom Android voice app (its own Ara session through xAI's realtime voice API, generated from a Google AI Studio prompt) was already superseded and not built. Issue #3 was a documentation-only fallback if the transcript could not be read; the read now works.

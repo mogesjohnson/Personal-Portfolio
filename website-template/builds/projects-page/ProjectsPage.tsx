@@ -103,23 +103,30 @@ export function ProjectsPage() {
                 A link can open one page. The hash looks like the README’s example: <code>#day=2026-10-05&amp;pin=&lt;id&gt;&amp;page=2</code>.
               </p>
               <p data-reveal>
+                A Topics view lists every topic across all days, most recently updated first, each with one living
+                summary. It opens at <code>#view=topics</code>. The layout works on a phone.
+              </p>
+              <p data-reveal>
                 Anyone can read the board. A lock icon is where the owner signs in. Everyone else gets a read-only board.
                 The owner tools add a day, a pin, or a page, and they rename, select, and delete. Select mode marks a
                 whole pin or a single page. Delete asks for confirmation, and it is permanent. Deleting a pin deletes its
                 pages. There is no recycle bin.
               </p>
               <p data-reveal>
-                The shared board stores notes in Supabase. The README says the free plan is enough: Postgres tables, row
-                level security, and Auth, and no Edge Functions. The tables are <code>days</code>, <code>pins</code>,{" "}
-                <code>pages</code>, and <code>board_owners</code>. The public site can read. A write is kept only for a
-                signed-in board owner. The repository’s setup turns public sign-ups off.
+                The shared board stores notes in Supabase on the free plan, with row level security on the tables{" "}
+                <code>days</code>, <code>pins</code>, <code>pages</code>, and <code>board_owners</code>. The public key
+                can only read. Writes are kept only for signed-in owner accounts. Public sign-ups are off, and no
+                service-role key is used.
               </p>
               <p data-reveal>
                 If <code>config.js</code> is empty, the board runs in demo mode in that browser only. Notes stay in{" "}
                 <code>localStorage</code>, and a banner says Supabase is not connected. The live site is not that demo.
                 GitHub Pages serves it from the <code>main</code> branch.
               </p>
-              <p data-reveal>Changes to <code>main</code> go through a pull request.</p>
+              <p data-reveal>
+                Changes to <code>main</code> go through a pull request. A test suite covers the board, the inbox
+                workflow, and the Topics view.
+              </p>
             </div>
             <p className="dispatch-links" data-reveal>
               <a className="dispatch-link" target="_blank" rel="noreferrer" href="https://github.com/mogesjohnson/post-it-board">
@@ -127,6 +134,9 @@ export function ProjectsPage() {
               </a>
               <a className="dispatch-link" target="_blank" rel="noreferrer" href="https://mogesjohnson.github.io/post-it-board/">
                 Live board
+              </a>
+              <a className="dispatch-link" target="_blank" rel="noreferrer" href="https://mogesjohnson.github.io/post-it-board/#view=topics">
+                Topics view
               </a>
             </p>
           </div>
@@ -140,33 +150,57 @@ export function ProjectsPage() {
             </h2>
             <div className="dispatch-copy">
               <p data-reveal>
-                How to post it is a documentation and spec repository. Its subject is a conversation with Grok in a Tesla,
-                and the place that conversation is meant to land is the Post-it Board. This repository is not a live car
-                workflow.
+                How to post it holds the docs and the code for getting a conversation with Grok in a Tesla onto the
+                Post-it Board. The docs start at <code>docs/main-workflow-goal.md</code>. The code is the transcript
+                poller in <code>poller/</code>: Node, no dependencies, and 41 unit tests.
               </p>
               <p data-reveal>
-                The goal is zero friction while driving. One pin per topic. One page per conversation. No screens, no
-                typing, no taps.
-              </p>
-              <p data-reveal>Two ways of posting are written down. Neither is live. The board is the live product. These two paths are not.</p>
-              <p data-reveal>
-                The recommended way is transcript automation. The design is: when a conversation goes quiet, summarize it
-                and pin it, even if nobody said “post it.” Quiet means 8 seconds by default, and that wait can be set from
-                5 to 30 seconds. Eight seconds is a minimum quiet time in the design, not a promise that a note appears
-                then. The design is written. The method for reading a transcript is unverified, and the automation is not
-                built.
+                The goal is zero friction while driving. No screens, no typing, no taps. One pin per topic, and one
+                living summary for each topic.
               </p>
               <p data-reveal>
-                The second way is to say “post it” to Ara, the car’s Grok. Instructions for that are written. They are
-                untested. The repository does not establish that Ara can write to GitHub.
+                Transcript automation is the primary path, and it has been live since October 11, 2026. The Grok phone
+                app mirrors voice conversations with Ara, the car’s Grok, into grok.com history, with timestamps. A
+                poller on an always-on Linux machine reads that history, picks out the voice chats, and waits until a
+                chat has been quiet for 10 minutes. Then it summarizes the chat and sends the result to the board.
               </p>
-              <p data-reveal>A custom Android voice app was considered earlier. It is superseded, and it was not built.</p>
+              <p data-reveal>
+                The summary comes from a free open-weights model that runs locally: Qwen3.5-2B, CPU only, through
+                llama.cpp. It uses about 1.5–2 GB of RAM and takes roughly 5–20 seconds per summary. It was chosen after
+                testing Gemma 4 E2B and Qwen3.5 0.8B and 4B. An earlier plan to use GitHub Models was retired.
+              </p>
+              <p data-reveal>
+                Each topic is one running summary, capped at 1,500 characters. A new chat is merged into the topic it
+                matches, or it starts a new topic. Matching is conservative: a miss makes a separate topic rather than a
+                wrong merge. Every Sunday, a compaction pass trims any summary over 1,500 characters to about 1,000. A
+                health check and twice-daily monitoring watch the poller.
+              </p>
+              <p data-reveal>
+                On October 11, 2026, a script outside the browser read full voice-chat text with millisecond timestamps
+                (issue #2). The history requests it relies on are private and undocumented, so the design accepts the
+                terms-of-service risk and the risk that they break.
+              </p>
+              <p data-reveal>
+                The second way is to say “post it” to Ara, who can post directly by pushing a file to the board’s inbox.
+                That path has not been tested in the car yet.
+              </p>
+              <p data-reveal>
+                Superseded: the earlier plan for a custom Android voice app, running its own Ara session through xAI’s
+                voice API and built from a Google AI Studio prompt, was never built. Its 8-second silence timer is gone
+                too. Quiet now means 10 minutes.
+              </p>
               <p data-reveal>The license is MIT.</p>
             </div>
             <div className="dispatch-origin" data-note-origin aria-hidden="true" />
             <p className="dispatch-links" data-reveal>
               <a className="dispatch-link" target="_blank" rel="noreferrer" href="https://github.com/mogesjohnson/how-to-post-it">
                 mogesjohnson/how-to-post-it
+              </a>
+              <a className="dispatch-link" target="_blank" rel="noreferrer" href="https://github.com/mogesjohnson/how-to-post-it/blob/main/docs/main-workflow-goal.md">
+                Start here
+              </a>
+              <a className="dispatch-link" target="_blank" rel="noreferrer" href="https://github.com/mogesjohnson/how-to-post-it/tree/main/poller">
+                Poller
               </a>
             </p>
           </div>
@@ -180,19 +214,20 @@ export function ProjectsPage() {
             </h2>
             <div className="dispatch-copy">
               <p data-reveal>
-                How to post it is the spec for getting a conversation onto a board. Post-it Board is the board that keeps
-                the note and shows it.
+                How to post it is the docs and the poller that turn a conversation into a note. Post-it Board is the
+                board that keeps the note and shows it.
               </p>
               <p data-reveal>
-                They meet in one place: the <code>inbox</code> branch of Post-it Board. How to post it has no inbox. A file
-                pushed to that spec repo does not change the board. The How to post it README calls an earlier “inbox on
-                how-to-post-it” wording a slip.
+                They meet in one place: the <code>inbox</code> branch of Post-it Board. How to post it has no inbox. A
+                file pushed to that repo does not change the board.
               </p>
               <p data-reveal>
-                A writer that can push a file sends one JSON command, <code>inbox/&lt;name&gt;.json</code>, on the board’s{" "}
-                <code>inbox</code> branch. A GitHub Action on the board runs <code>scripts/post.mjs</code> from{" "}
-                <code>main</code>, signed in as the bot, writes a result, and removes the command. The spec decides what
-                should be posted. The board is what actually stores it.
+                Anything that can push a small JSON command file, <code>inbox/&lt;name&gt;.json</code>, to the board’s{" "}
+                <code>inbox</code> branch starts a GitHub Actions workflow. It runs <code>scripts/post.mjs</code> from{" "}
+                <code>main</code>, signs in as a bot with encrypted repository secrets, adds, edits, or deletes notes,
+                and writes the result back to <code>inbox/results</code>. The secrets never touch a chat or the
+                repository. <code>main</code> is protected by a ruleset. The <code>inbox</code> branch stays open by
+                design.
               </p>
               <p data-reveal>
                 A command can add, edit, or delete. A pin is the topic. A page is the note. An add can land on a pin that
@@ -200,11 +235,13 @@ export function ProjectsPage() {
                 does not guess.
               </p>
               <p data-reveal>
-                The quiet-conversation path is meant to update the same page when the talk continues, so one topic stays
-                one note. That path is designed, and it is not built. Saying “post it” in the car is meant to pin
-                immediately. That path is untested.
+                Today the poller is the writer: once a voice chat has been quiet for 10 minutes, it pushes that topic’s
+                summary to the inbox. Ara saying “post it” is the second writer, and it is not yet tested in the car.
               </p>
-              <p data-reveal>The board is live. The join from the car is not.</p>
+              <p data-reveal>
+                The whole system runs at $0: GitHub Pages, the Supabase free plan, GitHub Actions, and a local model.
+              </p>
+              <p data-reveal>The board is live, and so is the transcript path from the car.</p>
             </div>
 
             <div className="dispatch-desk">
@@ -213,7 +250,7 @@ export function ProjectsPage() {
                   One pin per topic
                 </p>
               </div>
-              <p className="dispatch-caption">The spec sends the note, and the board keeps it.</p>
+              <p className="dispatch-caption">The poller sends the note, and the board keeps it.</p>
             </div>
 
             <p className="dispatch-links" data-reveal>

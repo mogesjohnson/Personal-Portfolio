@@ -11,6 +11,8 @@ The section files are the checked copy. Each project was read on its own on 2026
 
 Where this file and a section file disagree, the section file wins.
 
+Updated 2026-10-11: the Post-it Board, How to post it, and connection sections were refreshed from the owner's current facts. Transcript automation is live, the poller lives in `how-to-post-it/poller/`, and the 8-second silence design and the Android voice app are superseded. The page is built (`ProjectsPage.tsx`, served at `/projects`), so the "spec only" line above is history.
+
 ## Brief
 
 | Field | Value |
@@ -96,11 +98,12 @@ Source, README on `main`, read 2026-10-09:
 - A static site that looks like a classroom corkboard. Plain HTML, CSS, and vanilla JS. No framework, no build step, no dependencies.
 - Live site, GitHub Pages from `main`: https://mogesjohnson.github.io/post-it-board/
 - Data model: a day, then a pin (one topic), then one or more pages (notes). Pin colors named in the README: yellow, pink, blue, green.
-- Storage: Supabase. Tables `days`, `pins`, `pages`, and `board_owners`, with row level security. The anon key can read. A write is kept only for a signed-in board owner. Turning public sign-ups off is what the setup doc says. This pass did not read that switch on the live project.
+- Storage: Supabase. Tables `days`, `pins`, `pages`, and `board_owners`, with row level security. The anon key can read. A write is kept only for a signed-in board owner. Public sign-ups are off (owner-confirmed 2026-10-11), and no service-role key is used.
 - Anyone can read the board. The owner tools show for demo mode and for any signed-in user. An account that is not in `board_owners` still sees the tools, and the database rejects the write. Do not say the buttons are hidden unless you are a board owner.
 - Demo mode uses `localStorage` when `config.js` is empty. `config.js` on `main` is filled, and Pages serves that tree, so the live site is not the demo. Do not describe the demo seed notes as the live board.
 - Deleting a pin deletes its pages. Deleting a day deletes its pins. There is no license file. Do not say MIT.
 - Shareable hashes look like `#day=2026-10-05&pin=<id>&page=2`.
+- Added 2026-10-11: a Topics view (https://mogesjohnson.github.io/post-it-board/#view=topics) lists every topic across days, most recently updated first, each with one living summary. The mobile layout works. A test suite covers the board, the inbox workflow, and the Topics view (`node tests/run.mjs`, `bash tests/workflow.sh`, `node tests/topics.mjs`).
 - `main` is protected by a pull-request ruleset. The page may say changes to `main` go through a pull request. It does not recite the ruleset id or the bypass settings.
 
 GitHub link: https://github.com/mogesjohnson/post-it-board
@@ -111,19 +114,17 @@ Live link: https://mogesjohnson.github.io/post-it-board/
 
 Its own section. It names the board as the place notes land, and it does not yet explain the inbox protocol. That belongs in the connection.
 
-Source, README on the default branch, read 2026-10-09:
+Source: the owner's current facts and the README on `main`, 2026-10-11:
 
-- A documentation and spec repository. No application source and no secrets. The tree also has `scripts/send-test-command.sh` and three JSON templates. The page does not mention them. The only branch is `main`. The GitHub description still leads with the voice app and is behind the README. Do not use it as the lede.
+- The repo holds the docs (start with `docs/main-workflow-goal.md`) and the transcript poller in `poller/` (Node, no dependencies, 41 unit tests). No secrets in the repo.
 - Subject: how a conversation with Grok in a Tesla reaches the Post-it Board.
-- Goal, from the README: zero friction while driving. One pin per topic, one page per conversation. No screens, no typing, no taps.
-- Two ways, with the status table from that README:
-  - Transcript automation (recommended): when a conversation goes quiet, summarize it and pin it, even if nobody said "post it". Status: designed. The transcript-reading method is unverified, and it is not built.
-  - Ara, the car's Grok, on the words "post it": instructions are written. Status: untested. The README says Ara's ability to create files in GitHub is unverified.
-- A custom Android voice app is superseded and was not built. One sentence is enough. The page does not spec that app.
-- Silence threshold named in the README: default 8 seconds, tunable from 5 to 30. That is a minimum quiet time in the design, not a promise that a note appears then. Do not say a note posts within 8 seconds.
+- Goal: zero friction while driving. No screens, no typing, no taps. One pin per topic, one living summary per topic.
+- Transcript automation is the primary path and is live as of 2026-10-11. The Grok phone app mirrors car voice conversations with Ara into grok.com history with timestamps. A poller on an always-on Linux machine reads that history, picks voice chats, waits until a chat has been quiet for 10 minutes, summarizes it with a local open-weights model (Qwen3.5-2B, CPU only via llama.cpp, about 1.5–2 GB RAM, roughly 5–20 seconds per summary; chosen after testing Gemma 4 E2B and Qwen3.5 0.8B and 4B; GitHub Models was retired), and pushes an inbox command.
+- Topic papers: one running summary per topic, capped at 1,500 characters. A new chat merges into the matching topic or starts a new one; matching is conservative, so a miss makes a separate topic rather than a wrong merge. Weekly Sunday compaction trims summaries over 1,500 characters to about 1,000. Health check plus twice-daily monitoring.
+- Verified 2026-10-11 (issue #2): a script outside the browser reads full voice-chat text with millisecond timestamps. The requests are private and undocumented, so the design accepts terms-of-service and breakage risk.
+- Second path: Ara posts directly by pushing an inbox file when the user says "post it". Not yet tested in the car.
+- Superseded: the custom Android voice app (xAI voice, Google AI Studio prompt) was never built, and the 8-second silence threshold (5–30 tunable) is replaced by the 10-minute quiet window. One sentence on the page.
 - MIT license.
-
-The page must not say the car workflow is live. The board is live. The two ways of posting from the car are not built or not tested, as the table says.
 
 GitHub link: https://github.com/mogesjohnson/how-to-post-it
 
@@ -133,14 +134,16 @@ This is the first section that explains the two repositories as one system.
 
 Facts both READMEs agree on:
 
-- How to post it is the spec for how a conversation becomes a note. Post-it Board is the board that stores and shows the note.
+- How to post it is the docs and poller for how a conversation becomes a note. Post-it Board is the board that stores and shows the note.
 - The inbox is the `inbox` branch of `mogesjohnson/post-it-board`. How to post it has no inbox branch. A file pushed to How to post it does nothing to the board. The How to post it README calls an earlier "inbox on how-to-post-it" wording a slip.
 - A writer that can push a file sends one JSON command to `inbox/<name>.json` on that branch. A GitHub Actions workflow runs `scripts/post.mjs` from `main`, signed in as the bot account, writes a result file, and removes the command.
 - Command ops named in both READMEs: `add`, `edit`, `delete`. A pin is the topic. A page is the note.
 - Statuses named in both READMEs: `ok`, `skipped_duplicate`, `skipped_ambiguous`, `skipped_not_found`, `error_invalid`, `error`.
 - `add` can match an existing pin on that day loosely (case, spacing, punctuation, a narrow typo rule, a whole-word prefix). `edit` and `delete` need an exact pin title and do not guess.
-- The transcript path is meant to send an `edit` when the same conversation continues, so one topic stays one page. That path is designed, not built.
-- The "post it" path is meant to pin immediately. That path is untested.
+- The poller is the live writer: it pushes a topic's summary once a voice chat has been quiet for 10 minutes. (Superseded 2026-10-11: "designed, not built.")
+- The "post it" path is meant to pin immediately. That path is untested in the car.
+- Results are written back to `inbox/results`. The secrets never touch chat or the repo. `main` is protected by a ruleset; `inbox` stays open by design.
+- The whole system runs at $0: GitHub Pages, Supabase free plan, GitHub Actions, a local model.
 
 The section's job is the join: spec on one side, board on the other, inbox in the middle. It is not a second copy of either project section.
 
@@ -150,8 +153,9 @@ These are in the source repos. They do not go on the page.
 
 - The bot account email, passwords, and the names of Actions secrets as a setup recipe.
 - Token scopes, keystore notes, or steps that would help someone push to the inbox.
-- Any claim that a Grok transcript can be read through an undocumented endpoint. The source marks that as unverified.
-- Any claim that Ara can write to GitHub. The source marks that as unverified.
+- How Grok history is read: request names beyond "conversation list and load-responses," cookies, tokens, or headers. The page says the read works and names the risk.
+- Any claim that Ara's "post it" path was tested in the car.
+- Any private chat content, the Supabase project ref, or account emails.
 - Shadow Army's Claude-first design, beyond the one legacy sentence.
 - Soldier model names presented as products this spec verified. If the page lists soldiers, it attributes the list to the v1 README.
 
