@@ -2,21 +2,23 @@
 
 This section comes after Post-it Board and How to post it have each had their own section. It is the first place the page explains them as one system. It does not restate either project.
 
-Sources, both READMEs on the default branch, read 2026-10-09. How to post it: https://github.com/mogesjohnson/how-to-post-it. Post-it Board: https://github.com/mogesjohnson/post-it-board. No other repo.
+Sources, both READMEs on the default branch, read 2026-10-09. Updated 2026-10-11 from the owner's current facts: the transcript poller is live and is the writer, the 10-minute quiet window replaces the designed 8-second threshold, and the system's $0 cost. How to post it: https://github.com/mogesjohnson/how-to-post-it. Post-it Board: https://github.com/mogesjohnson/post-it-board. No other repo.
 
 ## Visitor copy
 
-How to post it is the spec for getting a conversation onto a board. Post-it Board is the board that keeps the note and shows it.
+How to post it is the docs and the poller that turn a conversation into a note. Post-it Board is the board that keeps the note and shows it.
 
-They meet in one place: the `inbox` branch of Post-it Board. How to post it has no inbox. A file pushed to that spec repo does not change the board. The How to post it README calls an earlier "inbox on how-to-post-it" wording a slip.
+They meet in one place: the `inbox` branch of Post-it Board. How to post it has no inbox. A file pushed to that repo does not change the board.
 
-A writer that can push a file sends one JSON command, `inbox/<name>.json`, on the board's `inbox` branch. A GitHub Action on the board runs `scripts/post.mjs` from `main`, signed in as the bot, writes a result, and removes the command. The spec decides what should be posted. The board is what actually stores it.
+Anything that can push a small JSON command file, `inbox/<name>.json`, to the board's `inbox` branch starts a GitHub Actions workflow. It runs `scripts/post.mjs` from `main`, signs in as a bot with encrypted repository secrets, adds, edits, or deletes notes, and writes the result back to `inbox/results`. The secrets never touch a chat or the repository. `main` is protected by a ruleset. The `inbox` branch stays open by design.
 
 A command can add, edit, or delete. A pin is the topic. A page is the note. An add can land on a pin that is already there that day, matched loosely by topic. An edit or a delete needs the exact pin title and does not guess.
 
-The quiet-conversation path is meant to update the same page when the talk continues, so one topic stays one note. That path is designed, and it is not built. Saying "post it" in the car is meant to pin immediately. That path is untested.
+Today the poller is the writer: once a voice chat has been quiet for 10 minutes, it pushes that topic's summary to the inbox. Ara saying "post it" is the second writer, and it is not yet tested in the car.
 
-The board is live. The join from the car is not.
+The whole system runs at $0: GitHub Pages, the Supabase free plan, GitHub Actions, and a local model.
+
+The board is live, and so is the transcript path from the car.
 
 ## Links
 
@@ -29,10 +31,11 @@ The board is live. The join from the car is not.
 
 | Piece | Where it lives | Role |
 | --- | --- | --- |
-| Spec | `mogesjohnson/how-to-post-it` | Says how a Grok conversation in the car becomes a note. No application, and no inbox branch. The only branch is `main`. |
+| Docs and poller | `mogesjohnson/how-to-post-it` | Says how a Grok conversation in the car becomes a note, and holds the poller (`poller/`) that does it. No inbox branch. |
 | Board | `mogesjohnson/post-it-board`, branch `main` | Stores days, pins, and pages. GitHub Pages serves the site. |
 | Inbox | `mogesjohnson/post-it-board`, branch `inbox` | Receives one JSON file per command. |
-| Writer | `scripts/post.mjs` on `main` | The Action runs this, signed in as the bot account. |
+| Writer | `scripts/post.mjs` on `main` | The Action runs this, signed in as the bot account. Results go to `inbox/results`. |
+| Sender | the poller (live), Ara on "post it" (untested in the car) | Pushes one command file per change. |
 
 Command shape both READMEs name: `op` is `add`, `edit`, or `delete`. A pin title is the topic. A page title and body are the note. `date` defaults to today in America/New_York.
 
@@ -44,15 +47,16 @@ Statuses both READMEs name: `ok`, `skipped_duplicate`, `skipped_ambiguous`, `ski
 
 This is the section that plays the traveling note. When the connection heading reaches the upper third of the viewport, one note moves from the How to post it block to a pin on the Post-it Board block, about 0.8s along one curve. Sample words: `[[placeholder: the sample note's words]]`.
 
-Reduced motion and no JavaScript: the note is already on the pin. Caption: the spec sends the note, and the board keeps it.
+Reduced motion and no JavaScript: the note is already on the pin. Caption: the poller sends the note, and the board keeps it. (Until 2026-10-11 the caption read "the spec sends the note"; changed because the poller now does the sending.)
 
 ## Do not say
 
 - The bot account email, passwords, or Actions secret names as a setup recipe.
 - Token scopes, or the steps that would let someone push a command.
-- That a Grok transcript can be read. The spec marks that unverified.
-- That Ara can write to GitHub. The spec marks that unverified.
-- That the car workflow is live.
+- Cookie, token, or request details for reading Grok history, or any private chat content.
+- That Ara's "post it" path has been tested in the car. It has not.
+- The Supabase project ref, account emails, or any secret value.
+- Superseded (true until 2026-10-11, now removed from this list): "that a Grok transcript can be read" and "that the car workflow is live." The read was verified on 2026-10-11 (issue #2), and the transcript path is live.
 
 ## Open questions
 
