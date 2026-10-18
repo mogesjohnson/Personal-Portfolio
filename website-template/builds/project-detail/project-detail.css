@@ -593,101 +593,71 @@ kbd.pd-key {
 }
 
 /* ---------------------------------------------------------------- */
-/* Footer                                                            */
+/* Footer: one slim row (all projects · private note · next project) */
 /* ---------------------------------------------------------------- */
 
 .pd-footer {
-  width: var(--pd-wide);
-  margin: 5rem auto 0;
-  padding-top: 2.5rem;
-  border-top: 1px solid var(--rule);
-}
-
-.pd-private {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 0.55rem;
-  margin: 0 0 1.5rem;
-  color: var(--text-2);
-  font-family: var(--font-dispatch-mono), ui-monospace, monospace;
-  font-size: 0.8rem;
-}
-
-.pd-private svg {
-  color: var(--amber-text);
-}
-
-.pd-footer-links {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
-  gap: 1rem;
-}
-
-.pd-back,
-.pd-next {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 1.4rem 1.5rem;
-  color: var(--text);
-  text-decoration: none;
-  font-size: 1.15rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-}
-
-.pd-next {
   justify-content: space-between;
-  font-family: var(--font-dispatch-serif), Georgia, serif;
-  font-size: clamp(1.6rem, 3vw, 2.3rem);
-  font-weight: 450;
-}
-
-.pd-back small,
-.pd-next small {
-  display: block;
-  margin-bottom: 0.3rem;
-  color: var(--amber-text);
+  gap: 1rem 1.5rem;
+  width: var(--pd-wide);
+  margin: 4rem auto 0;
+  padding: 1.1rem 0 0.5rem;
+  border-top: 1px solid var(--rule);
   font-family: var(--font-dispatch-mono), ui-monospace, monospace;
-  font-size: 0.7rem;
-  font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
 }
 
-.pd-next em {
-  display: block;
-  margin-top: 0.35rem;
+.pd-foot-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   color: var(--text-2);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
-  font-size: 0.92rem;
-  font-style: normal;
-  letter-spacing: 0;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.25s;
 }
 
-.pd-back:hover,
-.pd-next:hover {
-  border-color: color-mix(in srgb, var(--amber) 40%, transparent);
+.pd-foot-link b {
+  color: var(--text);
+  font-weight: 600;
 }
 
-.pd-back:hover::before,
-.pd-next:hover::before {
-  opacity: 1;
+.pd-foot-link:hover,
+.pd-foot-link:hover b {
+  color: var(--amber-text);
 }
 
-.pd-next svg,
-.pd-back svg {
+.pd-foot-link svg {
   flex: none;
   color: var(--amber-text);
   transition: transform 0.3s var(--ease-out);
 }
 
-.pd-next:hover svg {
-  transform: translateX(4px);
+.pd-foot-next:hover svg {
+  transform: translateX(3px);
 }
 
-.pd-back:hover svg {
-  transform: translateX(-4px);
+.pd-foot-all:hover svg {
+  transform: translateX(-3px);
+}
+
+.pd-private {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  color: var(--pd-muted);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.pd-private svg {
+  color: var(--amber-text);
 }
 
 /* ---------------------------------------------------------------- */
@@ -780,7 +750,6 @@ kbd.pd-key {
   .pd-features-2,
   .pd-gallery,
   .pd-ledger,
-  .pd-footer-links,
   .pd-stack {
     grid-template-columns: 1fr;
   }
@@ -962,4 +931,15 @@ kbd.pd-key {
 
 [data-theme="light"] .pd-shot-frame .pd-video-soon img {
   opacity: 0.1;
+}
+
+@media (max-width: 700px) {
+  .pd-private {
+    display: none;
+  }
+
+  .pd-footer {
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+  }
 }

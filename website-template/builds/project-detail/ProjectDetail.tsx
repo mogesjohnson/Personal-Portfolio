@@ -252,29 +252,22 @@ export function Limits({ items }: { items: string[] }) {
   );
 }
 
-export function DetailFooter({ note, next }: { note: string; next: { href: string; label: string; blurb: string } }) {
+/** One slim row: back to all projects, the private-repo note, and the next project. */
+export function DetailFooter({ note, next }: { note: string; next: { href: string; label: string } }) {
   return (
-    <footer className="pd-footer">
-      <p className="pd-private" data-reveal>
-        <Lock size={14} aria-hidden="true" /> {note}
+    <footer className="pd-footer" aria-label="Project navigation">
+      <Link className="pd-foot-link pd-foot-all" href="/projects">
+        <ArrowLeft size={15} aria-hidden="true" />
+        All projects
+      </Link>
+      <p className="pd-private" title={note}>
+        <Lock size={12} aria-hidden="true" />
+        Private repository · no source link
       </p>
-      <div className="pd-footer-links">
-        <Link className="pd-back glass" href="/#work" data-reveal>
-          <ArrowLeft size={18} aria-hidden="true" />
-          <span>
-            <small>Main website</small>
-            Back to selected work
-          </span>
-        </Link>
-        <Link className="pd-next glass" href={next.href} data-reveal>
-          <span>
-            <small>Next project</small>
-            {next.label}
-            <em>{next.blurb}</em>
-          </span>
-          <ArrowRight size={18} aria-hidden="true" />
-        </Link>
-      </div>
+      <Link className="pd-foot-link pd-foot-next" href={next.href}>
+        Next project: <b>{next.label}</b>
+        <ArrowRight size={15} aria-hidden="true" />
+      </Link>
     </footer>
   );
 }

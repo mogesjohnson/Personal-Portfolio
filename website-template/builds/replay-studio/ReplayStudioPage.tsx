@@ -399,7 +399,7 @@ export function ReplayStudioPage() {
 
         <DetailFooter
           note="The source repository is private, so this page links nowhere on GitHub."
-          next={{ href: "/switchyard", label: "Switchyard", blurb: "A personal Windows project desk with Return Tickets." }}
+          next={{ href: "/switchyard", label: "Switchyard" }}
         />
       </DetailShell>
     </ReplayMotion>

@@ -383,7 +383,7 @@ export function SwitchyardPage() {
 
         <DetailFooter
           note="The source repository is private and contains machine-specific paths, so this page links nowhere on GitHub."
-          next={{ href: "/replay-studio", label: "REPLAY Studio", blurb: "Record a window, trim, add callouts and privacy masks, export MP4." }}
+          next={{ href: "/replay-studio", label: "REPLAY Studio" }}
         />
       </DetailShell>
     </SwitchyardMotion>
