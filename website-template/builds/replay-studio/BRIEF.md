@@ -41,3 +41,10 @@ The palette is the site's: amber `--accent` is the playhead and sky `--sky` the 
   - Progress drives `--t` (the playhead position), the timecode over an 8.0 s take, and `.is-dim` on the five README steps until the playhead reaches each step's cue (0.04 / 0.24 / 0.44 / 0.64 / 0.84).
   - Static state: the playhead sits at the end, every step is lit, and the timecode reads the full duration.
 - `project-detail/no-intro.ts` turns off the first-visit intro hold so a visitor who lands here directly can scroll.
+
+## Demo video (added on request, 2026-10-18)
+
+The last section, "Demo video", renders `project-detail/DemoVideo.tsx` from this folder's `demo.ts`. No video exists yet, so the section shows the "Demo coming soon" state: a 16:9 framed player over a dimmed real screenshot. It has no motion beyond a slow standby blink with `data-motion="full"`, and is static under reduced motion. To publish, set one field in `demo.ts`:
+
+- `file`: an MP4 under `public/`, such as `/videos/<slug>-demo.mp4`
+- `embed`: a YouTube or other https player URL

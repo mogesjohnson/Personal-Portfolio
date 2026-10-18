@@ -794,3 +794,172 @@ kbd.pd-key {
     gap: 0.3rem;
   }
 }
+
+/* ---------------------------------------------------------------- */
+/* Demo video (placeholder until a file or embed is set in demo.ts)   */
+/* ---------------------------------------------------------------- */
+
+.pd-video-stage {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg);
+}
+
+.pd-video-stage video,
+.pd-video-stage iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #000;
+}
+
+.pd-video-soon {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.pd-shot-frame .pd-video-soon img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border: 0;
+  border-radius: 0;
+  opacity: 0.18;
+  filter: grayscale(0.6) blur(2px);
+}
+
+.pd-video-soon::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 45%, color-mix(in srgb, var(--amber) 14%, transparent), transparent 60%),
+    linear-gradient(180deg, transparent 55%, color-mix(in srgb, var(--bg) 85%, transparent));
+}
+
+.pd-video-center {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 0.6rem;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.pd-video-play {
+  display: grid;
+  place-items: center;
+  width: 4.25rem;
+  height: 4.25rem;
+  margin-bottom: 0.4rem;
+  border: 1px solid color-mix(in srgb, var(--amber) 55%, transparent);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--amber) 10%, transparent);
+  box-shadow: 0 0 0 10px color-mix(in srgb, var(--amber) 5%, transparent);
+  color: var(--amber-text);
+}
+
+.pd-video-play svg {
+  transform: translateX(2px);
+}
+
+.pd-video-title {
+  margin: 0;
+  font-family: var(--font-dispatch-serif), Georgia, serif;
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  line-height: 1.1;
+  color: var(--text);
+}
+
+.pd-video-sub {
+  max-width: 32rem;
+  margin: 0;
+  color: var(--pd-muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.pd-video-controls {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 1rem;
+  border-top: 1px solid var(--line);
+  color: var(--pd-muted);
+  font-family: var(--font-dispatch-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.pd-video-rec {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.pd-video-rec i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--amber);
+}
+
+.pd-video-track {
+  position: relative;
+  flex: 1;
+  height: 2px;
+  background: var(--line-strong);
+}
+
+.pd-video-track i {
+  position: absolute;
+  top: -3px;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--amber);
+}
+
+[data-motion="full"] .pd-video-rec i {
+  animation: pd-standby 1.6s ease-in-out infinite;
+}
+
+@keyframes pd-standby {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+@media (max-width: 700px) {
+  .pd-video-sub {
+    display: none;
+  }
+
+  .pd-video-play {
+    width: 3.25rem;
+    height: 3.25rem;
+  }
+
+  .pd-video-controls {
+    padding: 0.55rem 0.75rem;
+    font-size: 0.6rem;
+  }
+}
+
+[data-theme="light"] .pd-shot-frame .pd-video-soon img {
+  opacity: 0.1;
+}

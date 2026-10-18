@@ -1,4 +1,6 @@
 import { Clapperboard, EyeOff, FolderLock, Frame, ImagePlay, MessageSquareText, Scissors, ShieldCheck, Upload } from "lucide-react";
+import { DemoVideo } from "../project-detail/DemoVideo";
+import { demo } from "./demo";
 import {
   DetailFooter,
   DetailHero,
@@ -382,6 +384,16 @@ export function ReplayStudioPage() {
               "Hosted GitHub Actions never ran a step: an account billing limit blocked the runners.",
               "Claude Desktop and semantic audio listening are unverified.",
             ]}
+          />
+        </Section>
+
+        <Section id="demo" index="07" eyebrow="Demo video" title="See it run." intro="A recorded walkthrough of the app.">
+          <DemoVideo
+            video={demo}
+            backdrop={editor}
+            chrome="replay-studio · demo.mp4"
+            figure="Fig. demo"
+            caption="Walkthrough of REPLAY Studio."
           />
         </Section>
 

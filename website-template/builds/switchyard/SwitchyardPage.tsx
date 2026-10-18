@@ -1,4 +1,6 @@
 import { Command, DatabaseBackup, FolderOpen, GitBranch, PauseCircle, Sparkles } from "lucide-react";
+import { DemoVideo } from "../project-detail/DemoVideo";
+import { demo } from "./demo";
 import {
   DetailFooter,
   DetailHero,
@@ -366,6 +368,16 @@ export function SwitchyardPage() {
               "The worker is a process-tree control, not a filesystem or network sandbox.",
               "No first-party license has been chosen.",
             ]}
+          />
+        </Section>
+
+        <Section id="demo" index="09" eyebrow="Demo video" title="See it run." intro="A recorded walkthrough of the desk.">
+          <DemoVideo
+            video={demo}
+            backdrop={deskStart}
+            chrome="switchyard · demo.mp4"
+            figure="Fig. demo"
+            caption="Walkthrough of Switchyard."
           />
         </Section>
 

@@ -37,3 +37,10 @@ The palette is the site's: amber is the chosen route and sky is the switch.
   - The five stations (Library, Exact checkout, Open targets, Return Ticket, Back with context) light up as the marker passes their `data-at` positions.
   - Static state: the route is fully drawn, the marker sits at the end, and every station is lit.
 - `project-detail/no-intro.ts` turns off the first-visit intro hold so a visitor who lands here directly can scroll.
+
+## Demo video (added on request, 2026-10-18)
+
+The last section, "Demo video", renders `project-detail/DemoVideo.tsx` from this folder's `demo.ts`. No video exists yet, so the section shows the "Demo coming soon" state: a 16:9 framed player over a dimmed real screenshot. It has no motion beyond a slow standby blink with `data-motion="full"`, and is static under reduced motion. To publish, set one field in `demo.ts`:
+
+- `file`: an MP4 under `public/`, such as `/videos/<slug>-demo.mp4`
+- `embed`: a YouTube or other https player URL
