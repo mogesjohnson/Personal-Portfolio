@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { useMotionScenes } from "../../connectors/react";
 import { batchReveal, scrubWords, splitHeadings } from "../../lib/scenes";
 import type { Scene } from "../../lib/runtime";
+import { useNoIntroHold } from "../project-detail/no-intro";
 import { travelingNote } from "./traveling-note";
 
 const SCENES: Scene[] = [
@@ -14,6 +15,8 @@ const SCENES: Scene[] = [
 ];
 
 export function DispatchMotion({ children }: { children: ReactNode }) {
+  // /projects has no title sequence; without this a first visit here stays scroll-locked.
+  useNoIntroHold();
   useMotionScenes(SCENES);
   return children;
 }
