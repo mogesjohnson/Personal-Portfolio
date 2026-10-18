@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowUpRight, Command, Menu, X } from "lucide-react";
+import { Command, Menu, X } from "lucide-react";
 import { externalPages } from "@/data/externalPages";
 import ThemeToggle from "./ThemeToggle";
 import { lockScroll } from "./scroll";
@@ -47,11 +47,12 @@ function MenuLinks({
 }
 
 interface SiteNavProps {
-  onOpenResume: () => void;
   onOpenPalette: () => void;
 }
 
-export default function SiteNav({ onOpenResume, onOpenPalette }: SiteNavProps) {
+// The résumé opens from the hero ("View résumé") and the command palette, so the
+// header ends with the same round menu button the /projects bar uses.
+export default function SiteNav({ onOpenPalette }: SiteNavProps) {
   const [active, setActive] = useState("");
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -146,9 +147,6 @@ export default function SiteNav({ onOpenResume, onOpenPalette }: SiteNavProps) {
             <kbd>K</kbd>
           </button>
           <ThemeToggle />
-          <button type="button" className="btn btn-amber btn-sm nav-resume" onClick={onOpenResume}>
-            Résumé <ArrowUpRight size={15} />
-          </button>
           <button
             type="button"
             className="nav-icon nav-burger"
