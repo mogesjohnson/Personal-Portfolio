@@ -593,74 +593,6 @@ kbd.pd-key {
 }
 
 /* ---------------------------------------------------------------- */
-/* Footer: one slim row (all projects · private note · next project) */
-/* ---------------------------------------------------------------- */
-
-.pd-footer {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem 1.5rem;
-  width: var(--pd-wide);
-  margin: 4rem auto 0;
-  padding: 1.1rem 0 0.5rem;
-  border-top: 1px solid var(--rule);
-  font-family: var(--font-dispatch-mono), ui-monospace, monospace;
-  font-size: 0.78rem;
-  letter-spacing: 0.06em;
-}
-
-.pd-foot-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: var(--text-2);
-  text-decoration: none;
-  white-space: nowrap;
-  transition: color 0.25s;
-}
-
-.pd-foot-link b {
-  color: var(--text);
-  font-weight: 600;
-}
-
-.pd-foot-link:hover,
-.pd-foot-link:hover b {
-  color: var(--amber-text);
-}
-
-.pd-foot-link svg {
-  flex: none;
-  color: var(--amber-text);
-  transition: transform 0.3s var(--ease-out);
-}
-
-.pd-foot-next:hover svg {
-  transform: translateX(3px);
-}
-
-.pd-foot-all:hover svg {
-  transform: translateX(-3px);
-}
-
-.pd-private {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  margin: 0;
-  color: var(--pd-muted);
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-}
-
-.pd-private svg {
-  color: var(--amber-text);
-}
-
-/* ---------------------------------------------------------------- */
 /* Responsive                                                        */
 /* ---------------------------------------------------------------- */
 
@@ -931,15 +863,4 @@ kbd.pd-key {
 
 [data-theme="light"] .pd-shot-frame .pd-video-soon img {
   opacity: 0.1;
-}
-
-@media (max-width: 700px) {
-  .pd-private {
-    display: none;
-  }
-
-  .pd-footer {
-    font-size: 0.72rem;
-    letter-spacing: 0.02em;
-  }
 }

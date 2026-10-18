@@ -46,3 +46,10 @@ export const externalPages = [
     kind: "project",
   },
 ] as const;
+
+/**
+ * Single project and prototype pages, in the order the "Next project" link in
+ * their footer cycles through (the last one wraps to the first). /projects,
+ * the listing, is the "All projects" link instead.
+ */
+export const detailPages = externalPages.filter((page) => page.kind !== "page");

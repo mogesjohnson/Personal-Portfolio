@@ -1,8 +1,8 @@
 import { Clapperboard, EyeOff, FolderLock, Frame, ImagePlay, MessageSquareText, Scissors, ShieldCheck, Upload } from "lucide-react";
 import { DemoVideo } from "../project-detail/DemoVideo";
 import { demo } from "./demo";
+import { ProjectFooter } from "../project-footer/ProjectFooter";
 import {
-  DetailFooter,
   DetailHero,
   DetailShell,
   FeatureGrid,
@@ -397,9 +397,9 @@ export function ReplayStudioPage() {
           />
         </Section>
 
-        <DetailFooter
-          note="The source repository is private, so this page links nowhere on GitHub."
-          next={{ href: "/switchyard", label: "Switchyard" }}
+        <ProjectFooter
+          current="/replay-studio"
+          note={{ label: "Private repository · no source link", title: "The source repository is private, so this page links nowhere on GitHub." }}
         />
       </DetailShell>
     </ReplayMotion>

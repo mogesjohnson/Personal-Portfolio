@@ -1,0 +1,81 @@
+/*
+ * The slim footer row at the bottom of every project and prototype page:
+ * All projects on one side, Next project on the other, and an optional note
+ * between them. Site tokens only.
+ */
+
+.project-footer {
+  --pf-muted: color-mix(in srgb, var(--text) 55%, var(--bg));
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 1.5rem;
+  width: min(100% - 2.5rem, 72rem);
+  margin: 4rem auto 0;
+  padding: 1.1rem 0 1.5rem;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-dispatch-mono), ui-monospace, monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+}
+
+.pf-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-2);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.25s;
+}
+
+.pf-link b {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.pf-link:hover,
+.pf-link:hover b {
+  color: var(--amber-text);
+}
+
+.pf-link svg {
+  flex: none;
+  color: var(--amber-text);
+  transition: transform 0.3s var(--ease-out);
+}
+
+.pf-next:hover svg {
+  transform: translateX(3px);
+}
+
+.pf-all:hover svg {
+  transform: translateX(-3px);
+}
+
+.pf-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  color: var(--pf-muted);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.pf-note svg {
+  color: var(--amber-text);
+}
+
+@media (max-width: 700px) {
+  .pf-note {
+    display: none;
+  }
+
+  .project-footer {
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
+  }
+}

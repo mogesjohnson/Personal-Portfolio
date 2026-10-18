@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Mono, Newsreader } from "next/font/google";
 import { ShadowArmyPrototype } from "../../../website-template/builds/shadow-army/ShadowArmyPrototype";
 import "../../../website-template/builds/projects-page/projects.css";
+import "../../../website-template/builds/project-footer/project-footer.css";
 import "../../../website-template/builds/prototype-headers/prototype.css";
 
 const serif = Newsreader({

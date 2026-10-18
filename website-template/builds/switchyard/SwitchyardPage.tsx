@@ -1,8 +1,8 @@
 import { Command, DatabaseBackup, FolderOpen, GitBranch, PauseCircle, Sparkles } from "lucide-react";
 import { DemoVideo } from "../project-detail/DemoVideo";
 import { demo } from "./demo";
+import { ProjectFooter } from "../project-footer/ProjectFooter";
 import {
-  DetailFooter,
   DetailHero,
   DetailShell,
   FeatureGrid,
@@ -381,9 +381,9 @@ export function SwitchyardPage() {
           />
         </Section>
 
-        <DetailFooter
-          note="The source repository is private and contains machine-specific paths, so this page links nowhere on GitHub."
-          next={{ href: "/replay-studio", label: "REPLAY Studio" }}
+        <ProjectFooter
+          current="/switchyard"
+          note={{ label: "Private repository · no source link", title: "The source repository is private and contains machine-specific paths, so this page links nowhere on GitHub." }}
         />
       </DetailShell>
     </SwitchyardMotion>

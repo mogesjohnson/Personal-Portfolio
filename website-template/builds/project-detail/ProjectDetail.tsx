@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import Image, { type StaticImageData } from "next/image";
-import Link from "next/link";
-import { ArrowLeft, ArrowRight, Lock, type LucideIcon } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { DispatchBar } from "../projects-page/DispatchBar";
 
 /**
@@ -249,25 +248,5 @@ export function Limits({ items }: { items: string[] }) {
         <li key={item}>{item}</li>
       ))}
     </ul>
-  );
-}
-
-/** One slim row: back to all projects, the private-repo note, and the next project. */
-export function DetailFooter({ note, next }: { note: string; next: { href: string; label: string } }) {
-  return (
-    <footer className="pd-footer" aria-label="Project navigation">
-      <Link className="pd-foot-link pd-foot-all" href="/projects">
-        <ArrowLeft size={15} aria-hidden="true" />
-        All projects
-      </Link>
-      <p className="pd-private" title={note}>
-        <Lock size={12} aria-hidden="true" />
-        Private repository · no source link
-      </p>
-      <Link className="pd-foot-link pd-foot-next" href={next.href}>
-        Next project: <b>{next.label}</b>
-        <ArrowRight size={15} aria-hidden="true" />
-      </Link>
-    </footer>
   );
 }

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Mono, Newsreader } from "next/font/google";
 import { ReplayStudioPage } from "../../../website-template/builds/replay-studio/ReplayStudioPage";
 import "../../../website-template/builds/projects-page/projects.css";
+import "../../../website-template/builds/project-footer/project-footer.css";
 import "../../../website-template/builds/project-detail/project-detail.css";
 import "../../../website-template/builds/replay-studio/replay.css";
 
