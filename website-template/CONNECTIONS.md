@@ -59,6 +59,7 @@ The owner placed Projects in the header and kept both résumé buttons.
 - The mobile menu has two centered labels. "Main website" heads the homepage sections. "External site pages" heads pages that leave the homepage, starting with Projects.
 - On `/projects`, the bar link "Main website" goes to `/`. Section links are `/#work`, `/#experience`, `/#about`, `/#stack`, and `/#contact`, so they map back to the homepage.
 - The work section stays free of a second Projects link.
+- Each entry in `src/data/externalPages.ts` has a `kind`: `page`, `prototype` or `project`. Project detail pages (`/replay-studio`, `/switchyard`) appear in the mobile menu, the DispatchBar menu and the command palette. The desktop header leaves them out so it does not overflow; the Work section reaches them through "Read the project page".
 - The command palette keeps "Explore selected work" as a scroll to `#work`. "Open Projects" (`id` `projects-page`) closes the palette and routes to `/projects`.
 
 A third centered group was suggested ("Reach", for Résumé and Schedule a chat) and was not added. The Active Directory lab becomes an external page only after that page exists.

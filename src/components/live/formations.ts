@@ -27,7 +27,7 @@ export interface Formation {
   targets: Target[];
 }
 
-export type FormationKey = "mj" | "contact" | "sys" | "tree" | "orbit";
+export type FormationKey = "mj" | "contact" | "sys" | "tree" | "orbit" | "reel" | "yard";
 
 type Rand = () => number;
 type Make = (rand: Rand) => Target;
@@ -87,13 +87,37 @@ const treeEdges: [number, number][] = [
   [2, 6],
 ];
 
+/** REPLAY Studio: a captured window with a callout and a privacy region, its timeline, and the MP4 it exports. */
+const reelTracks = [
+  { y: 290, label: "TAKE" },
+  { y: 320, label: "TEXT" },
+  { y: 350, label: "BLUR" },
+];
+
+/** Switchyard: the route leaves the library, passes the switch, and runs the exact-checkout line. */
+const yardRoute: [number, number][] = [
+  [40, 300],
+  [200, 300],
+  [250, 250],
+  [300, 196],
+  [340, 180],
+  [600, 180],
+];
+const yardStations = [
+  { x: 380, label: "CHECKOUT" },
+  { x: 470, label: "OPEN" },
+  { x: 555, label: "TICKET" },
+];
+
 const orbitSatellites = [
   { x: 320, y: 55, label: "IDENTITY" },
   { x: 488, y: 285, label: "PROJECTS" },
   { x: 151, y: 285, label: "CONTACT" },
 ];
 
-export const diagrams: Record<"sys" | "tree" | "orbit", Diagram> = {
+export type DiagramKey = "sys" | "tree" | "orbit" | "reel" | "yard";
+
+export const diagrams: Record<DiagramKey, Diagram> = {
   sys: {
     width: 640,
     height: 420,
@@ -152,6 +176,72 @@ export const diagrams: Record<"sys" | "tree" | "orbit", Diagram> = {
       { x: 320, y: 200, text: "PORTFOLIO", anchor: "middle" },
       { x: 320, y: 224, text: "MJ / 26", anchor: "middle", size: "lg" },
       ...orbitSatellites.map((s) => ({ x: s.x, y: s.y + 50, text: s.label, anchor: "middle" as const })),
+    ],
+  },
+  reel: {
+    width: 640,
+    height: 420,
+    description: "A captured window with a callout and a privacy region, its trimmed timeline with a playhead, and the MP4 export",
+    shapes: [
+      { type: "rect", x: 120, y: 40, w: 360, h: 190 },
+      { type: "line", x1: 120, y1: 64, x2: 480, y2: 64, tone: "faint" },
+      { type: "rect", x: 150, y: 160, w: 160, h: 42, tone: "accent" },
+      { type: "rect", x: 370, y: 84, w: 86, h: 62 },
+      { type: "line", x1: 480, y1: 138, x2: 520, y2: 138 },
+      { type: "rect", x: 520, y: 108, w: 96, h: 60, tone: "accent" },
+      ...reelTracks.map((t) => ({ type: "line" as const, x1: 90, y1: t.y, x2: 600, y2: t.y, tone: "faint" as const })),
+      { type: "rect", x: 150, y: 281, w: 400, h: 18 },
+      { type: "rect", x: 230, y: 312, w: 160, h: 16, tone: "accent" },
+      { type: "rect", x: 330, y: 342, w: 110, h: 16 },
+      { type: "line", x1: 150, y1: 272, x2: 150, y2: 308, tone: "accent" },
+      { type: "line", x1: 550, y1: 272, x2: 550, y2: 308, tone: "accent" },
+      { type: "line", x1: 360, y1: 262, x2: 360, y2: 372, tone: "accent" },
+      { type: "circle", cx: 360, cy: 262, r: 6, tone: "accent" },
+    ],
+    labels: [
+      { x: 134, y: 57, text: "CAPTURE TARGET" },
+      { x: 230, y: 186, text: "CALLOUT", anchor: "middle" },
+      { x: 413, y: 120, text: "PRIVACY", anchor: "middle" },
+      { x: 568, y: 134, text: "EXPORT", anchor: "middle" },
+      { x: 568, y: 156, text: "MP4", anchor: "middle", size: "lg" },
+      ...reelTracks.map((t) => ({ x: 32, y: t.y + 4, text: t.label })),
+      { x: 320, y: 404, text: "TRIM / CALLOUT / PRIVACY / EXPORT", anchor: "middle" },
+    ],
+  },
+  yard: {
+    width: 640,
+    height: 420,
+    description: "A rail yard: the route leaves the library, passes a switch, and follows the exact checkout to a Return Ticket while side tracks stay unlit",
+    shapes: [
+      ...yardRoute.slice(1).map(([x2, y2], i) => ({
+        type: "line" as const,
+        x1: yardRoute[i][0],
+        y1: yardRoute[i][1],
+        x2,
+        y2,
+        tone: i === 0 ? undefined : ("accent" as const),
+      })),
+      { type: "line", x1: 200, y1: 300, x2: 600, y2: 300, tone: "faint" },
+      { type: "line", x1: 200, y1: 300, x2: 250, y2: 350, tone: "faint" },
+      { type: "line", x1: 250, y1: 350, x2: 600, y2: 350, tone: "faint" },
+      { type: "circle", cx: 100, cy: 300, r: 10 },
+      { type: "circle", cx: 200, cy: 300, r: 7 },
+      ...yardStations.map((s) => ({ type: "circle" as const, cx: s.x, cy: 180, r: 10, tone: "accent" as const })),
+      { type: "rect", x: 480, y: 44, w: 150, h: 64, tone: "accent" },
+      { type: "line", x1: 555, y1: 108, x2: 555, y2: 170, tone: "faint" },
+      { type: "circle", cx: 120, cy: 130, r: 50, tone: "dashed" },
+      { type: "line", x1: 166, y1: 148, x2: 370, y2: 176, tone: "faint" },
+    ],
+    labels: [
+      { x: 120, y: 126, text: "OBSIDIAN", anchor: "middle" },
+      { x: 120, y: 148, text: "VAULT", anchor: "middle", size: "lg" },
+      { x: 555, y: 70, text: "RETURN TICKET", anchor: "middle" },
+      { x: 555, y: 92, text: "NEXT STEP", anchor: "middle", size: "lg" },
+      ...yardStations.map((s) => ({ x: s.x, y: 216, text: s.label, anchor: "middle" as const })),
+      { x: 100, y: 334, text: "LIBRARY", anchor: "middle" },
+      { x: 420, y: 292, text: "SAME-LOOKING FOLDER", anchor: "middle" },
+      { x: 420, y: 342, text: "REMOTE REFERENCE", anchor: "middle" },
+      { x: 320, y: 404, text: "EXACT TARGET / RETURN TICKET / READ-ONLY CONTEXT", anchor: "middle" },
     ],
   },
 };
@@ -334,6 +424,56 @@ function recipeOrbit(): Primitive[] {
   return prims;
 }
 
+function recipeReel(): Primitive[] {
+  const prims: Primitive[] = [
+    { weight: 14, make: rectOutline(120, 40, 360, 190, 1) },
+    { weight: 2.5, make: segment(120, 64, 480, 64, 2, 0.8) },
+    { weight: 7, make: rectOutline(150, 160, 160, 42, 0) },
+    { weight: 2, make: rectFill(154, 164, 152, 34, 0) },
+    // The privacy region is a loose cloud, the way a blur reads.
+    { weight: 6, make: rectFill(370, 84, 86, 62, 2) },
+    { weight: 3, make: rectOutline(370, 84, 86, 62, 1) },
+    { weight: 1.5, make: segment(480, 138, 520, 138, 2) },
+    { weight: 6, make: rectOutline(520, 108, 96, 60, 0) },
+    { weight: 3, make: flow([[480, 138], [520, 138]], 0.5, 0, 2) },
+    { weight: 7, make: rectOutline(150, 281, 400, 18, 1) },
+    { weight: 4, make: rectOutline(230, 312, 160, 16, 0) },
+    { weight: 3, make: rectOutline(330, 342, 110, 16, 1) },
+    { weight: 2, make: segment(150, 272, 150, 308, 0) },
+    { weight: 2, make: segment(550, 272, 550, 308, 0) },
+    { weight: 4, make: segment(360, 262, 360, 372, 0) },
+    { weight: 1, make: disc(360, 262, 6, 0) },
+    { weight: 6, make: flow([[150, 290], [550, 290]], 0.18, 0, 3) },
+  ];
+  for (const t of reelTracks) prims.push({ weight: 2, make: segment(90, t.y, 600, t.y, 2, 0.6) });
+  return prims;
+}
+
+function recipeYard(): Primitive[] {
+  const prims: Primitive[] = [
+    { weight: 3, make: segment(40, 300, 200, 300, 2) },
+    { weight: 4, make: segment(200, 300, 600, 300, 2, 0.8) },
+    { weight: 1.2, make: segment(200, 300, 250, 350, 2, 0.8) },
+    { weight: 3.5, make: segment(250, 350, 600, 350, 2, 0.8) },
+    { weight: 3, make: ring(100, 300, 10, 1) },
+    { weight: 2, make: ring(200, 300, 7, 1) },
+    { weight: 10, make: rectOutline(480, 44, 150, 64, 0) },
+    { weight: 2, make: rectFill(484, 48, 142, 56, 0) },
+    { weight: 1.5, make: segment(555, 108, 555, 170, 2) },
+    { weight: 12, make: spin(120, 130, 50, 0.16, 1, 22) },
+    { weight: 2, make: segment(166, 148, 370, 176, 2, 0.8) },
+    { weight: 3, make: flow([[166, 148], [370, 176]], 0.3, 1, 2) },
+    { weight: 12, make: flow(yardRoute, 0.16, 0, 5) },
+  ];
+  for (let i = 1; i < yardRoute.length; i++) {
+    const [x1, y1] = yardRoute[i - 1];
+    const [x2, y2] = yardRoute[i];
+    prims.push({ weight: Math.hypot(x2 - x1, y2 - y1) / 40, make: segment(x1, y1, x2, y2, i === 1 ? 2 : 0) });
+  }
+  for (const s of yardStations) prims.push({ weight: 4, make: ring(s.x, 180, 10, 0) });
+  return prims;
+}
+
 /** Hero: the MJ monogram, sampled from real type, inside two orbiting rings. */
 function recipeMonogram(glyph: [number, number][]): Primitive[] {
   const glyphMake: Make = (rand) => {
@@ -424,6 +564,10 @@ export function buildFormation(key: FormationKey, pool: number, glyph: [number, 
       return assemble(640, 420, 1, recipeTree(), take(1), 5);
     case "orbit":
       return assemble(640, 420, 1, recipeOrbit(), take(1), 7);
+    case "reel":
+      return assemble(640, 420, 1, recipeReel(), take(1), 13);
+    case "yard":
+      return assemble(640, 420, 1, recipeYard(), take(1), 17);
   }
 }
 

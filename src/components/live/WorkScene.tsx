@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, ArrowUpRight, GitBranch } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, ArrowUpRight, GitBranch, Lock } from "lucide-react";
 import { personalInfo, projects, type Project } from "@/data/portfolio";
 import ProjectDiagram from "./ProjectDiagram";
 import { SectionHead, cls } from "./ui";
@@ -145,7 +146,7 @@ export default function WorkScene() {
               Projects with <span className="hollow">purpose.</span>
             </>
           }
-          aside="Three directions, one approach: understand the problem, build with intent, and show the thinking. Pick a system and watch it assemble."
+          aside="Different problems, one approach: understand the problem, build with intent, and show the thinking. Pick a system and watch it assemble."
         />
 
         <div className="stage" data-reveal>
@@ -233,9 +234,20 @@ export default function WorkScene() {
                 <button type="button" className="btn btn-ghost btn-sm" onClick={() => setOpen((o) => !o)} aria-expanded={open} aria-controls="case-file">
                   {open ? "Close case file" : "Open case file"} <ArrowRight size={15} className={cls("turn", open && "is-turned")} />
                 </button>
-                <a className="text-link" href={project.githubUrl} target="_blank" rel="noopener noreferrer">
-                  View repository <ArrowUpRight size={15} />
-                </a>
+                {project.pageUrl && (
+                  <Link className="text-link" href={project.pageUrl}>
+                    Read the project page <ArrowRight size={15} />
+                  </Link>
+                )}
+                {project.githubUrl ? (
+                  <a className="text-link" href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+                    View repository <ArrowUpRight size={15} />
+                  </a>
+                ) : (
+                  <span className="stage-private">
+                    <Lock size={13} aria-hidden="true" /> Private repository
+                  </span>
+                )}
               </div>
             </div>
 

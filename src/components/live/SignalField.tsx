@@ -16,7 +16,7 @@ const PALETTES = {
   light: ["#d97706", "#0284c7", "#334155"],
 };
 
-const FORMATION_KEYS: FormationKey[] = ["mj", "contact", "sys", "tree", "orbit"];
+const FORMATION_KEYS: FormationKey[] = ["mj", "contact", "sys", "tree", "orbit", "reel", "yard"];
 
 function evalTarget(t: Target, time: number, out: [number, number]) {
   if (t.kind === "point") {

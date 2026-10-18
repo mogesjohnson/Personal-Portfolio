@@ -127,15 +127,17 @@ export default function SiteNav({ onOpenResume, onOpenPalette }: SiteNavProps) {
           <span ref={indicatorRef} className="nav-indicator" aria-hidden="true" />
         </nav>
         <div className="nav-external-group">
-          {externalPages.map((page) => (
-            <Link
-              key={page.href}
-              href={page.href}
-              className={page.href === "/projects" ? "nav-external" : "nav-external nav-external-prototype"}
-            >
-              {page.label}
-            </Link>
-          ))}
+          {externalPages
+            .filter((page) => page.kind !== "project")
+            .map((page) => (
+              <Link
+                key={page.href}
+                href={page.href}
+                className={page.kind === "page" ? "nav-external" : "nav-external nav-external-prototype"}
+              >
+                {page.label}
+              </Link>
+            ))}
         </div>
 
         <div className="nav-actions">
