@@ -641,7 +641,7 @@ kbd.pd-key {
 }
 
 /* ---------------------------------------------------------------- */
-/* Demo video (placeholder until a file or embed is set in demo.ts)   */
+/* Demo video: a silent loop, an embed, or the placeholder            */
 /* ---------------------------------------------------------------- */
 
 .pd-video-stage {
@@ -660,6 +660,43 @@ kbd.pd-key {
   height: 100%;
   border: 0;
   background: #000;
+}
+
+/* A silent loop keeps its own aspect ratio instead of letterboxing in 16:9. */
+.pd-video-stage:has(> video) {
+  aspect-ratio: auto;
+}
+
+.pd-video-stage > video {
+  height: auto;
+}
+
+.pd-video-toggle {
+  position: absolute;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid color-mix(in srgb, var(--text) 25%, transparent);
+  border-radius: 999px;
+  background: rgba(7, 8, 12, 0.78);
+  color: #eceef2;
+  font-family: var(--font-dispatch-mono), ui-monospace, monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.pd-video-toggle:hover {
+  border-color: var(--amber);
+}
+
+.pd-video-toggle:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
 }
 
 .pd-video-soon {

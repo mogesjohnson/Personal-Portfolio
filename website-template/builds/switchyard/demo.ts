@@ -9,8 +9,9 @@ import type { DemoVideoSource } from "../project-detail/DemoVideo";
  *   poster (optional, file only): "/videos/switchyard-demo.jpg"
  */
 export const demo: DemoVideoSource = {
-  file: null,
+  file: "/videos/switchyard-demo.mp4",
+  webm: "/videos/switchyard-demo.webm",
   embed: null,
-  title: "Switchyard demo",
-  poster: null,
+  title: "Switchyard demo loop",
+  poster: "/videos/switchyard-demo.jpg",
 };

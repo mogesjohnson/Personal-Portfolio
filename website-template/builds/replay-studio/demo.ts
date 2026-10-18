@@ -9,8 +9,9 @@ import type { DemoVideoSource } from "../project-detail/DemoVideo";
  *   poster (optional, file only): "/videos/replay-studio-demo.jpg"
  */
 export const demo: DemoVideoSource = {
-  file: null,
+  file: "/videos/replay-studio-demo.mp4",
+  webm: "/videos/replay-studio-demo.webm",
   embed: null,
-  title: "REPLAY Studio demo",
-  poster: null,
+  title: "REPLAY Studio demo loop",
+  poster: "/videos/replay-studio-demo.jpg",
 };

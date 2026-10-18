@@ -1,5 +1,6 @@
 import Image, { type StaticImageData } from "next/image";
 import { Play } from "lucide-react";
+import { LoopVideo } from "./LoopVideo";
 
 /**
  * The "Demo video" block at the bottom of a project detail page.
@@ -7,7 +8,9 @@ import { Play } from "lucide-react";
  * Each page passes a `DemoVideoSource` from its own `demo.ts`. To publish a demo,
  * set ONE field there:
  *   file:  a path under /public, e.g. "/videos/replay-studio-demo.mp4"
- *          (put the file at public/videos/replay-studio-demo.mp4). Plays in a native <video>.
+ *          (put the file at public/videos/replay-studio-demo.mp4). Plays as a silent
+ *          autoplaying loop (muted, loop, playsInline) with a pause button. Add
+ *          `webm` for a smaller VP9 copy and `poster` for the first frame.
  *   embed: a YouTube link in any common form (watch?v=, youtu.be/, /shorts/, /embed/),
  *          which is played through youtube-nocookie.com, or any other https player URL
  *          (e.g. Vimeo's player.vimeo.com/video/<id>), used as the iframe src as is.
@@ -15,6 +18,8 @@ import { Play } from "lucide-react";
  */
 export type DemoVideoSource = {
   file: string | null;
+  /** Optional VP9 WebM copy of `file`, offered first. */
+  webm?: string | null;
   embed: string | null;
   /** Accessible title for the player, e.g. "REPLAY Studio demo". */
   title: string;
@@ -75,10 +80,7 @@ export function DemoVideo({
       <div className="pd-shot-frame">
         <div className="pd-video-stage">
           {video.file ? (
-            <video controls preload="metadata" playsInline poster={poster} aria-label={video.title}>
-              <source src={video.file} type="video/mp4" />
-              Your browser can’t play this video. <a href={video.file}>Download the MP4</a>.
-            </video>
+            <LoopVideo mp4={video.file} webm={video.webm} poster={poster} title={video.title} />
           ) : iframe ? (
             <iframe
               src={iframe}
