@@ -1,4 +1,4 @@
-import { BookOpen, Command, FolderOpen, PauseCircle, Sparkles, Ticket } from "lucide-react";
+import { Command, FolderOpen, PauseCircle, Ticket } from "lucide-react";
 import { DemoVideo } from "../project-detail/DemoVideo";
 import { demo } from "./demo";
 import { ProjectFooter } from "../project-footer/ProjectFooter";
@@ -17,57 +17,49 @@ import {
   type Feature,
 } from "../project-detail/ProjectDetail";
 import candidates from "./media/candidates.webp";
-import deskStart from "./media/desk-start.webp";
 import library from "./media/library.webp";
+import returnTickets from "./media/return-tickets.webp";
 import reviewBay from "./media/review-bay.webp";
 import { SwitchyardMotion } from "./SwitchyardMotion";
 
 /* Every fact on this page comes from the switchyard README, docs/VALIDATION.md,
  * IMPLEMENTATION-CONTRACT.md, package.json, Cargo.toml and tauri.conf.json on main
- * (read 2026-10-18). The screenshots are the repo's own browser design preview,
- * which runs on its fixture data. See BRIEF.md. */
+ * (v0.1.0, no tags or GitHub releases yet; read 2026-10-18). The screenshots and the
+ * demo loop were captured at 2x from the repo's browser design preview with its sample
+ * projects. For the capture only, the desk label was changed from the hard-coded
+ * "JOHN'S DESK" to "MY DESK" and the " · example" suffix was dropped from the sample
+ * names; the preview banner is cropped off. See BRIEF.md. */
 
 const STATIONS = [
-  { at: 0.081, label: "Library", body: "Projects you chose. Nothing is imported by default." },
-  { at: 0.324, label: "Exact checkout", body: "The checkout you picked. A folder with a similar name doesn't count." },
-  { at: 0.522, label: "Open targets", body: "Folder, Terminal, Notes. You review each one first." },
-  { at: 0.721, label: "Return Ticket", body: "One sentence for your future self." },
-  { at: 0.919, label: "Back with context", body: "Read-only notes from the shared vault, with citations." },
+  { at: 0.081, label: "Library", body: "Only the projects you added. Nothing comes in on its own." },
+  { at: 0.324, label: "Exact checkout", body: "The copy of the project you picked, never a folder with a similar name." },
+  { at: 0.522, label: "Open targets", body: "Folder, Terminal, Notes. You check each one before it opens." },
+  { at: 0.721, label: "Return Ticket", body: "A one-sentence note to your future self about the next step." },
+  { at: 0.919, label: "Back with context", body: "Your Obsidian notes for the project, read but never edited, with sources." },
 ];
 
 const FEATURES: Feature[] = [
   {
     icon: FolderOpen,
     title: "Launch Set",
-    body: "Folder, Terminal, Notes, or a set of them. You review each target before Open, and each step reports its own result.",
+    body: "Opens the folder, terminal and notes you checked, together.",
     tag: "Alt F · Alt T · Alt N",
   },
   {
     icon: Ticket,
     title: "Return Tickets",
-    body: "When you stop, leave the next action for one checkout or the whole project. Tickets keep their versions.",
+    body: "A one-sentence note to yourself about the next step.",
   },
   {
     icon: Command,
     title: "Quick Switch",
-    body: "Ctrl+K, arrow keys, Enter. Picking a project selects it to inspect. It doesn't launch anything.",
+    body: "Ctrl+K finds any project. Picking one never launches it.",
     tag: "Ctrl K",
-  },
-  {
-    icon: Sparkles,
-    title: "Something to do",
-    body: "Suggests only Active projects with a next action you wrote, no hold or blocker, and an available checkout. It never invents priorities.",
   },
   {
     icon: PauseCircle,
     title: "Review Bay",
-    body: "Human review holds stay put. Held projects drop out of suggestions, and releasing a hold takes a reason.",
-  },
-  {
-    icon: BookOpen,
-    title: "Read-only knowledge",
-    body: "Ask the linked Obsidian shared brain for a brief with citations you can preview. Switchyard only reads; notes stay untouched.",
-    tag: "Obsidian",
+    body: "On-hold projects stay parked until a person releases them.",
   },
 ];
 
@@ -129,11 +121,11 @@ export function SwitchyardPage() {
           lead="A personal Windows project desk: open the exact checkout, leave yourself the next step, and come back to read-only context."
         >
           <Shot
-            src={deskStart}
-            alt="Switchyard's empty desk: a left rail with Library, Return tickets, Review Bay, Knowledge, Action receipts and Settings, a heading reading A good place to begin again, line art of diverging rail tracks, and buttons to choose existing projects or add one folder."
+            src={library}
+            alt="Switchyard's library, headed MY DESK / WINDOWS: five project cards, the Portfolio card selected, and on the right its exact folder with Folder, Terminal and Notes buttons above a Return Ticket that reads Finish the mobile menu, then publish the case-study page."
             figure="Fig. 01"
-            chrome="Switchyard · browser design preview"
-            caption="The empty desk, from the repository's browser design preview, which runs on fixture data and opens nothing. All screenshots here come from it."
+            chrome="Switchyard · library"
+            caption="The library with a Return Ticket on Portfolio. Captured from the app's browser preview, which uses sample projects and never touches your files."
             priority
           />
         </DetailHero>
@@ -142,24 +134,24 @@ export function SwitchyardPage() {
           id="desk"
           index="01"
           eyebrow="The desk"
-          title="Everything here is a human decision."
-          intro="Import is deliberate. It doesn't clone repositories, create missing folders, or invent next actions."
+          title="You decide what happens next."
+          intro="Switchyard only shows projects you added. It never clones repositories, creates folders, or guesses your next step."
         >
-          <FeatureGrid features={FEATURES} />
+          <FeatureGrid features={FEATURES} columns={2} />
           <StatusDetails status="Personal v0.1 · 56 frontend + 53 Rust tests passing · unsigned, no updater">
             <Stats
               stats={[
                 { value: "56", label: "Frontend tests", note: "Eight suites, all passing." },
-                { value: "53", label: "Rust tests", note: "Default native suite passing, with five skipped on purpose. Both production worker gates passed separately." },
+                { value: "53", label: "Rust tests", note: "Native suite passing, with five tests skipped on purpose." },
                 { value: "500", label: "Project cap", note: "With a 20 MiB cap on saved state and 100 MiB per backup." },
-                { value: "30 s", label: "Open intent", note: "A prepared open expires, so a stale target can't launch." },
+                { value: "30 s", label: "Open window", note: "A prepared open expires after 30 seconds, so an out-of-date target can't launch." },
               ]}
             />
             <div className="pd-copy">
               <p>
-                Personal-build evidence from 16 October 2026, not a public-release claim. Refresh only checks that the checkout is there and reads Git HEAD and ref
-                metadata; whether the tree is clean stays Unknown on purpose. Named SQLite backups are verified with a digest before a restore, and if saved state
-                won&apos;t load, the desk opens read-only instead of starting empty.
+                Tested on the developer&apos;s Windows PC on 16 October 2026. It&apos;s a personal build, not a public release. Refresh only checks that the folder
+                is there and reads its Git branch; it doesn&apos;t claim to know whether you have uncommitted changes. Backups are checked before a restore, and if
+                saved data won&apos;t load, the desk opens read-only instead of starting empty.
               </p>
             </div>
             <DetailsHeading>What it will and won’t run</DetailsHeading>
@@ -204,31 +196,31 @@ export function SwitchyardPage() {
           id="screens"
           index="02"
           eyebrow="Screens"
-          title="The design preview."
-          intro="Fixture projects marked as examples. In this mode, nothing touches files, terminals, notes, or agents."
+          title="What it looks like."
+          intro="Captured at 2x from the app's browser preview with sample projects. In the preview, nothing on your computer is opened or changed."
         >
           <div className="pd-gallery">
             <Shot
-              src={library}
-              alt="The project library with five example project cards, the Exact target panel with Folder, Terminal and Notes buttons, and the top of a Return Ticket."
-              figure="Fig. 02"
-              chrome="Library"
-              caption="The library, with Exact target on the right: the checkout path, its availability, and the open buttons."
-              className="pd-shot-wide"
-            />
-            <Shot
               src={candidates}
-              alt="The Bring your projects to the desk dialog, listing example candidates with checkboxes, two of them marked with an executive review hold."
-              figure="Fig. 03"
-              chrome="Import"
-              caption="Import offers candidates. Nothing is selected for you."
+              alt="The Bring your projects to the desk dialog listing sample projects with checkboxes. Portfolio and Shadow Army are ticked, and the button reads Import 2 targets."
+              figure="Fig. 02"
+              chrome="Add projects"
+              caption="Adding projects: you tick the ones you want. Nothing is pre-selected."
             />
             <Shot
               src={reviewBay}
-              alt="The Review Bay page, headed Keep the context. Give it room., showing one held example project."
-              figure="Fig. 04"
+              alt="The Review Bay page, headed Keep the context. Give it room., showing the Shadow Army project on review, waiting for a decision."
+              figure="Fig. 03"
               chrome="Review Bay"
-              caption="Review Bay. Passing checks or time can't release a human hold."
+              caption="Review Bay: a project on hold stays on hold until a person releases it and gives a reason."
+            />
+            <Shot
+              src={returnTickets}
+              alt="The Return tickets page: Portfolio has an active ticket reading Finish the mobile menu, then publish the case-study page, with Edit, Complete, Undo version and History links. Other projects have none."
+              figure="Fig. 04"
+              chrome="Return tickets"
+              caption="Return Tickets: each project keeps the notes you left yourself, with earlier versions you can restore."
+              className="pd-shot-wide"
             />
           </div>
         </Section>
@@ -238,18 +230,24 @@ export function SwitchyardPage() {
           index="03"
           eyebrow="How it works"
           title="Throw the switch to the exact checkout."
-          intro="One project can have several checkouts, and Switchyard sends you down the one you picked. The app draws itself as diverging rail lines; scroll to run the line."
+          intro="One project can live in several folders. Switchyard opens the one you picked, never a look-alike. Scroll to follow the line."
         >
           <Yard />
         </Section>
 
-        <Section id="demo" index="04" eyebrow="Demo video" title="See it run." intro="A recorded walkthrough of the desk.">
+        <Section
+          id="demo"
+          index="04"
+          eyebrow="Demo"
+          title="See it run."
+          intro="An 18-second silent loop: add projects, pick one, leave a Return Ticket, then check the Review Bay."
+        >
           <DemoVideo
             video={demo}
-            backdrop={deskStart}
-            chrome="switchyard · demo.mp4"
-            figure="Fig. demo"
-            caption="Walkthrough of Switchyard."
+            backdrop={library}
+            chrome="switchyard · demo loop"
+            figure="Fig. 05"
+            caption="Recorded in the browser preview with sample projects, at 1.5x speed."
           />
         </Section>
 

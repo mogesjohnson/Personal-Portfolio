@@ -60,3 +60,10 @@ The page is cut down to five blocks:
 5. The demo video.
 
 The slim footer row follows. The overlapping section (the agent diagram on REPLAY Studio; the Return Ticket card and the knowledge diagram on Switchyard) was folded into the feature cards. Its facts were kept, and none were added.
+
+## Review fixes (PR #17 review, 2026-10-18)
+
+- **Demo:** the "Demo coming soon" placeholder is replaced by a silent 18-second loop (`public/videos/replay-studio-demo.webm` + `.mp4`, poster `.jpg`). `DemoVideo` renders it through `project-detail/LoopVideo.tsx`: autoplay (started on mount), `muted`, `loop`, `playsInline`, a poster, and a Pause/Play button. With reduced motion it does not autoplay and shows the poster.
+- **Screens:** recaptured at 2x (deviceScaleFactor 2) with Playwright on the box, from the source repo's own browser preview.
+- **Copy:** plain visitor-benefit wording; four feature cards with one sentence each, larger body text in `--text` (measured 16.6:1 dark, 18.1:1 light).
+- **Sample recording:** the colour-bar test pattern is gone. The editor shows a made-up invoicing app ("Harbor", Dana Whitfield, dana.whitfield@example.com, a 555 number). All of it is fake; the name and email are covered by a privacy blur, and a timed callout reads "One click sends the invoice." The source is `v0.2.0-alpha.4`, the latest release (17 October 2026).

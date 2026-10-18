@@ -1,4 +1,4 @@
-import { Bot, Clapperboard, EyeOff, FolderLock, MessageSquareText, Scissors, Upload } from "lucide-react";
+import { Bot, Clapperboard, EyeOff, MessageSquareText, Scissors, Upload } from "lucide-react";
 import { DemoVideo } from "../project-detail/DemoVideo";
 import { demo } from "./demo";
 import { ProjectFooter } from "../project-footer/ProjectFooter";
@@ -16,49 +16,42 @@ import {
   StatusDetails,
   type Feature,
 } from "../project-detail/ProjectDetail";
+import calloutBlur from "./media/callout-blur.webp";
 import editor from "./media/editor.webp";
-import privacyCallout from "./media/privacy-callout.webp";
-import review from "./media/review.webp";
-import welcome from "./media/welcome.webp";
+import privacyInspector from "./media/privacy-inspector.webp";
+import timeline from "./media/timeline.webp";
 import { ReplayMotion } from "./ReplayMotion";
 
-/* Every fact on this page comes from the replay-studio README, RELEASES.md, docs/ and
- * package.json at tag v0.2.0-alpha.4 (read 2026-10-18). See BRIEF.md for the source list. */
+/* Every fact on this page comes from the replay-studio README, docs/ and package.json
+ * at tag v0.2.0-alpha.4, the latest release (17 October 2026; read 2026-10-18). The
+ * screens and the demo loop were captured at 2x from that tag's browser preview with a
+ * made-up invoicing recording ("Harbor"); every name, email and number in it is fake.
+ * See BRIEF.md for the source list. */
 
 const FEATURES: Feature[] = [
   {
     icon: Clapperboard,
     title: "Record one window",
-    body: "Pick the app, then pause, resume, or stop from the recording bar.",
+    body: "Pick an app and record just that window, with pause and resume.",
     tag: "WebM",
   },
   {
     icon: Scissors,
-    title: "Trim the take",
-    body: "Drag the trim handles, or press I and O at the playhead.",
+    title: "Trim, call out, blur",
+    body: "Cut the dead air, add timed text, and blur anything private.",
     tag: "I / O",
   },
   {
-    icon: MessageSquareText,
-    title: "Callouts and privacy blur",
-    body: "Timed text callouts and fixed blur regions, each with its own time on screen.",
-  },
-  {
     icon: Upload,
-    title: "Frame and export",
-    body: "Four canvas looks, padding, and corner radius, then an H.264 MP4 that never upscales or overwrites a file.",
-    tag: "MP4 · AAC",
+    title: "Export a clean MP4",
+    body: "Frame it and export H.264 MP4 without overwriting files.",
+    tag: "MP4",
   },
   {
     icon: Bot,
-    title: "Agents share the controls",
-    body: "28 MCP tools and a JSON CLI drive the same edits, undo, and playback you use, over an authenticated per-user named pipe.",
+    title: "Let an AI agent help",
+    body: "Approved agents can edit too, only in folders you pick.",
     tag: "MCP · CLI",
-  },
-  {
-    icon: FolderLock,
-    title: "Scoped and revocable",
-    body: "A connection only reaches the import and export folders you approve. Disconnect it, or revoke it.",
   },
 ];
 
@@ -153,10 +146,10 @@ export function ReplayStudioPage() {
         >
           <Shot
             src={editor}
-            alt="REPLAY Studio editor: library on the left, a framed preview with a text callout in the middle, canvas look and frame settings on the right, and a timeline with recording and text callout tracks underneath."
+            alt="REPLAY Studio editor showing a recording of an invoicing app. A text callout reads One click sends the invoice, the client's name and email at the top are blurred, and the timeline underneath has recording, text callout and privacy blur tracks."
             figure="Fig. 01"
             chrome="REPLAY Studio · editor"
-            caption="The editor in v0.2.0-alpha.3: library, framed preview, appearance inspector, and a timeline with a timed text callout. From the repository’s release evidence."
+            caption="The v0.2.0-alpha.4 editor with a sample recording: a timed callout, a blurred client name and email, and the timeline underneath. The sample app and its data are made up."
             priority
           />
         </DetailHero>
@@ -168,7 +161,7 @@ export function ReplayStudioPage() {
           title="From one window to a finished MP4."
           intro="Your original video is kept and every edit saves locally. Normal editing needs no account and no AI connection."
         >
-          <FeatureGrid features={FEATURES} />
+          <FeatureGrid features={FEATURES} columns={2} />
           <StatusDetails status="Alpha · 167 automated tests passing · unsigned Windows installer">
             <Stats
               stats={[
@@ -180,8 +173,11 @@ export function ReplayStudioPage() {
             />
             <div className="pd-copy">
               <p>
-                The checks ran on the development Windows 11 machine with synthetic content. A real Claude Code 2.1.302 process passed the shared editing and playback
-                checks, and in the visual check it read a hidden synthetic number and colour it could only see in an image REPLAY delivered.
+                The tests ran on the developer&apos;s Windows 11 PC with made-up test videos. In a real Claude Code 2.1.302 session, the agent made edits, controlled
+                playback, and correctly read a number and colour it could only see in a frame REPLAY sent it.
+              </p>
+              <p>
+                An agent connection only reaches the import and export folders you approve. You can disconnect it for the session or revoke it for good.
               </p>
             </div>
             <DetailsHeading>What works, and what doesn’t yet</DetailsHeading>
@@ -225,29 +221,29 @@ export function ReplayStudioPage() {
           index="02"
           eyebrow="Screens"
           title="What it looks like."
-          intro="From the repository's release evidence. The test pattern is synthetic media the checks record and inspect."
+          intro="Captured at 2x from v0.2.0-alpha.4. The recording shows a made-up invoicing app; the client's name and email are fake and blurred to show the privacy tool."
         >
           <div className="pd-gallery">
             <Shot
-              src={welcome}
-              alt="REPLAY Studio first launch: an empty library and a welcome panel reading Make a clear demo. Start with one window, with Record a window and Import a video buttons."
+              src={calloutBlur}
+              alt="Close-up of the framed preview: an invoicing app with a dark callout reading One click sends the invoice under the Send invoice button, and the client's name and email blurred at the top."
               figure="Fig. 02"
-              chrome="First launch"
-              caption="An empty studio on first launch."
+              chrome="Preview"
+              caption="What viewers see: the callout appears on cue and the blur hides the client's details."
             />
             <Shot
-              src={review}
-              alt="The Review media panel over the editor, showing a four-frame contact sheet of a colour-bar test pattern with timestamps and a Verified badge."
+              src={privacyInspector}
+              alt="The privacy blur selected on the preview, with the inspector on the right showing when it appears and ends and its position and size."
               figure="Fig. 03"
-              chrome="Review media"
-              caption="Review builds timestamped frames, contact sheets, and audio excerpts that you or an agent can inspect."
+              chrome="Privacy blur"
+              caption="Draw a blur box over anything private, then set when it starts and ends."
             />
             <Shot
-              src={privacyCallout}
-              alt="The editor with a test pattern in the Studio canvas look, a text callout track and a privacy blur track on the timeline, and trim handles on the recording."
+              src={timeline}
+              alt="The timeline: a recording track with trim handles, a text callout track starting at five seconds, and a privacy blur track that runs the whole video."
               figure="Fig. 04"
-              chrome="Shared editing"
-              caption="Trim handles, a text callout, and a privacy blur on their own tracks, in the Studio canvas look."
+              chrome="Timeline"
+              caption="Each callout and blur gets its own track, so you can see what shows when."
               className="pd-shot-wide"
             />
           </div>
@@ -258,7 +254,7 @@ export function ReplayStudioPage() {
           index="03"
           eyebrow="How it works"
           title="Scroll is the playhead."
-          intro="The five steps from the README over a sketch of the editor's timeline. Each step lights as the playhead reaches it."
+          intro="Making a demo takes five steps. Scroll to move the playhead; each step lights up as it passes."
         >
           <div className="rp-demo">
             <Timeline />
@@ -276,13 +272,19 @@ export function ReplayStudioPage() {
           </div>
         </Section>
 
-        <Section id="demo" index="04" eyebrow="Demo video" title="See it run." intro="A recorded walkthrough of the app.">
+        <Section
+          id="demo"
+          index="04"
+          eyebrow="Demo"
+          title="See it run."
+          intro="An 18-second silent loop: import a take, add a callout, blur the client's details, then play it back."
+        >
           <DemoVideo
             video={demo}
             backdrop={editor}
-            chrome="replay-studio · demo.mp4"
-            figure="Fig. demo"
-            caption="Walkthrough of REPLAY Studio."
+            chrome="replay-studio · demo loop"
+            figure="Fig. 05"
+            caption="Recorded in the v0.2.0-alpha.4 browser preview at 1.2x speed, with a made-up recording."
           />
         </Section>
 

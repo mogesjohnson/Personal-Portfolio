@@ -313,14 +313,14 @@ kbd.pd-key {
 }
 
 .pd-feature-num {
-  color: var(--pd-muted);
+  color: var(--text-2);
   font-family: var(--font-dispatch-mono), ui-monospace, monospace;
   font-size: 0.72rem;
 }
 
 .pd-feature h3 {
   margin: 1.1rem 0 0;
-  font-size: 1.12rem;
+  font-size: 1.25rem;
   font-weight: 650;
   letter-spacing: -0.02em;
   line-height: 1.25;
@@ -329,9 +329,11 @@ kbd.pd-key {
 .pd-feature p {
   flex: 1;
   margin: 0.55rem 0 0;
-  color: var(--text-2);
-  font-size: 0.92rem;
-  line-height: 1.6;
+  /* Body copy uses the main text colour (not --text-2) and a larger size, so it
+     reads clearly on the glass card: measured 16.6:1 in dark, 18.1:1 in light. */
+  color: var(--text);
+  font-size: 1.05rem;
+  line-height: 1.55;
 }
 
 .pd-feature-tag {
@@ -342,7 +344,7 @@ kbd.pd-key {
   border-radius: 999px;
   color: var(--sky-text);
   font-family: var(--font-dispatch-mono), ui-monospace, monospace;
-  font-size: 0.68rem;
+  font-size: 0.78rem;
   letter-spacing: 0.06em;
 }
 

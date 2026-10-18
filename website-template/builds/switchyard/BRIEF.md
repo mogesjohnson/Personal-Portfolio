@@ -56,3 +56,10 @@ The page is cut down to five blocks:
 5. The demo video.
 
 The slim footer row follows. The overlapping section (the agent diagram on REPLAY Studio; the Return Ticket card and the knowledge diagram on Switchyard) was folded into the feature cards. Its facts were kept, and none were added.
+
+## Review fixes (PR #17 review, 2026-10-18)
+
+- **Demo:** the "Demo coming soon" placeholder is replaced by a silent 18-second loop (`public/videos/switchyard-demo.webm` + `.mp4`, poster `.jpg`). `DemoVideo` renders it through `project-detail/LoopVideo.tsx`: autoplay (started on mount), `muted`, `loop`, `playsInline`, a poster, and a Pause/Play button. With reduced motion it does not autoplay and shows the poster.
+- **Screens:** recaptured at 2x (deviceScaleFactor 2) with Playwright on the box, from the source repo's own browser preview.
+- **Copy:** plain visitor-benefit wording; four feature cards with one sentence each, larger body text in `--text` (measured 16.6:1 dark, 18.1:1 light).
+- **Desk name:** the app hard-codes `JOHN'S DESK` in `src/App.tsx` (the `desk-label` in the top bar); it is not a setting or fixture. For the capture only, a local, uncommitted edit in the source clone changed it to `MY DESK`, and the ` · example` suffix was dropped from the preview's sample project names in `src/preview.ts`. The lime BROWSER DESIGN PREVIEW banner is cropped off. The hero is now the filled library.
