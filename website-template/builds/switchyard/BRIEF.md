@@ -44,3 +44,15 @@ The last section, "Demo video", renders `project-detail/DemoVideo.tsx` from this
 
 - `file`: an MP4 under `public/`, such as `/videos/<slug>-demo.mp4`
 - `embed`: a YouTube or other https player URL
+
+## Trim (on request, 2026-10-18)
+
+The page is cut down to five blocks:
+
+1. The hero: a one-line pitch, the status line, and a real screenshot.
+2. The feature grid, with six cards, ending in one collapsed "Status · Details" disclosure. The disclosure (a native `<details>`, closed by default) holds the test stats, what works and what doesn't yet, the limits, and the stack.
+3. One screenshot gallery.
+4. The scroll "how it works" signature move.
+5. The demo video.
+
+The slim footer row follows. The overlapping section (the agent diagram on REPLAY Studio; the Return Ticket card and the knowledge diagram on Switchyard) was folded into the feature cards. Its facts were kept, and none were added.

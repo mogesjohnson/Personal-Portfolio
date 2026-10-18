@@ -244,15 +244,6 @@
   line-height: 1.5;
 }
 
-.rp-note {
-  max-width: 44rem;
-  margin: 1.5rem 0 0;
-  color: var(--pd-muted);
-  font-family: var(--font-dispatch-mono), ui-monospace, monospace;
-  font-size: 0.8rem;
-  line-height: 1.6;
-}
-
 @media (max-width: 960px) {
   .rp-demo {
     grid-template-columns: 1fr;

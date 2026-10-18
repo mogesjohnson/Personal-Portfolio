@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import Image, { type StaticImageData } from "next/image";
-import type { LucideIcon } from "lucide-react";
+import { ChevronDown, type LucideIcon } from "lucide-react";
 import { DispatchBar } from "../projects-page/DispatchBar";
 
 /**
@@ -35,8 +35,8 @@ export function DetailHero({
   title: string;
   status: string;
   lead: string;
-  facts: Fact[];
-  tags: string[];
+  facts?: Fact[];
+  tags?: string[];
   children?: ReactNode;
 }) {
   return (
@@ -51,21 +51,25 @@ export function DetailHero({
           {lead}
         </p>
       </div>
-      <dl className="metrics pd-facts" data-reveal>
-        {facts.map((fact) => (
-          <div key={fact.label}>
-            <dt>{fact.label}</dt>
-            <dd>{fact.value}</dd>
-          </div>
-        ))}
-      </dl>
-      <ul className="chips pd-chips" aria-label="Technologies" data-reveal>
-        {tags.map((tag) => (
-          <li className="chip" key={tag}>
-            {tag}
-          </li>
-        ))}
-      </ul>
+      {facts?.length ? (
+        <dl className="metrics pd-facts" data-reveal>
+          {facts.map((fact) => (
+            <div key={fact.label}>
+              <dt>{fact.label}</dt>
+              <dd>{fact.value}</dd>
+            </div>
+          ))}
+        </dl>
+      ) : null}
+      {tags?.length ? (
+        <ul className="chips pd-chips" aria-label="Technologies" data-reveal>
+          {tags.map((tag) => (
+            <li className="chip" key={tag}>
+              {tag}
+            </li>
+          ))}
+        </ul>
+      ) : null}
       {children}
     </header>
   );
@@ -249,4 +253,29 @@ export function Limits({ items }: { items: string[] }) {
       ))}
     </ul>
   );
+}
+
+/**
+ * One status line that opens into the long-form evidence (tests, limits, stack).
+ * A native <details>, so it works without JavaScript and stays closed by default.
+ */
+export function StatusDetails({ status, children }: { status: string; children: ReactNode }) {
+  return (
+    <details className="pd-details glass" data-reveal>
+      <summary>
+        <span className="pd-details-label">Status</span>
+        <span className="pd-details-line">{status}</span>
+        <span className="pd-details-toggle" aria-hidden="true">
+          Details
+          <ChevronDown size={14} />
+        </span>
+      </summary>
+      <div className="pd-details-body">{children}</div>
+    </details>
+  );
+}
+
+/** A small mono heading inside StatusDetails. */
+export function DetailsHeading({ children }: { children: ReactNode }) {
+  return <h3 className="pd-details-heading">{children}</h3>;
 }
