@@ -1,91 +1,20 @@
-/* /trace-workbench only. Site tokens; amber is the run cursor and progress, sky the prompts. */
-
-/* ---- Hero links ------------------------------------------------ */
-
-.tw-links {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.6rem 1.25rem;
-  margin: 1.25rem 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.tw-links a {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  color: var(--amber-text);
-  font-family: var(--font-dispatch-mono), ui-monospace, monospace;
-  font-size: 0.82rem;
-  text-decoration: none;
-  border-bottom: 1px solid color-mix(in srgb, var(--amber-text) 35%, transparent);
-}
-
-.tw-links a:hover {
-  border-bottom-color: currentColor;
-}
-
-.tw-links-note {
-  color: var(--pd-muted);
-  font-family: var(--font-dispatch-mono), ui-monospace, monospace;
-  font-size: 0.74rem;
-}
-
-/* ---- Gallery: the Calculator frames are small portrait captures. ---- */
-
-.tw-shot-calc .pd-shot-frame {
-  display: grid;
-  place-items: center;
-  padding: 1.25rem;
-}
-
-.tw-shot-calc .pd-shot-frame img {
-  width: auto;
-  max-width: 100%;
-  height: auto;
-  max-height: 534px;
-  margin-inline: auto;
-}
-
-/* ---- The setup run -------------------------------------------- */
+/* /trace-workbench only. Everything else on the page is the shared project-detail
+ * layout; these rules cover what sits inside its two Frames: the evidence log and the
+ * setup run. Site tokens: amber is the run's progress rail, sky the commands. */
 
 .tw-run {
   --t: 1;
-  padding: 1.1rem 1.2rem 1.2rem;
-}
-
-.tw-run-head {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  color: var(--pd-muted);
-  font-family: var(--font-dispatch-mono), ui-monospace, monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.tw-run-head b {
-  color: var(--amber-text);
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-}
-
-.tw-run-body {
-  position: relative;
   display: grid;
-  grid-template-columns: 4px minmax(0, 1fr);
-  gap: 1.1rem;
+  grid-template-columns: 3px minmax(0, 1fr);
+  gap: clamp(0.8rem, 2vw, 1.25rem);
+  padding: clamp(0.4rem, 1.4vw, 0.9rem) clamp(0.4rem, 1.4vw, 0.9rem);
 }
 
 .tw-rail {
   position: relative;
+  overflow: hidden;
   border-radius: 999px;
   background: var(--line);
-  overflow: hidden;
 }
 
 .tw-rail i {
@@ -94,14 +23,14 @@
   height: calc(var(--t) * 100%);
   border-radius: inherit;
   background: var(--amber);
-  box-shadow: 0 0 10px color-mix(in srgb, var(--amber) 55%, transparent);
 }
 
 .tw-run pre {
   margin: 0;
   overflow-x: auto;
+  color: var(--sky-text);
   font-family: var(--font-dispatch-mono), ui-monospace, monospace;
-  font-size: 0.92rem;
+  font-size: clamp(0.78rem, 1.6vw, 0.95rem);
   line-height: 1.95;
 }
 
@@ -113,39 +42,87 @@
   opacity: 0.28;
 }
 
-.tw-cmd {
-  color: var(--text);
-}
-
-.tw-prompt {
-  color: var(--sky-text);
-}
-
 .tw-comment {
   color: var(--pd-muted);
 }
 
-.tw-run-note {
-  margin: 1.1rem 0 0;
-  padding-top: 1rem;
-  border-top: 1px solid var(--line);
-  color: var(--text-2);
-  font-size: 0.95rem;
-  line-height: 1.6;
-  max-width: 46rem;
+.tw-after {
+  margin-top: 1.5rem;
 }
 
-@media (max-width: 600px) {
-  .tw-run {
-    padding: 1rem;
+/* The shared `.pd code` chip is for inline code; the terminal's block of code stays flat. */
+.tw-run pre code {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+}
+
+/* Fig. 01: the recorded Calculator trace as text. Four columns on desktop; on a phone
+ * the method and detail drop under the sequence and type. */
+.tw-log {
+  padding: clamp(0.4rem, 1.4vw, 0.9rem);
+  font-family: var(--font-dispatch-mono), ui-monospace, monospace;
+  font-size: clamp(0.74rem, 1.4vw, 0.86rem);
+  line-height: 1.5;
+}
+
+.tw-log-head {
+  margin: 0 0 0.85rem;
+  color: var(--pd-muted);
+  overflow-wrap: anywhere;
+}
+
+.tw-log-head span {
+  color: var(--amber-text);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.tw-log ol {
+  display: grid;
+  gap: 0.2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tw-log li {
+  display: grid;
+  grid-template-columns: 2.2rem 7.5rem 12.5rem minmax(0, 1fr);
+  gap: 0 1rem;
+  padding: 0.3rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.tw-log-seq {
+  color: var(--amber-text);
+}
+
+.tw-log-type {
+  color: var(--pd-muted);
+}
+
+.tw-log-method {
+  color: var(--sky-text);
+}
+
+.tw-log li.is-warn .tw-log-detail {
+  color: var(--amber-text);
+}
+
+.tw-log li.is-ok .tw-log-detail {
+  color: var(--text);
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .tw-log li {
+    grid-template-columns: 2rem minmax(0, 1fr);
   }
 
-  .tw-run pre {
-    font-size: 0.8rem;
-  }
-
-  .tw-run-head {
-    flex-direction: column;
-    gap: 0.35rem;
+  .tw-log-method,
+  .tw-log-detail {
+    grid-column: 2;
   }
 }

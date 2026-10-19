@@ -1,48 +1,45 @@
-import { ArrowUpRight, MousePointerClick, ScanSearch } from "lucide-react";
+import { Bot, MousePointerClick, ScanSearch, Telescope } from "lucide-react";
 import { ProjectFooter } from "../project-footer/ProjectFooter";
-import {
-  DetailHero,
-  DetailsHeading,
-  DetailShell,
-  FeatureGrid,
-  Limits,
-  Section,
-  Shot,
-  Stats,
-  StatusDetails,
-  type Feature,
-} from "../project-detail/ProjectDetail";
-import calculator12 from "./media/calculator-12.webp";
-import calculator36 from "./media/calculator-36.webp";
-import landingHero from "./media/landing-hero.webp";
-import landingStatus from "./media/landing-status.webp";
+import { DetailHero, DetailShell, FeatureGrid, Frame, Ledger, Section, Stats, StatusDetails, type Feature } from "../project-detail/ProjectDetail";
+import { LOG, SESSION } from "./evidence";
 import { TraceMotion } from "./TraceMotion";
 
-/* Every fact on this page comes from the trace-workbench README.md and SKILLS.md on
- * the docs/advanced-capabilities branch (v0.1.0-alpha.1, read 2026-10-18) and from
- * PR #4, the landing page (site/index.html). The two Calculator frames are the
- * repo's own evidence images (evidence/0.1.0-alpha.1/computer-use/frames); the two
- * landing-page screens were captured from PR #4. Nothing else was added. See BRIEF.md. */
-
-const REPO = "https://github.com/mogesjohnson/trace-workbench";
-const LANDING_PR = "https://github.com/mogesjohnson/trace-workbench/pull/4";
+/* The TRACE Workbench landing page (trace-workbench PR #4, site/index.html at 1db13de)
+ * rebuilt in the shared project-detail layout as live text. Copy comes from PR #4,
+ * README.md and SKILLS.md on docs/advanced-capabilities, minus two lines they don't
+ * support ("built in the open, verified step by step" and "0 shortcuts taken"). The
+ * evidence log is the repo's recorded Calculator trace (see evidence.ts). There are no
+ * screenshots: TRACE has no window of its own yet, and the only real-app captures in the
+ * repo (the Calculator evidence frames) are 323 x 534 at 1x. See BRIEF.md. */
 
 const FEATURES: Feature[] = [
   {
     icon: ScanSearch,
     title: "Reverse Engineer Anything",
-    body: "Inspect artifacts, gather evidence, and support reconstruction work.",
+    body: "Inspect artifacts, gather evidence, and support reconstruction work across binaries and packages.",
     tag: "Setup verified",
   },
   {
     icon: MousePointerClick,
     title: "Computer Use",
-    body: "Observe Windows apps, use mouse/keyboard and controls, and check action results.",
-    tag: "Selected · next priority",
+    body: "Observe Windows apps, use mouse, keyboard and controls, and check action results. The next implementation priority.",
+    tag: "Selected",
+  },
+  {
+    icon: Bot,
+    title: "Four agent CLIs",
+    body: "Codex, Claude Code, Grok Build, and Gemini CLI. Both skills need acceptance checks with each before claiming universal availability.",
+    tag: "Acceptance pending",
+  },
+  {
+    icon: Telescope,
+    title: "Future skills",
+    body: "Browser operation, screen understanding, voice, recorded-demo production, document intelligence, and recoverable parallel workers.",
+    tag: "Under review",
   },
 ];
 
-/* The README's setup block, grouped the way PR #4's landing page labels it. */
+/* The landing page's "Run it" terminal: the README setup block with its three comments. */
 const RUN = [
   { at: 0.02, comment: "install dependencies" },
   { at: 0.06, cmd: "npm ci" },
@@ -57,41 +54,45 @@ const RUN = [
 
 function SetupRun() {
   return (
-    <div className="tw-run glass" data-setup-run data-reveal>
-      <div className="tw-run-head">
-        <span>powershell · trace workbench</span>
-        <span>
-          <b data-step-count>6 / 6</b> commands
-        </span>
-      </div>
-      <div className="tw-run-body">
-        <span className="tw-rail" aria-hidden="true">
-          <i />
-        </span>
-        <pre>
-          <code>
-            {RUN.map((line) =>
-              line.cmd ? (
-                <span key={line.cmd} className="tw-line tw-cmd" data-at={line.at} data-cmd="">
-                  <span className="tw-prompt" aria-hidden="true">
-                    &gt;{" "}
-                  </span>
-                  {line.cmd}
-                  {"\n"}
-                </span>
-              ) : (
-                <span key={line.comment} className="tw-line tw-comment" data-at={line.at}>
-                  {`# ${line.comment}\n`}
-                </span>
-              ),
-            )}
-          </code>
-        </pre>
-      </div>
-      <p className="tw-run-note">
-        These commands configure development analysis tools. Review the plan before applying it; setup preserves unrelated settings and backs up existing
-        configuration.
+    <div className="tw-run" data-setup-run>
+      <span className="tw-rail" aria-hidden="true">
+        <i />
+      </span>
+      <pre>
+        <code>
+          {RUN.map((line) =>
+            line.cmd ? (
+              <span key={line.cmd} className="tw-line" data-at={line.at}>
+                {`${line.cmd}\n`}
+              </span>
+            ) : (
+              <span key={line.comment} className="tw-line tw-comment" data-at={line.at}>
+                {`# ${line.comment}\n`}
+              </span>
+            ),
+          )}
+        </code>
+      </pre>
+    </div>
+  );
+}
+
+function EvidenceLog() {
+  return (
+    <div className="tw-log">
+      <p className="tw-log-head">
+        <span>session</span> {SESSION}
       </p>
+      <ol>
+        {LOG.map((row) => (
+          <li key={row.seq} className={row.tone ? `is-${row.tone}` : undefined}>
+            <span className="tw-log-seq">{String(row.seq).padStart(2, "0")}</span>
+            <span className="tw-log-type">{row.type}</span>
+            <span className="tw-log-method">{row.method}</span>
+            <span className="tw-log-detail">{row.detail}</span>
+          </li>
+        ))}
+      </ol>
     </div>
   );
 }
@@ -99,141 +100,100 @@ function SetupRun() {
 export function TraceWorkbenchPage() {
   return (
     <TraceMotion>
-      <DetailShell current="/trace-workbench" mark="Computer control for AI agents">
+      <DetailShell current="/trace-workbench" mark="AI computer control">
         <DetailHero
           kicker="Project · October 2026"
           title="TRACE Workbench"
-          status="Version 0.1.0-alpha.1 · development foundation"
+          status="v0.1.0-alpha.1 · Windows x64 · development foundation · 18 October 2026"
           lead="One interface for Codex, Claude Code, Grok Build, and Gemini CLI to observe and operate Windows."
-          tags={["Codex", "Claude Code", "Grok Build", "Gemini CLI", "Windows", "Node.js", "MCP"]}
-        >
-          <ul className="tw-links" aria-label="TRACE Workbench links">
-            <li>
-              <a href={REPO} target="_blank" rel="noopener noreferrer">
-                Repository <ArrowUpRight size={14} aria-hidden="true" />
-              </a>
-            </li>
-            <li>
-              <a href={LANDING_PR} target="_blank" rel="noopener noreferrer">
-                Landing page (PR #4) <ArrowUpRight size={14} aria-hidden="true" />
-              </a>
-            </li>
-            <li className="tw-links-note">Private repository: links open for collaborators only.</li>
-          </ul>
-          <Shot
-            src={landingHero}
-            alt="The TRACE Workbench landing page: a dark hero over a particle field, the eyebrow Shared computer control for AI agents, the title TRACE Workbench, the line One interface for Codex, Claude Code, Grok Build, and Gemini CLI to observe and operate Windows, and the buttons View on GitHub and Where it stands."
-            figure="Fig. 01"
-            chrome="TRACE Workbench · landing page"
-            caption="The landing page from PR #4 (site/index.html), with the signal-field hero."
-            priority
-          />
-        </DetailHero>
+        />
 
         <Section
           id="skills"
           index="01"
-          eyebrow="Skills"
-          title="The first two skills."
-          intro="Shared tools that give agents abilities beyond written instructions. The shared desktop executor is not implemented yet. This version contains engineering setup and recorded workflow evidence."
+          eyebrow="What it does"
+          title="Early, honest, and moving."
+          intro="TRACE is in its development foundation phase: engineering setup and recorded workflow evidence, with the first two skills selected. The shared desktop executor is not implemented yet. What's here is real, and what's not is stated plainly."
         >
           <FeatureGrid features={FEATURES} columns={2} />
-          <StatusDetails status="0.1.0-alpha.1 · 38 unit tests passed · shared desktop executor not implemented yet">
+          <StatusDetails status="v0.1.0-alpha.1 · 38 unit tests passed · 207 analysis tools via MCP · executor not yet implemented">
             <Stats
               stats={[
-                { value: "38", label: "Unit tests", note: "All passed." },
-                {
-                  value: "207",
-                  label: "Analysis tools",
-                  note: "Discovered through the development MCP connection; static fixture analysis passed and owned processes exited.",
-                },
-                {
-                  value: "2",
-                  label: "REPLAY modules",
-                  note: "Two selected modules from packaged REPLAY were analyzed without changing its package.",
-                },
-                {
-                  value: "12 × 3 = 36",
-                  label: "Calculator demo",
-                  note: "Demonstrated by the existing Computer Use executor, reviewed by two observers.",
-                },
+                { value: "38", label: "Unit tests", note: "Passed." },
+                { value: "207", label: "Analysis tools", note: "Discovered via MCP." },
+                { value: "12 × 3 = 36", label: "Calculator demo", note: "Reviewed by 2 observers." },
+                { value: "2", label: "REPLAY modules", note: "Analyzed without changing its package." },
               ]}
             />
-            <DetailsHeading>Scope</DetailsHeading>
-            <Limits
-              items={[
-                "The development skill and analysis connection are installed.",
-                "Native decompilation engines and live Claude/Grok/Gemini model sessions were not tested.",
-                "The Calculator demonstration records the workflow TRACE aims to support; it does not establish a working TRACE executor.",
-                "Selected scope does not mean both skills are finished. The next implementation priority is Computer Use, while preserving the verified analysis setup.",
-                "Both skills need acceptance checks with Codex, Claude Code, Grok Build, and Gemini CLI before claiming universal availability.",
-              ]}
-            />
-            <DetailsHeading>Future skills under review</DetailsHeading>
-            <Limits
-              items={[
-                "Browser operation and debugging: complete web workflows and inspect browser errors/performance.",
-                "Screen understanding: identify interactive regions from screenshots.",
-                "Voice and listening: generate narration, transcribe audio, and align speech timing.",
-                "Recorded-demo production and inspection: coordinate REPLAY editing and verify recorded footage/exports.",
-                "Document intelligence: extract structured content from scans, PDFs, tables, and Office files.",
-                "Recoverable parallel workers: run isolated Windows jobs with restore points and task recovery.",
-              ]}
-            />
-            <div className="pd-copy">
-              <p>Future candidates have no assigned release or implementation approval.</p>
-            </div>
           </StatusDetails>
         </Section>
 
         <Section
-          id="screens"
+          id="evidence"
           index="02"
           eyebrow="Evidence"
-          title="Recorded workflow evidence."
-          intro="The existing Computer Use executor demonstrated Calculator 12 × 3 = 36, reviewed by two observers. It records the workflow TRACE aims to support; it does not establish a working TRACE executor."
+          title="Calculator, 12 × 3 = 36."
+          intro="The existing Computer Use executor demonstrated the workflow TRACE aims to support, reviewed by two observers: one click per fresh observation of the Calculator window."
         >
-          <div className="pd-gallery tw-gallery">
-            <Shot
-              src={calculator12}
-              alt="Windows Calculator in Standard mode showing 12, with the pointer on the 2 key."
-              figure="Fig. 02"
-              chrome="Calculator · observation"
-              caption="A retained observation frame from the recorded workflow: 12 entered."
-              className="tw-shot-calc"
-            />
-            <Shot
-              src={calculator36}
-              alt="Windows Calculator in Standard mode showing the expression 12 × 3 = and the result 36, with the pointer on the equals key."
-              figure="Fig. 03"
-              chrome="Calculator · observation"
-              caption="The final frame: 12 × 3 = 36."
-              className="tw-shot-calc"
-            />
-            <Shot
-              src={landingStatus}
-              alt="The landing page's Where it stands section: the heading Early, honest, and moving., two skill cards for Reverse Engineer Anything and Computer Use, and a row of stats: 38 unit tests passed, 207 analysis tools discovered via MCP, and the 12 × 3 = 36 Calculator demo."
-              figure="Fig. 04"
-              chrome="TRACE Workbench · where it stands"
-              caption="The landing page's status section from PR #4."
-              className="pd-shot-wide"
-            />
+          <Frame
+            chrome="trace.jsonl · calculator session"
+            figure="Fig. 01"
+            caption="The 22 records of the 18 October 2026 session from the repo's evidence folder, shown as text. Its screenshots are 323 × 534 at 1x, so they aren't reproduced here."
+          >
+            <EvidenceLog />
+          </Frame>
+        </Section>
+
+        <Section
+          id="setup"
+          index="03"
+          eyebrow="How it works"
+          title="Run it on Windows."
+          intro="Requires a supported Node.js version; verified on Windows x64 with Node.js 26. Review the plan before applying it; setup preserves unrelated settings and backs up existing configuration."
+        >
+          <Frame
+            chrome="powershell · trace workbench"
+            figure="Fig. 02"
+            caption="The developer setup from the README. Scroll to run it: each command lights up in order."
+          >
+            <SetupRun />
+          </Frame>
+          <div className="pd-copy tw-after">
+            <p>
+              Personal configuration, credentials, raw private analysis, and application binaries stay outside Git. PRs target <code>2–3 commits</code>, max{" "}
+              <code>4</code>. See the repository rules before contributing.
+            </p>
           </div>
         </Section>
 
         <Section
-          id="run-it"
-          index="03"
-          eyebrow="Setup"
-          title="Run it on Windows."
-          intro="Requires a supported Node.js version; verified on Windows x64 with Node.js 26. Scroll to run the setup."
+          id="scope"
+          index="04"
+          eyebrow="Scope"
+          title="Honest scope."
+          intro="The development skill and analysis connection are installed. The Calculator demonstration records the workflow TRACE aims to support; it does not establish a working TRACE executor."
         >
-          <SetupRun />
+          <Ledger
+            yesLabel="Verified"
+            noLabel="Not yet"
+            yes={[
+              "38 unit tests passed.",
+              "207 analysis tools discovered through the development MCP connection; static fixture analysis passed and owned processes exited.",
+              "Two selected modules from packaged REPLAY analyzed without changing its package.",
+              "Calculator 12 × 3 = 36 with the existing Computer Use executor, reviewed by two observers.",
+            ]}
+            no={[
+              "Native decompilation engines.",
+              "Live Claude, Grok, and Gemini model sessions.",
+              "TRACE's own shared desktop executor, which still needs implementation.",
+              "Acceptance checks for both skills with each agent CLI.",
+            ]}
+          />
         </Section>
 
         <ProjectFooter
           current="/trace-workbench"
-          note={{ label: "Private repository · collaborators only", title: "The trace-workbench repository is private, so its GitHub links open only for collaborators." }}
+          note={{ label: "Private repository · no source link", title: "The trace-workbench repository is private, so this page links nowhere on GitHub." }}
         />
       </DetailShell>
     </TraceMotion>

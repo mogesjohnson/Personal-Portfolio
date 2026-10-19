@@ -63,7 +63,7 @@ The owner placed Projects in the header and kept both résumé buttons.
 - Every project and prototype page ends with `builds/project-footer/ProjectFooter.tsx`: one row with "All projects" (to `/projects`) and "Next project", which cycles through `detailPages` in `src/data/externalPages.ts` order. A new page joins the cycle by being listed there with a non-`page` kind and rendering `<ProjectFooter current="/its-route" />`.
 - The command palette keeps "Explore selected work" as a scroll to `#work`. "Open Projects" (`id` `projects-page`) closes the palette and routes to `/projects`.
 
-- The `trace-workbench` repo is private, like `replay-studio` and `switchyard`. Read it with `gh`. Its page copy comes only from `README.md` and `SKILLS.md` on `docs/advanced-capabilities` and from PR #4 (the landing page). The page links to the repo and to PR #4 because the owner asked for those links, and labels both "collaborators only". `portfolio.ts` leaves out `githubUrl`.
+- The `trace-workbench` repo is private, like `replay-studio` and `switchyard`. Read it with `gh`. Its page copy comes only from `README.md` and `SKILLS.md` on `docs/advanced-capabilities` and from PR #4 (the landing page). The evidence log comes from that branch's `evidence/0.1.0-alpha.1/computer-use/`. Like /switchyard, the page links nowhere on GitHub, and `portfolio.ts` leaves out `githubUrl`.
 
 A third centered group was suggested ("Reach", for Résumé and Schedule a chat) and was not added. The Active Directory lab becomes an external page only after that page exists.
 
