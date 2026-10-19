@@ -59,9 +59,11 @@ The owner placed Projects in the header and kept both résumé buttons.
 - The mobile menu has two centered labels. "Main website" heads the homepage sections. "External site pages" heads pages that leave the homepage, starting with Projects.
 - On `/projects`, the bar link "Main website" goes to `/`. Section links are `/#work`, `/#experience`, `/#about`, `/#stack`, and `/#contact`, so they map back to the homepage.
 - The work section stays free of a second Projects link.
-- Each entry in `src/data/externalPages.ts` has a `kind`: `page`, `prototype` or `project`. Project detail pages (`/replay-studio`, `/switchyard`) appear in the mobile menu, the DispatchBar menu and the command palette. The desktop header leaves them out so it does not overflow; the Work section reaches them through "Read the project page".
+- Each entry in `src/data/externalPages.ts` has a `kind`: `page`, `prototype` or `project`. Project detail pages (`/replay-studio`, `/switchyard`, `/trace-workbench`) appear in the mobile menu, the DispatchBar menu and the command palette. The desktop header leaves them out so it does not overflow; the Work section reaches them through "Read the project page".
 - Every project and prototype page ends with `builds/project-footer/ProjectFooter.tsx`: one row with "All projects" (to `/projects`) and "Next project", which cycles through `detailPages` in `src/data/externalPages.ts` order. A new page joins the cycle by being listed there with a non-`page` kind and rendering `<ProjectFooter current="/its-route" />`.
 - The command palette keeps "Explore selected work" as a scroll to `#work`. "Open Projects" (`id` `projects-page`) closes the palette and routes to `/projects`.
+
+- The `trace-workbench` repo is private, like `replay-studio` and `switchyard`. Read it with `gh`. Its page copy comes only from `README.md` and `SKILLS.md` on `docs/advanced-capabilities` and from PR #4 (the landing page). The page links to the repo and to PR #4 because the owner asked for those links, and labels both "collaborators only". `portfolio.ts` leaves out `githubUrl`.
 
 A third centered group was suggested ("Reach", for Résumé and Schedule a chat) and was not added. The Active Directory lab becomes an external page only after that page exists.
 
