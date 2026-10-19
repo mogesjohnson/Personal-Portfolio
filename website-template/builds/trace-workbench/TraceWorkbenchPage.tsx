@@ -2,12 +2,14 @@ import { Bot, MousePointerClick, ScanSearch, Telescope } from "lucide-react";
 import { ProjectFooter } from "../project-footer/ProjectFooter";
 import { DetailHero, DetailShell, FeatureGrid, Frame, Ledger, Section, Stats, StatusDetails, type Feature } from "../project-detail/ProjectDetail";
 import { LOG, SESSION } from "./evidence";
+import { SignalFieldFigure } from "./SignalFieldFigure";
 import { TraceMotion } from "./TraceMotion";
 
 /* The TRACE Workbench landing page (trace-workbench PR #4, site/index.html at 1db13de)
  * rebuilt in the shared project-detail layout as live text. Copy comes from PR #4,
  * README.md and SKILLS.md on docs/advanced-capabilities, minus two lines they don't
  * support ("built in the open, verified step by step" and "0 shortcuts taken"). The
+ * hero figure is the landing page's signal field, ported to a canvas component. The
  * evidence log is the repo's recorded Calculator trace (see evidence.ts). There are no
  * screenshots: TRACE has no window of its own yet, and the only real-app captures in the
  * repo (the Calculator evidence frames) are 323 x 534 at 1x. See BRIEF.md. */
@@ -104,9 +106,13 @@ export function TraceWorkbenchPage() {
         <DetailHero
           kicker="Project · October 2026"
           title="TRACE Workbench"
-          status="v0.1.0-alpha.1 · Windows x64 · development foundation · 18 October 2026"
+          status="v0.1.0-alpha.1 · Windows x64 · foundation · 18 October 2026"
           lead="One interface for Codex, Claude Code, Grok Build, and Gemini CLI to observe and operate Windows."
-        />
+        >
+          <Frame chrome="TRACE · signal field" figure="Fig. 01" caption="The TRACE signal field, from the landing page.">
+            <SignalFieldFigure />
+          </Frame>
+        </DetailHero>
 
         <Section
           id="skills"
@@ -137,7 +143,7 @@ export function TraceWorkbenchPage() {
         >
           <Frame
             chrome="trace.jsonl · calculator session"
-            figure="Fig. 01"
+            figure="Fig. 02"
             caption="The 22 records of the 18 October 2026 session from the repo's evidence folder, shown as text. Its screenshots are 323 × 534 at 1x, so they aren't reproduced here."
           >
             <EvidenceLog />
@@ -153,7 +159,7 @@ export function TraceWorkbenchPage() {
         >
           <Frame
             chrome="powershell · trace workbench"
-            figure="Fig. 02"
+            figure="Fig. 03"
             caption="The developer setup from the README. Scroll to run it: each command lights up in order."
           >
             <SetupRun />

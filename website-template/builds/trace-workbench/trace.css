@@ -126,3 +126,33 @@
     grid-column: 2;
   }
 }
+
+/* Fig. 01: the landing page's signal field, in the hero frame. Same box as the
+ * hero screenshots on /switchyard and /replay-studio: full frame width, their
+ * 2560 x 1544 aspect, and the shared image border and radius. */
+.tw-field {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 2560 / 1544;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--bg);
+}
+
+.tw-field canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* The landing page's vignette, so the field fades into the page colour at the edges. */
+.tw-field::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 70% 55% at 50% 45%, transparent 30%, var(--bg) 92%);
+}
