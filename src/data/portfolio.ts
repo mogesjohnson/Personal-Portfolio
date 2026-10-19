@@ -532,8 +532,8 @@ export interface ExportOptions {
     pageUrl: "/trace-workbench",
     metrics: [
       { label: "Version", value: "0.1.0-alpha.2" },
-      { label: "Tests", value: "109 passed, 1 skipped" },
-      { label: "Computer tools", value: "6 MCP tools" },
+      { label: "Computer tools", value: "6" },
+      { label: "Agent CLIs", value: "4" },
     ],
     codeArtifact: {
       title: "The six Computer Use tools",
