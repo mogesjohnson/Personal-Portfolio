@@ -1,163 +1,62 @@
-/* /trace-workbench only. Everything else on the page is the shared project-detail
- * layout; these rules cover what sits inside its two Frames: the evidence log and the
- * setup run. Site tokens: amber is the run's progress rail, sky the commands. */
+/* /trace-workbench only. The three recorded runs inside Fig. 01.
+ * Reduced motion and no-JS leave every row lit. Full motion dims a row until
+ * the scroll reaches its data-at cue. */
 
-.tw-run {
-  --t: 1;
+.tw-examples {
   display: grid;
-  grid-template-columns: 3px minmax(0, 1fr);
-  gap: clamp(0.8rem, 2vw, 1.25rem);
-  padding: clamp(0.4rem, 1.4vw, 0.9rem) clamp(0.4rem, 1.4vw, 0.9rem);
-}
-
-.tw-rail {
-  position: relative;
-  overflow: hidden;
-  border-radius: 999px;
-  background: var(--line);
-}
-
-.tw-rail i {
-  position: absolute;
-  inset: 0 0 auto;
-  height: calc(var(--t) * 100%);
-  border-radius: inherit;
-  background: var(--amber);
-}
-
-.tw-run pre {
+  gap: 0;
   margin: 0;
-  overflow-x: auto;
-  color: var(--sky-text);
-  font-family: var(--font-dispatch-mono), ui-monospace, monospace;
-  font-size: clamp(0.78rem, 1.6vw, 0.95rem);
-  line-height: 1.95;
-}
-
-.tw-line {
-  transition: opacity 0.35s ease;
-}
-
-.tw-line.is-dim {
-  opacity: 0.28;
-}
-
-.tw-comment {
-  color: var(--pd-muted);
-}
-
-.tw-after {
-  margin-top: 1.5rem;
-}
-
-/* The shared `.pd code` chip is for inline code; the terminal's block of code stays flat. */
-.tw-run pre code {
-  padding: 0;
-  border: 0;
-  border-radius: 0;
-  background: none;
-}
-
-/* Fig. 01: the recorded Calculator trace as text. Four columns on desktop; on a phone
- * the method and detail drop under the sequence and type. */
-.tw-log {
-  padding: clamp(0.4rem, 1.4vw, 0.9rem);
-  font-family: var(--font-dispatch-mono), ui-monospace, monospace;
-  font-size: clamp(0.74rem, 1.4vw, 0.86rem);
-  line-height: 1.5;
-}
-
-.tw-log-head {
-  margin: 0 0 0.85rem;
-  color: var(--pd-muted);
-  overflow-wrap: anywhere;
-}
-
-.tw-log-head span {
-  color: var(--amber-text);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.tw-log ol {
-  display: grid;
-  gap: 0.2rem;
-  margin: 0;
-  padding: 0;
+  padding: clamp(0.3rem, 1.2vw, 0.7rem) clamp(0.5rem, 1.6vw, 1rem);
   list-style: none;
 }
 
-.tw-log li {
+.tw-examples li {
   display: grid;
-  grid-template-columns: 2.2rem 7.5rem 12.5rem minmax(0, 1fr);
-  gap: 0 1rem;
-  padding: 0.3rem 0;
+  grid-template-columns: 2.4rem minmax(0, 1fr);
+  gap: 0.85rem;
+  padding: 0.95rem 0;
   border-top: 1px solid var(--line);
+  transition: opacity 0.35s ease;
 }
 
-.tw-log-seq {
+.tw-examples li:first-child {
+  border-top: 0;
+}
+
+.tw-examples li.is-dim {
+  opacity: 0.32;
+}
+
+.tw-ex-num {
   color: var(--amber-text);
+  font-family: var(--font-dispatch-mono), ui-monospace, monospace;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
 }
 
-.tw-log-type {
-  color: var(--pd-muted);
-}
-
-.tw-log-method {
+.tw-ex-kicker {
+  margin: 0 0 0.15rem;
   color: var(--sky-text);
+  font-family: var(--font-dispatch-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
-.tw-log li.is-warn .tw-log-detail {
-  color: var(--amber-text);
-}
-
-.tw-log li.is-ok .tw-log-detail {
-  color: var(--text);
-  font-weight: 600;
-}
-
-@media (max-width: 640px) {
-  .tw-log li {
-    grid-template-columns: 2rem minmax(0, 1fr);
-  }
-
-  .tw-log-method,
-  .tw-log-detail {
-    grid-column: 2;
-  }
-}
-
-/* Fig. 01: the landing page's signal field, in the hero frame. Same box as the
- * hero screenshots on /switchyard and /replay-studio: full frame width, their
- * 2560 x 1544 aspect, and the shared image border and radius. */
-.tw-field {
-  position: relative;
+.tw-examples strong {
   display: block;
-  width: 100%;
-  aspect-ratio: 2560 / 1544;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  /* The landing hero's focal glow: the site's amber --glow at the centre, a faint sky
-   * wash beside it. Both are theme tokens, so light mode gets its own amber. */
-  background:
-    radial-gradient(ellipse 42% 48% at 46% 46%, var(--glow), transparent 70%),
-    radial-gradient(ellipse 36% 42% at 60% 56%, color-mix(in srgb, var(--sky) 9%, transparent), transparent 70%),
-    var(--bg);
+  color: var(--text);
+  font-family: var(--font-dispatch-serif), Georgia, serif;
+  font-size: clamp(1.25rem, 2.4vw, 1.7rem);
+  font-weight: 450;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
 }
 
-.tw-field canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-
-/* The landing page's vignette, so the field fades into the page colour at the edges. */
-.tw-field::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: radial-gradient(ellipse 70% 55% at 50% 45%, transparent 30%, var(--bg) 92%);
+.tw-examples li p:last-child {
+  margin: 0.4rem 0 0;
+  max-width: 62ch;
+  color: var(--text-2);
+  font-size: 0.98rem;
+  line-height: 1.5;
 }

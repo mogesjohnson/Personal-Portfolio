@@ -256,7 +256,7 @@ export const diagrams: Record<DiagramKey, Diagram> = {
   trace: {
     width: 640,
     height: 420,
-    description: "Four agent CLIs, Codex, Claude Code, Grok Build and Gemini CLI, meet at one TRACE interface that reaches into a Windows window holding two skills: Reverse Engineer Anything, set up and verified, and Computer Use, selected and not yet implemented",
+    description: "Four agent CLIs, Codex, Claude Code, Grok Build and Gemini CLI, meet at one TRACE interface that reaches into a Windows window holding two skills: Reverse Engineer Anything and Computer Use",
     shapes: [
       ...traceAgents.map((a) => ({ type: "rect" as const, x: 24, y: a.y - 18, w: 136, h: 36 })),
       ...traceAgents.map((a) => ({ type: "line" as const, x1: 160, y1: a.y, x2: traceHub.x, y2: 210, tone: "faint" as const })),
@@ -265,7 +265,7 @@ export const diagrams: Record<DiagramKey, Diagram> = {
       { type: "rect", x: 436, y: 60, w: 184, h: 300 },
       { type: "line", x1: 436, y1: 86, x2: 620, y2: 86, tone: "faint" },
       { type: "rect", x: 454, y: 106, w: 148, h: 104, tone: "accent" },
-      { type: "rect", x: 454, y: 230, w: 148, h: 110 },
+      { type: "rect", x: 454, y: 230, w: 148, h: 110, tone: "accent" },
     ],
     labels: [
       ...traceAgents.map((a) => ({ x: 92, y: a.y + 4, text: a.label, anchor: "middle" as const })),
@@ -520,8 +520,8 @@ function recipeTrace(): Primitive[] {
     { weight: 2.5, make: segment(436, 86, 620, 86, 2, 0.8) },
     { weight: 8, make: rectOutline(454, 106, 148, 104, 0) },
     { weight: 2, make: rectFill(458, 110, 140, 96, 0) },
-    // Skill 02 is selected but its executor is not built: a sparse, soft outline.
-    { weight: 4, make: rectOutline(454, 230, 148, 110, 2) },
+    { weight: 8, make: rectOutline(454, 230, 148, 110, 0) },
+    { weight: 2, make: rectFill(458, 234, 140, 102, 0) },
   ];
   for (const a of traceAgents) {
     prims.push({ weight: 5, make: rectOutline(24, a.y - 18, 136, 36, 1) });

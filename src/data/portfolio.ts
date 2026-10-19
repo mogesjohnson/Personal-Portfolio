@@ -524,34 +524,34 @@ export interface ExportOptions {
     signal: "trace",
     category: "AI Agent Tooling",
     year: "2026",
-    summary: "Shared tools that give agents abilities beyond written instructions. The goal is one interface for Codex, Claude Code, Grok Build, and Gemini CLI to observe and operate Windows. The first two skills are Reverse Engineer Anything and Computer Use.",
-    problem: "Four agent CLIs (Codex, Claude Code, Grok Build, and Gemini CLI) each need a way to observe and operate Windows. TRACE's goal is one interface for all of them, with each skill checked against every host before it claims universal availability.",
-    architecture: "Version 0.1.0-alpha.1 is the development foundation: engineering setup and recorded workflow evidence. bin/trace.cjs plans, applies and checks the development analysis tools, and scripts/link-grok-skill.cjs links the skill. The shared desktop executor is not implemented yet.",
-    tradeoff: "Selected scope does not mean both skills are finished. The next implementation priority is Computer Use, while preserving the verified analysis setup; native decompilation engines and live Claude/Grok/Gemini model sessions were not tested.",
+    summary: "Local Windows tools for Codex, Claude Code, Grok Build, and Gemini CLI. Reverse Engineer Anything inspects artifacts. Computer Use observes a window and operates it.",
+    problem: "Those four CLIs each need the same way to see a Windows window and act on it. TRACE is that interface. A skill stays short of universal until it has been checked with each host.",
+    architecture: "Version 0.1.0-alpha.2 is a Windows preview. Computer Use exposes six MCP tools: doctor, list windows, open a session, observe, act, and close the session. One session holds the desktop at a time. The analysis connection still exposes 207 tools.",
+    tradeoff: "Verified on a window TRACE owns, plus an 18 October Calculator run that used the earlier executor. Key chords, scrolling, dragging, and a full task with each agent are still open. Live Grok and Gemini sessions are unverified.",
     tags: ["Node.js", "MCP", "Windows", "Codex", "Claude Code", "Grok Build", "Gemini CLI"],
     pageUrl: "/trace-workbench",
     metrics: [
-      { label: "Version", value: "0.1.0-alpha.1" },
-      { label: "Unit tests", value: "38 passed" },
-      { label: "Analysis tools", value: "207 via MCP" },
+      { label: "Version", value: "0.1.0-alpha.2" },
+      { label: "Tests", value: "109 passed, 1 skipped" },
+      { label: "Computer tools", value: "6 MCP tools" },
     ],
     codeArtifact: {
-      title: "Developer setup",
-      language: "powershell",
-      filename: "README.md",
-      code: `npm ci
-node bin/trace.cjs plan
-node bin/trace.cjs apply
-node scripts/link-grok-skill.cjs --plan
-node scripts/link-grok-skill.cjs --apply
-node bin/trace.cjs doctor`,
-      explanation: "From the README on docs/advanced-capabilities. These commands configure development analysis tools. Review the plan before applying it; setup preserves unrelated settings and backs up existing configuration. Verified on Windows x64 with Node.js 26.",
+      title: "The six Computer Use tools",
+      language: "mcp",
+      filename: "evidence/0.1.0-alpha.2/computer-live.json",
+      code: `trace_computer_doctor
+trace_computer_list_windows
+trace_computer_open_session
+trace_computer_observe
+trace_computer_act
+trace_computer_close_session`,
+      explanation: "The six tools on the trace-computer server in 0.1.0-alpha.2. A live stdio run called them against a window the test owns: seven actions, eight fresh screenshots. Typing, a coordinate click, an invoke, a checkbox, and the desktop lease were checked.",
     },
     architectureFlow: [
-      { step: "01", label: "Install", tech: "npm ci", detail: "Install dependencies." },
-      { step: "02", label: "Plan & apply", tech: "bin/trace.cjs plan · apply", detail: "Review the plan before applying it; setup backs up existing configuration." },
-      { step: "03", label: "Link the skill", tech: "scripts/link-grok-skill.cjs", detail: "The same plan-then-apply step for the skill link." },
-      { step: "04", label: "Verify", tech: "bin/trace.cjs doctor", detail: "Verify the setup." },
+      { step: "01", label: "Doctor", tech: "trace_computer_doctor", detail: "Continue when the provider reports ready." },
+      { step: "02", label: "Pick the window", tech: "list windows · open session", detail: "Open the exact window id that came back. One desktop lease at a time." },
+      { step: "03", label: "Observe, then act", tech: "observe · act", detail: "One action, bound to the latest observation." },
+      { step: "04", label: "Check, then release", tech: "fresh screenshot · close session", detail: "Read the new frame before the next action. Closing the session releases the desktop." },
     ],
   },
 ];

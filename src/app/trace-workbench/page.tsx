@@ -22,7 +22,7 @@ const mono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: "TRACE Workbench | Moges Johnson",
   description:
-    "TRACE Workbench: one interface for Codex, Claude Code, Grok Build, and Gemini CLI to observe and operate Windows. Early development.",
+    "TRACE Workbench: local Windows tools for Codex, Claude Code, Grok Build, and Gemini CLI. Windows preview, v0.1.0-alpha.2.",
 };
 
 export default function Page() {

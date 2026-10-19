@@ -1,53 +1,37 @@
 # TRACE Workbench project page: brief
 
-Stations 1–3 merged (METHODS: section builds may merge). Route `/trace-workbench`, mounted from `src/app/trace-workbench/page.tsx` per CONNECTIONS.md. It follows the REPLAY Studio and Switchyard pages from PR #17.
+Route `/trace-workbench`, mounted from `src/app/trace-workbench/page.tsx`. Same shell as `/replay-studio` (the owner said that page is the one to keep). Shorter, on the owner's request of 2026-10-19: a direct test line, then a few recorded examples. The Shadow Army page was the length reference.
 
 ## Brief
 
-- **Kind:** page (a project detail page, one of the "External site pages").
-- **Host app:** this portfolio (`src/app/trace-workbench`). Previewed with `npm run build && npm start`.
-- **Audience:** recruiters and engineers coming from the Work section or the site menu.
-- **One message:** TRACE Workbench is one interface for Codex, Claude Code, Grok Build, and Gemini CLI to observe and operate Windows. It is early: engineering setup and recorded workflow evidence, with the first two skills selected.
-- **What the page is:** the TRACE landing page (trace-workbench PR #4, `site/index.html` at `1db13de`), rebuilt natively in the shared project-detail layout as live text (owner request and the PR #18 review, 2026-10-18). It has the same four-section rhythm as /switchyard and /replay-studio:
-  - The hero (eyebrow, title, version line, pitch) is `DetailHero`. The version line follows the house format: `v0.1.0-alpha.1 · Windows x64 · foundation · 18 October 2026` (package.json, checks.json `win32`/`x64`, and the evidence date; "foundation" is short for the README's "development foundation").
-  - Its Fig. 01 is the landing page's signal field, ported to `SignalFieldFigure.tsx` (a canvas client component) inside the shared `Frame`, at the hero figures' 2560 × 1544 aspect. It follows the theme tokens, draws at devicePixelRatio (capped at 2), pauses off-screen and in a hidden tab, respawns when the frame resizes, and holds one seeded still frame under reduced motion. Its node count follows the frame area (one per 1,600 px², 40 to 480: 466 at 1440, 40 at 390), so desktop is as dense as the phone. Links use a LINK_DIST grid, batched alpha bands and a 2,400-link raster budget. Link lines use `--text-2` (alpha 0.36 in light, 0.16 in dark), and the frame has a soft `--glow` amber and `--sky` focal glow.
-  - "01 What it does" is PR #4's "Status" section. It has a four-card `FeatureGrid`: the two skills from PR #4 and SKILLS.md, the four agent CLIs (README, SKILLS.md), and the future skills under review (SKILLS.md). Its stats go in `StatusDetails` with `Stats`.
-  - "02 Evidence" is Fig. 02: the recorded Calculator session (`evidence/0.1.0-alpha.1/computer-use/trace.jsonl`, 22 records) as a text log inside the shared `Frame`. The rows are condensed from each record's fields, and the display values come from `independent-review.json`. See `evidence.ts`.
-  - "03 How it works" is PR #4's "Setup" section, with its terminal as Fig. 03 in a `Frame` and its rules line in `.pd-copy`.
-  - "04 Scope" is PR #4's "Honest scope" note, as a `Ledger` of what is verified and what isn't yet (README "Verified" and "Scope", SKILLS.md).
-  - The footer is `ProjectFooter`.
-- **Copy:** from PR #4, README.md and SKILLS.md (on `docs/advanced-capabilities`, 0.1.0-alpha.1), minus two lines they don't support. One is "built in the open, verified step by step" (the repo is private). The other is the "0 shortcuts taken in verification" stat. Its slot in the four-stat grid holds a README fact instead: two REPLAY modules analyzed without changing the package. PR #4 drops the same two lines. Nothing is invented, and there is no `[[placeholder]]` copy.
-- **Left out from PR #4:** the hero link row and the three doc links. The repo is private and the landing page has no public host, so the page links nowhere on GitHub, like /switchyard. The footer note says so. `portfolio.ts` leaves out `githubUrl`, as REPLAY Studio and Switchyard do.
-- **No screenshots:** figures may only be crisp 2x captures of TRACE actually working, never a webpage screenshot.
-  - TRACE has no app window yet; its executor is not implemented.
-  - The only real-app captures in the repo are the six Calculator evidence frames in `evidence/0.1.0-alpha.1/computer-use/frames/`, which are 323 × 534 at 1x. A fresh 2x capture would not be that recorded evidence, and it needs the Windows machine.
-  - So the landing-page screenshots and the Calculator frames were removed, and `media/` is gone. All three figures are drawn live (a canvas and two text figures) in the shared `Frame`, so they follow the light and dark themes.
-- **No demo video:** there is no recording of TRACE itself.
-- **Motion budget:** calm plus one signature move. That means reveals, split headings and word scrub, plus the setup run. The hero's signal field is the landing page's ambient drift, kept to its frame; the homepage has this project's `trace` formation.
+- **Kind:** page. **Host:** this portfolio. **Audience:** someone coming from the Work section or the menu.
+- **One message:** TRACE is local Windows tools for Codex, Claude Code, Grok Build, and Gemini CLI. Two skills: reverse engineering, and computer use.
+- **What the page is:** two sections in the shared project-detail components.
+  - Hero: eyebrow, title, version line, one-sentence pitch, and four facts. The facts are the test line: 109 passed, 1 symlink skip, 6 computer tools, 207 analysis tools.
+  - 01 What it does: four cards. The intro sentence names the skip (a file-symlink check that needs Windows developer mode).
+  - 02 Examples: three recorded runs in one frame. Scroll lights each row. That is the signature move (`example-run.ts`).
+  - Footer: private repository, no GitHub link. `portfolio.ts` leaves out `githubUrl`.
+- **Left off on purpose:** the landing-page signal field, the 22-row Calculator log, the setup-command terminal, the scope ledger, and the future-skills list. The owner asked for the test result in one place, then examples tied to the project.
+- **No screenshots.** The Calculator frames are 323×534 and the alpha.2 fixture frames are 564×697, both at 1x. The examples are text.
 
-## Overrides of RULES.md (user instruction wins, recorded here)
+## Sources
 
-- **R1/R2 (new palette and type):** the user asked for the page to line up exactly with /switchyard and /replay-studio. So it uses only the shared project-detail components, the `globals.css` tokens, and the Newsreader / IBM Plex Mono pairing.
-- **R12 (no edits outside the build):** the user asked for this page on the website. So `src/app/trace-workbench`, `src/data/externalPages.ts`, `src/data/portfolio.ts`, the homepage formations, `SignalField.tsx`, README and CONNECTIONS were edited.
-  - The shared `project-detail/ProjectDetail.tsx` gained `Frame`, the figure frame that `Shot` already drew, now usable for code-drawn figures. `Shot` renders through it with the same DOM as before.
-  - `externalPages.ts` gained an optional `menuLabel`. TRACE shows as "TRACE" in the two large mobile menus so it fits on one line at 390 px. The shared `.dispatch-bar` keeps its link and label on one line and hides the label below 30rem, where it wrapped on every project page.
-- **R14 / METHODS station 0 (branch name):** the branch is `grok/add-trace-workbench`, as the user asked, stacked on `grok/add-replay-studio-switchyard` (PR #17).
+Read 2026-10-19 with `gh` from `mogesjohnson/trace-workbench` `main` at `7b2ff921c6c4f129cb7d37ee0a1df801659ae2a0`, package `0.1.0-alpha.2`. Nothing on the page is newer than these files.
+
+- `README.md`: version, Windows preview, the four CLIs, the two skills, six MCP tools, 109 passed and 1 skipped, 207 analysis tools, four client registrations, and what remains open.
+- `SKILLS.md`: skill status. Computer Use's executor and six tools are implemented. Acceptance with every host is still open. Grok and Gemini live coverage is reported separately.
+- `docs/VERIFICATION.md` and `evidence/0.1.0-alpha.2/checks.json`: 109 passed, 0 failed, 1 skipped. Skip reason: creating a file symlink needs developer mode on that Windows host. Review date 19 October 2026. Codex connection check passed. Full agent-task acceptance is pending.
+- `evidence/0.1.0-alpha.2/computer-live.json` and `independent-review.json`: seven actions, eight PNGs, typing, value, coordinate click, invoke, checkbox, lease. Visible end state: counter 2, option checked.
+- `docs/OBSERVED-WORKFLOW.md`: Calculator, five clicks, frames `0 → 1 → 12 → 12× → 3 → 36`, two reviewers, 18 October 2026. That run used the earlier executor. It does not establish the alpha.2 executor.
+- `docs/VERIFICATION.md` analysis table: two packaged REPLAY modules parsed, package hash unchanged. That check is from the alpha.1 foundation and is still the recorded REPLAY example.
+
+## Overrides of RULES.md
+
+- **R1/R2:** the page uses the shared project-detail components, the site tokens, and Newsreader / IBM Plex Mono, so it lines up with `/replay-studio`.
+- **R12:** `src/app/trace-workbench`, `src/data/portfolio.ts`, the homepage `trace` formation, `README.md`, and `CONNECTIONS.md` carry the same facts. The formation draws both skills solid, because Computer Use now has an executor.
+- **R14:** branch `grok/add-trace-workbench`, stacked on `grok/add-replay-studio-switchyard` (PR #17).
 
 ## Score
 
-- `splitHeadings`, `batchReveal`, `scrubWords`: the shared kit (`project-detail/scenes.ts`). Reduced motion leaves them static and fully visible.
-- **Signature: `setup-run.ts`.**
-  - Trigger: the "Run it on Windows" section.
-  - Range: start `top 65%`, end `bottom 75%`.
-  - Progress drives `--t` (the amber rail's fill). It also sets `.is-dim` on each comment and command line until progress reaches that line's `data-at` cue: 0.02 / 0.06 / 0.20 / 0.26 / 0.40 / 0.54 / 0.68 / 0.80 / 0.86.
-  - Static state: the rail is full and every line is lit.
-- `project-detail/no-intro.ts` turns off the first-visit intro hold.
-- `trace.css` holds only the signal field, the evidence log and the setup run, inside their Frames. Everything else is shared CSS.
-
-## Homepage formation
-
-`trace` in `src/components/live/formations.ts` is new geometry.
-
-- The four agent CLIs meet at one TRACE interface.
-- That interface feeds a Windows window holding the two skills.
-- Skill 01 is drawn solid (setup verified). Skill 02 is drawn without the accent (selected; executor not implemented yet).
+- Shared kit: `splitHeadings`, `batchReveal`, `scrubWords`. Reduced motion leaves them static.
+- **Signature: `example-run.ts`.** The examples list is the trigger. Start `top 65%`, end `bottom 75%`. Progress sets `.is-dim` on each row until it passes that row's `data-at` (0.18, 0.48, 0.78). Static state: every row lit.
