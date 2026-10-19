@@ -8,11 +8,14 @@ Route `/trace-workbench`. Same shell as `/replay-studio`. The owner asked for a 
 - 01 What it is: four cards. One window, a fresh picture, one move, four agent CLIs. No test row, no ledger.
 - 02 How it's used: scroll fades that picture into the picture after one click (Dusk). Three steps light up with the fade. That is the signature move (`look-again.ts`).
 - 03 Demo: a six-second silent loop of the same fade.
+- 04 Doing more: a one-minute silent loop of a longer run on the same sample. TRACE adds a text box, types "Follow the cut.", drags that box up, scrubs the playhead, and presses play.
 - Footer: private repository, no GitHub link.
 
 ## The run
 
 19 October 2026. REPLAY Studio browser preview at `http://127.0.0.1:5199/` (repo `replay-studio`, `npm run dev`). The preview's own sample project is "A little less busy", a made-up app named fold. TRACE computer use opened that Edge window, looked, and clicked the Dusk canvas swatch. The frame around the sample changed from blue-green to purple. The Edge chrome is cropped off the figures. The click is the only action the page claims.
+
+The longer run, the same day, stayed on that sample and on Tide so it would not repeat the click. TRACE clicked Text, replaced "Add your text" with "Follow the cut.", dragged the new box up the canvas, dragged the playhead along the timeline, and clicked Play. The published cut starts once the editor is clear and runs about a minute. The cursor is in the picture.
 
 Not used: the developer's real REPLAY library. A first launch of the installed app opened an existing recording, and that window was closed without publishing any frame from it.
 
@@ -23,5 +26,5 @@ Not used: the developer's real REPLAY library. A first launch of the installed a
 ## Overrides of RULES.md
 
 - **R1/R2:** shared project-detail components, site tokens, Newsreader / IBM Plex Mono, so the page still lines up with `/replay-studio`.
-- **R12:** the page, its media, `public/videos/trace-workbench-demo.*`, the homepage card metrics, and this brief.
+- **R12:** the page, its media, `public/videos/trace-workbench-demo.*`, `public/videos/trace-workbench-more.*`, the homepage card metrics, and this brief.
 - **R14:** branch `grok/add-trace-workbench`, stacked on PR #17.

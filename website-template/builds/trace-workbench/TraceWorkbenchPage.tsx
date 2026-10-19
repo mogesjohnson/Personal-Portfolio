@@ -3,14 +3,15 @@ import { DemoVideo } from "../project-detail/DemoVideo";
 import { ProjectFooter } from "../project-footer/ProjectFooter";
 import { DetailHero, DetailShell, FeatureGrid, Section, Shot, type Feature } from "../project-detail/ProjectDetail";
 import again from "./media/again.jpg";
-import { demo } from "./demo";
+import { demo, moreDemo } from "./demo";
 import look from "./media/look.jpg";
 import { TraceMotion } from "./TraceMotion";
 
-/* What TRACE is, how a person uses it, and one real run: computer use on the
- * REPLAY Studio browser preview (sample project "A little less busy"). TRACE
- * clicked the Dusk canvas look. The sample is the preview's own made-up app.
- * No test ledger. Sources and the run are in BRIEF.md. */
+/* What TRACE is, how a person uses it, and two real runs on the REPLAY Studio
+ * browser preview (sample project "A little less busy"). The first run clicks
+ * the canvas from Tide to Dusk. The second adds a text box, types, drags,
+ * scrubs the timeline, and presses play. The sample is the preview's own
+ * made-up app. No test ledger. Sources and the runs are in BRIEF.md. */
 
 const FEATURES: Feature[] = [
   {
@@ -112,6 +113,22 @@ export function TraceWorkbenchPage() {
             chrome="trace · replay sample"
             figure="Fig. 02"
             caption="TRACE on the REPLAY Studio preview. Tide, then one click, then Dusk."
+          />
+        </Section>
+
+        <Section
+          id="more"
+          index="04"
+          eyebrow="Doing more"
+          title="The rest of the edit."
+          intro="Same sample, same window. A second text box, the line typed into it, the box dragged up, the playhead pulled along the timeline, then play."
+        >
+          <DemoVideo
+            video={moreDemo}
+            backdrop={look}
+            chrome="trace · replay sample"
+            figure="Fig. 03"
+            caption="TRACE on the REPLAY sample. The cursor adds Follow the cut, drags that callout up, scrubs to about nine seconds, and starts playback."
           />
         </Section>
 
