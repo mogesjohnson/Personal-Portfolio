@@ -138,7 +138,12 @@
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 10px;
-  background: var(--bg);
+  /* The landing hero's focal glow: the site's amber --glow at the centre, a faint sky
+   * wash beside it. Both are theme tokens, so light mode gets its own amber. */
+  background:
+    radial-gradient(ellipse 42% 48% at 46% 46%, var(--glow), transparent 70%),
+    radial-gradient(ellipse 36% 42% at 60% 56%, color-mix(in srgb, var(--sky) 9%, transparent), transparent 70%),
+    var(--bg);
 }
 
 .tw-field canvas {
