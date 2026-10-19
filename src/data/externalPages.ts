@@ -45,6 +45,14 @@ export const externalPages = [
     keywords: "switchyard windows project desk return tickets obsidian tauri rust",
     kind: "project",
   },
+  {
+    id: "trace-workbench",
+    label: "TRACE Workbench",
+    href: "/trace-workbench",
+    command: "Open TRACE Workbench",
+    keywords: "trace workbench ai agents computer use reverse engineer windows codex claude code grok build gemini cli mcp",
+    kind: "project",
+  },
 ] as const;
 
 /**

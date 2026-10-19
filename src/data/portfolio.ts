@@ -21,8 +21,8 @@ export interface Project {
   /** Figure code shown on the project diagram. */
   code: string;
   /** Particle formation the live signal field draws for this project. */
-  signal: "sys" | "tree" | "orbit" | "reel" | "yard";
-  category: "Systems & Infrastructure" | "Data Structures & C++" | "AI & Web Systems" | "Windows Desktop Apps";
+  signal: "sys" | "tree" | "orbit" | "reel" | "yard" | "trace";
+  category: "Systems & Infrastructure" | "Data Structures & C++" | "AI & Web Systems" | "Windows Desktop Apps" | "AI Agent Tooling";
   year: string;
   summary: string;
   problem: string;
@@ -514,6 +514,44 @@ export interface ExportOptions {
       { step: "02", label: "Prepare & confirm", tech: "Rust broker · 30 s intent", detail: "Folder, Terminal or Notes targets are validated, previewed, then dispatched." },
       { step: "03", label: "Return Ticket", tech: "SQLite · versioned", detail: "One next-action sentence, with optional note, blocker, time and energy." },
       { step: "04", label: "Read-only context", tech: "Obsidian vault reader", detail: "A bounded brief with citations from an isolated, read-only Python worker." },
+    ],
+  },
+  {
+    id: "trace-workbench",
+    title: "TRACE Workbench: Shared Windows Computer Control for AI Agents",
+    shortTitle: "Computer control for agents",
+    code: "06 / TRC",
+    signal: "trace",
+    category: "AI Agent Tooling",
+    year: "2026",
+    summary: "Shared tools that give agents abilities beyond written instructions. The goal is one interface for Codex, Claude Code, Grok Build, and Gemini CLI to observe and operate Windows. The first two skills are Reverse Engineer Anything and Computer Use.",
+    problem: "Four agent CLIs (Codex, Claude Code, Grok Build, and Gemini CLI) each need a way to observe and operate Windows. TRACE's goal is one interface for all of them, with each skill checked against every host before it claims universal availability.",
+    architecture: "Version 0.1.0-alpha.1 is the development foundation: engineering setup and recorded workflow evidence. bin/trace.cjs plans, applies and checks the development analysis tools, and scripts/link-grok-skill.cjs links the skill. The shared desktop executor is not implemented yet.",
+    tradeoff: "Selected scope does not mean both skills are finished. The next implementation priority is Computer Use, while preserving the verified analysis setup; native decompilation engines and live Claude/Grok/Gemini model sessions were not tested.",
+    tags: ["Node.js", "MCP", "Windows", "Codex", "Claude Code", "Grok Build", "Gemini CLI"],
+    pageUrl: "/trace-workbench",
+    metrics: [
+      { label: "Version", value: "0.1.0-alpha.1" },
+      { label: "Unit tests", value: "38 passed" },
+      { label: "Analysis tools", value: "207 via MCP" },
+    ],
+    codeArtifact: {
+      title: "Developer setup",
+      language: "powershell",
+      filename: "README.md",
+      code: `npm ci
+node bin/trace.cjs plan
+node bin/trace.cjs apply
+node scripts/link-grok-skill.cjs --plan
+node scripts/link-grok-skill.cjs --apply
+node bin/trace.cjs doctor`,
+      explanation: "From the README on docs/advanced-capabilities. These commands configure development analysis tools. Review the plan before applying it; setup preserves unrelated settings and backs up existing configuration. Verified on Windows x64 with Node.js 26.",
+    },
+    architectureFlow: [
+      { step: "01", label: "Install", tech: "npm ci", detail: "Install dependencies." },
+      { step: "02", label: "Plan & apply", tech: "bin/trace.cjs plan · apply", detail: "Review the plan before applying it; setup backs up existing configuration." },
+      { step: "03", label: "Link the skill", tech: "scripts/link-grok-skill.cjs", detail: "The same plan-then-apply step for the skill link." },
+      { step: "04", label: "Verify", tech: "bin/trace.cjs doctor", detail: "Verify the setup." },
     ],
   },
 ];
