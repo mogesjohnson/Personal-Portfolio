@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { AppWindow, Bot, Eye, MousePointerClick } from "lucide-react";
 import { DemoVideo } from "../project-detail/DemoVideo";
 import { ProjectFooter } from "../project-footer/ProjectFooter";
@@ -40,10 +41,12 @@ const FEATURES: Feature[] = [
   },
 ];
 
+/* The loop from skills/trace-computer-use/SKILL.md: observe, one action, then
+ * read the fresh observation that action returns. */
 const STEPS = [
-  { at: 0.12, title: "Look", body: "REPLAY Studio is open on its sample. The canvas is Tide, blue-green." },
-  { at: 0.42, title: "Act", body: "One click. Dusk, the purple look." },
-  { at: 0.72, title: "Look again", body: "The same window. The frame around the sample has turned purple." },
+  { call: "trace_computer_observe", title: "Look", body: "REPLAY Studio is open on its sample. The canvas is Tide, blue-green." },
+  { call: "trace_computer_act", title: "Act", body: "One click. Dusk, the purple look." },
+  { call: "fresh observation", title: "Look again", body: "The same window. The frame around the sample has turned purple." },
 ];
 
 export function TraceWorkbenchPage() {
@@ -81,17 +84,34 @@ export function TraceWorkbenchPage() {
           index="02"
           eyebrow="How it's used"
           title="Look. Then look again."
-          intro="Scroll. This is a real run on REPLAY Studio. One click changes the canvas from Tide to Dusk."
+          intro="This is a real run on REPLAY Studio. One click changes the canvas from Tide to Dusk."
         >
           <div className="tw-run" data-look>
             <figure className="tw-stage">
-              <img src={look.src} alt="REPLAY Studio sample in the Tide look, blue-green frame." />
-              <img className="tw-after" src={again.src} alt="" aria-hidden="true" />
+              <Image src={look} sizes="(max-width: 800px) 100vw, 50rem" alt="Before the click: REPLAY Studio on its sample, in the Tide look with a blue-green frame." />
+              <Image className="tw-after" src={again} sizes="(max-width: 800px) 100vw, 50rem" alt="After one click on the Dusk swatch: the same window, with the frame around the sample now purple." />
+              <span className="tw-sight" aria-hidden="true">
+                <i />
+                <i />
+                <i />
+                <i />
+              </span>
+              <span className="tw-diff" aria-hidden="true">
+                <b>Tide → Dusk</b>
+              </span>
+              <span className="tw-ring" aria-hidden="true" />
+              <span className="tw-cursor" aria-hidden="true">
+                <svg viewBox="0 0 16 24" focusable="false">
+                  <path d="M1 1v19.5l5-4.8 3.4 7.3 3.3-1.5-3.3-7.1H16z" />
+                </svg>
+              </span>
             </figure>
             <ol className="tw-steps">
               {STEPS.map((step, index) => (
-                <li key={step.title} data-at={step.at}>
-                  <span>0{index + 1}</span>
+                <li key={step.title} data-step={index}>
+                  <span>
+                    0{index + 1} · <code>{step.call}</code>
+                  </span>
                   <strong>{step.title}</strong>
                   <p>{step.body}</p>
                 </li>
