@@ -16,7 +16,7 @@ Route `/trace-workbench`. Same shell as `/replay-studio`. The owner asked for a 
 - 01 What it is: four cards. One window, a fresh picture, one move, four agent CLIs. No test row, no ledger.
 - 02 How it's used: the observation stage, the signature move (`look-again.ts`, score below). Beside it, three steps labelled with the loop from the skill: `trace_computer_observe`, `trace_computer_act`, then the fresh observation that the action returns.
 - 03 Demo: a six-second silent loop of the real click, Tide to Dusk.
-- 04 Doing more: a one-minute silent loop of a longer run on the same sample. TRACE adds a text box, types "Follow the cut.", drags that box up, scrubs the playhead, and presses play.
+- 04 Doing more: a 13-second silent loop cut from a longer run on the same sample. TRACE adds a text box, types "Follow the cut.", drags that box up, scrubs the playhead, and presses play.
 - Footer: private repository, no GitHub link. The hero has no repo or landing-page link either.
 
 ## Score
@@ -39,7 +39,7 @@ The shared shell (`builds/project-detail/scenes.ts`) gives the arrivals: split h
 
 19 October 2026. REPLAY Studio browser preview at `http://127.0.0.1:5199/` (repo `replay-studio`, `npm run dev`). The preview's own sample project is "A little less busy", a made-up app named fold. TRACE computer use opened that Edge window, looked, and clicked the Dusk canvas swatch. The frame around the sample changed from blue-green to purple. The Edge chrome is cropped off the figures. Sections 02 and 03 claim only that click. The cursor and sight marks on the stage are drawn in code. They mark where that click landed and what changed. They are not a capture.
 
-The longer run, the same day, stayed on that sample and on Tide so it would not repeat the click. TRACE clicked Text, replaced "Add your text" with "Follow the cut.", dragged the new box up the canvas, dragged the playhead along the timeline, and clicked Play. The published cut starts once the editor is clear and runs about a minute. The cursor is in the picture. Section 04 claims these actions.
+The longer run was recorded again on 20 October 2026 on the same sample, left on Tide so it would not repeat the click. It ran in a separate Edge profile in an app window at 1440 × 900, captured with ffmpeg Desktop Duplication at 30 fps. TRACE (local checkout `0.1.0-alpha.3.3` at `48bcef2`, one session) clicked Text, clicked into the inspector text field, selected all, typed "Follow the cut.", dragged the new box up the canvas (Y 78% to 36%), dragged the playhead from 00:01.5 to 00:08.9 and clicked Play. The raw take is 50 s. The published cut is 13.2 s: nine shots, each a hard cut, cropped to the area where that action happens. The waits between actions are cut out, and nothing is sped up or redrawn. The box and the playhead jump because TRACE sends each drag as a single press-move-release. The cursor is in the picture. Section 04 claims these actions.
 
 Not used: the developer's real REPLAY library. A first launch of the installed app opened an existing recording, and that window was closed without publishing any frame from it.
 

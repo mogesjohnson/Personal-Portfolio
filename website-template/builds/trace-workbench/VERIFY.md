@@ -39,7 +39,7 @@ Checked 2026-10-20 at `64745ba` on `review/f9-fixes` (stacked on PR #17), produc
 - pass: reduced motion (`Emulation.setEmulatedMedia`) at 1440 and 390, dark and light. It shows the rest pose, and both loops are paused on their posters. Nothing is stuck hidden: the only nodes under 0.99 opacity are the 2 closed-menu labels, which `/replay-studio` has too.
 - pass: with JavaScript disabled, the page shows the rest pose.
 - pass: no horizontal overflow and no console errors in every run.
-- pass: loop lengths are 5.6s and 60.0s, matching "six seconds" and "about a minute" in the copy.
+- pass: loop lengths are 5.6s and 13.2s. The second loop was re-recorded on 2026-10-20 (1440 × 864, 30 fps, H.264 and VP9, 378 KB and 269 KB). Its frames were checked: the callout appears, "Follow the cut." is typed, the box moves up, the playhead goes to 00:08.9, and playback runs.
 - pass: homepage Work item 06 draws `trace` as SVG under reduced motion and as SVG plus the live canvas in full motion.
 - pass: footer cycle Switchyard → `/trace-workbench` → `/shadow-army`.
 - n/a: intro, pinned track, particle budget on this page.
