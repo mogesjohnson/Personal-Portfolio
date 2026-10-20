@@ -4,7 +4,7 @@ Its own section. Visitor copy describes the board. It does not explain How to po
 
 Verified 2026-10-09 against `main` of [mogesjohnson/post-it-board](https://github.com/mogesjohnson/post-it-board): the README (raw), `supabase/schema.sql`, `store.js`, `app.js`, `index.html`, the shape of `config.js` (values not copied), the GitHub Pages API, and the branch-rules API.
 
-Updated 2026-10-11 from the owner's current facts: the Topics view, the mobile layout, the test suite, and the confirmed security setup (public sign-ups off, no service-role key). The builder notes below are still the 2026-10-09 reading unless marked.
+Updated 2026-10-11 from the owner's current facts: the Topics view, the mobile layout, the test suite, and the confirmed security setup (public sign-ups off, no service-role key). The builder notes below are still the 2026-10-09 reading unless marked. Updated again 2026-10-20 from the README on `main`: the Topics view became a searchable folder tree with per-topic links (`bb24625`, PR #7, 2026-10-18). The read-only MCP server and Edge Function (`426dbd0`) are left out: the commit calls them a draft, and the README still says "No Edge Functions".
 
 ## Visitor copy
 
@@ -14,7 +14,7 @@ Each day gets its own board. Each topic is one pin, a sticky note in yellow, pin
 
 A link can open one page. The hash looks like the README’s example: `#day=2026-10-05&pin=<id>&page=2`.
 
-A Topics view lists every topic across all days, most recently updated first, each with one living summary. It opens at `#view=topics`. The layout works on a phone.
+A Topics view is a folder tree: every topic across all days, most recently updated first, with its note count and one living summary. Folders can be searched by name, and `#view=topics&topic=<slug>` opens one. The layout works on a phone.
 
 Anyone can read the board. A lock icon is where the owner signs in. Everyone else gets a read-only board. The owner tools add a day, a pin, or a page, and they rename, select, and delete. Select mode marks a whole pin or a single page. Delete asks for confirmation, and it is permanent. Deleting a pin deletes its pages. There is no recycle bin.
 

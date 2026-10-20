@@ -103,7 +103,7 @@ Source, README on `main`, read 2026-10-09:
 - Demo mode uses `localStorage` when `config.js` is empty. `config.js` on `main` is filled, and Pages serves that tree, so the live site is not the demo. Do not describe the demo seed notes as the live board.
 - Deleting a pin deletes its pages. Deleting a day deletes its pins. There is no license file. Do not say MIT.
 - Shareable hashes look like `#day=2026-10-05&pin=<id>&page=2`.
-- Added 2026-10-11: a Topics view (https://mogesjohnson.github.io/post-it-board/#view=topics) lists every topic across days, most recently updated first, each with one living summary. The mobile layout works. A test suite covers the board, the inbox workflow, and the Topics view (`node tests/run.mjs`, `bash tests/workflow.sh`, `node tests/topics.mjs`).
+- Added 2026-10-11: a Topics view (https://mogesjohnson.github.io/post-it-board/#view=topics) lists every topic across days, most recently updated first, each with one living summary. Since 2026-10-18 it is a folder tree with name search and `#view=topics&topic=<slug>` links. The mobile layout works. A test suite covers the board, the inbox workflow, and the Topics view (`node tests/run.mjs`, `bash tests/workflow.sh`, `node tests/topics.mjs`).
 - `main` is protected by a pull-request ruleset. The page may say changes to `main` go through a pull request. It does not recite the ruleset id or the bypass settings.
 
 GitHub link: https://github.com/mogesjohnson/post-it-board
@@ -116,7 +116,7 @@ Its own section. It names the board as the place notes land, and it does not yet
 
 Source: the owner's current facts and the README on `main`, 2026-10-11:
 
-- The repo holds the docs (start with `docs/main-workflow-goal.md`) and the transcript poller in `poller/` (Node, no dependencies, 41 unit tests). No secrets in the repo.
+- The repo holds the docs (start with `docs/main-workflow-goal.md`) and the transcript poller in `poller/` (Node, no dependencies, 53 unit tests as of 2026-10-18; it skips throwaway chats before summarizing). No secrets in the repo.
 - Subject: how a conversation with Grok in a Tesla reaches the Post-it Board.
 - Goal: zero friction while driving. No screens, no typing, no taps. One pin per topic, one living summary per topic.
 - Transcript automation is the primary path and is live as of 2026-10-11. The Grok phone app mirrors car voice conversations with Ara into grok.com history with timestamps. A poller on an always-on Linux machine reads that history, picks voice chats, waits until a chat has been quiet for 10 minutes, summarizes it with a local open-weights model (Qwen3.5-2B, CPU only via llama.cpp, about 1.5–2 GB RAM, roughly 5–20 seconds per summary; chosen after testing Gemma 4 E2B and Qwen3.5 0.8B and 4B; GitHub Models was retired), and pushes an inbox command.
