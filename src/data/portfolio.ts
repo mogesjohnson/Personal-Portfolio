@@ -535,6 +535,8 @@ export interface ExportOptions {
     architecture: "Version 0.1.0-alpha.3 is a Windows preview, not a published release. Computer Use exposes six MCP tools: doctor, list windows, open a session, observe, act, and close the session. One session holds the desktop at a time. The analysis connection still exposes 207 tools.",
     tradeoff: "Verified on windows TRACE owns: exact key chords and selection, scrolling both ways, and drag and drop, plus a native guard that refuses input to a disabled window. Full modal recovery, a clean-machine setup, and a complete task with each agent are still open. Live Grok and Gemini sessions are unverified.",
     tags: ["Node.js", "MCP", "Windows", "Codex", "Claude Code", "Grok Build", "Gemini CLI"],
+    githubUrl: "https://github.com/mogesjohnson/trace-workbench",
+    repoPrivate: true,
     pageUrl: "/trace-workbench",
     metrics: [
       { label: "Version", value: "0.1.0-alpha.3" },

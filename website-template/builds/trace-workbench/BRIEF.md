@@ -7,7 +7,7 @@ Route `/trace-workbench`. Same shell as `/replay-studio`. The owner asked for a 
 - **Audience:** people reading the portfolio, from the homepage Work section, the menus, or the project-footer cycle.
 - **The one message:** TRACE lets an agent CLI see one Windows window, do one thing, and look again.
 - **Content inventory:** owner-supplied. Words from the sources below; pictures and loops from the two runs below. `fiction: false`. No placeholders.
-- **Constraints:** the site palette and fonts, the shared project-detail shell, and the private repo (no source link).
+- **Constraints:** the site palette and fonts, the shared project-detail shell, and the private repo. On 2026-10-20 the owner chose to link it with a "Private · collaborators only" label, through `ProjectFooter`'s `repo` prop and the Work card's `githubUrl` plus `repoPrivate`, as REPLAY Studio and Switchyard do.
 - **Motion budget:** `calm`. A few arrivals from the shared shell, plus one signature that carries the argument.
 
 ## What the page is

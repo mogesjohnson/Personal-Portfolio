@@ -154,7 +154,7 @@ export function TraceWorkbenchPage() {
 
         <ProjectFooter
           current="/trace-workbench"
-          note={{ label: "Private repository · no source link", title: "The trace-workbench repository is private, so this page links nowhere on GitHub." }}
+          repo={{ href: "https://github.com/mogesjohnson/trace-workbench", name: "mogesjohnson/trace-workbench", private: true }}
         />
       </DetailShell>
     </TraceMotion>
