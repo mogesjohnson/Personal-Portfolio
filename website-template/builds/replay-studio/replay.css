@@ -156,6 +156,17 @@
   background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--sky) 14%, transparent) 0 6px, transparent 6px 12px);
 }
 
+/* A clip is live while the playhead is inside it (timeline-scrub.ts). */
+.rp-clip {
+  transition: border-color 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out), color 0.3s var(--ease-out);
+}
+
+.rp-clip.is-live {
+  border-color: var(--sky);
+  box-shadow: inset 0 0 0 1px var(--sky), 0 0 18px color-mix(in srgb, var(--sky) 35%, transparent);
+  color: var(--text);
+}
+
 .rp-playhead {
   position: absolute;
   top: 0;
@@ -212,7 +223,7 @@
   gap: 0.6rem;
   padding: 0.85rem 0;
   border-top: 1px solid var(--line);
-  transition: opacity 0.35s ease;
+  transition: opacity 0.4s var(--ease-out);
 }
 
 .rp-steps li:last-child {

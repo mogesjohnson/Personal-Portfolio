@@ -86,17 +86,26 @@ function Yard() {
         <text className="sy-side-label" x="656" y="274">
           REMOTE REFERENCE · CANNOT LAUNCH LOCALLY
         </text>
-        <g className="sy-switch">
-          <circle cx="200" cy="190" r="9" />
+        <g className="sy-switch" data-switch data-x="200">
+          {/* The lever lies along the side track while waiting, and stands toward the main line once thrown. */}
+          <g className="sy-lever">
+            <line x1="200" y1="190" x2="240" y2="190" />
+            <circle cx="240" cy="190" r="5" />
+          </g>
+          <circle className="sy-switch-hub" cx="200" cy="190" r="9" />
           <text x="200" y="222" textAnchor="middle">
             SWITCH
           </text>
         </g>
         {[110, 330, 550, 770, 990].map((x, i) => (
-          <circle key={x} className="sy-stop" cx={x} cy={i === 0 ? 190 : 90} r="6" />
+          <circle key={x} className="sy-stop" cx={x} cy={i === 0 ? 190 : 90} r="6" data-at={STATIONS[i].at} />
         ))}
         <circle className="sy-marker" data-marker cx="1080" cy="90" r="9" />
       </svg>
+      <ul className="sy-legend" aria-hidden="true">
+        <li>Same-looking folder · not this project</li>
+        <li>Remote reference · cannot launch locally</li>
+      </ul>
       <ol className="sy-stations">
         {STATIONS.map((station, i) => (
           <li key={station.label} data-at={station.at}>
