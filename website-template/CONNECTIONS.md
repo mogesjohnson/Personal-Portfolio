@@ -73,7 +73,7 @@ Checked copy lives in `builds/projects-page/sections/`. Those files win when the
 
 ## Project detail pages
 
-`/trace-workbench` (TRACE Workbench) reads the private `mogesjohnson/trace-workbench` repo with `gh`: `main` at `7b2ff92`, package `0.1.0-alpha.2`, read 2026-10-19. The page's words come from `README.md` and `skills/trace-computer-use/SKILL.md`. The homepage Work card also uses `SKILLS.md`, `docs/VERIFICATION.md` and `docs/OBSERVED-WORKFLOW.md`. Its pictures and loops are two TRACE runs on the REPLAY Studio preview's made-up sample, recorded in `builds/trace-workbench/BRIEF.md`. The page links nowhere on GitHub, and `portfolio.ts` leaves out `githubUrl`.
+`/trace-workbench` (TRACE Workbench) reads the private `mogesjohnson/trace-workbench` repo with `gh`: `main` at `7b2ff92`, package `0.1.0-alpha.2`, read 2026-10-19, and re-read at `e20568b` (`0.1.0-alpha.3`) on 2026-10-20. The page's words come from `README.md` and `skills/trace-computer-use/SKILL.md`. The homepage Work card also uses `SKILLS.md`, `docs/VERIFICATION.md` and `docs/OBSERVED-WORKFLOW.md`. Its pictures and loops are two TRACE runs on the REPLAY Studio preview's made-up sample, recorded in `builds/trace-workbench/BRIEF.md`. The page links nowhere on GitHub, and `portfolio.ts` leaves out `githubUrl`.
 
 ## Pull requests
 

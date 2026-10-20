@@ -45,6 +45,10 @@ Checked 2026-10-20 at `64745ba` on `review/f9-fixes` (stacked on PR #17), produc
 - n/a: intro, pinned track, particle budget on this page.
 - not run: a real phone and a screen reader pass.
 
+## Copy check, 2026-10-20
+
+The repo moved to `0.1.0-alpha.3` (`e20568b`) after the page was written. The hero status line, the Work card's version, architecture and tradeoff, and the stage intro were updated to match its README and `docs/VERIFICATION.md`. The stage intro now says the run was on the REPLAY Studio preview, because the README still lists a real REPLAY workflow as remaining.
+
 ## Known gaps
 
 - `docs/pr-assets/pr18/` and `alignment.md` show the page before the 2026-10-19 revamp. Whether they stay in the repo is the owner's call.

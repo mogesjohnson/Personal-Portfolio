@@ -56,7 +56,7 @@ export function TraceWorkbenchPage() {
         <DetailHero
           kicker="Project · October 2026"
           title="TRACE Workbench"
-          status="v0.1.0-alpha.2 · Windows x64 · preview · 19 October 2026"
+          status="v0.1.0-alpha.3 · Windows x64 · preview · 19 October 2026"
           lead="Shared Windows tools so Codex, Claude Code, Grok Build, and Gemini CLI can see a window and operate it."
         >
           <Shot
@@ -84,7 +84,7 @@ export function TraceWorkbenchPage() {
           index="02"
           eyebrow="How it's used"
           title="Look. Then look again."
-          intro="This is a real run on REPLAY Studio. One click changes the canvas from Tide to Dusk."
+          intro="This is a real TRACE run on the REPLAY Studio preview. One click changes the canvas from Tide to Dusk."
         >
           <div className="tw-run" data-look>
             <figure className="tw-stage">

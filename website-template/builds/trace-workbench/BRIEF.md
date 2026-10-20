@@ -45,7 +45,7 @@ Not used: the developer's real REPLAY library. A first launch of the installed a
 
 ## Sources for the words
 
-The private `trace-workbench` repo (owner's GitHub account), `main` at `7b2ff921c6c4f129cb7d37ee0a1df801659ae2a0`, package `0.1.0-alpha.2`, read 2026-10-19 with `gh` (the repo is private):
+The private `trace-workbench` repo (owner's GitHub account), `main` at `7b2ff921c6c4f129cb7d37ee0a1df801659ae2a0`, package `0.1.0-alpha.2`, read 2026-10-19 with `gh`. Re-read 2026-10-20 at `e20568b`, package `0.1.0-alpha.3`: README and `docs/VERIFICATION.md` (126 tests, one skip; key chord and selection, scrolling both ways and drag and drop passed on owned fixtures; a native guard refuses input to a disabled window; modal recovery, clean-machine setup, a real REPLAY workflow and agent tasks remain; alpha.3 is not a published release). The version, the Work card's tradeoff and the stage intro ("the REPLAY Studio preview") follow that read:
 
 - The page: `README.md` (four CLIs, Windows preview, six computer tools, one desktop lease) and `skills/trace-computer-use/SKILL.md` (observe, one action with `trace_computer_act`, read the fresh observation it returns, release).
 - The homepage Work card in `src/data/portfolio.ts`: also `SKILLS.md`, `docs/VERIFICATION.md` (six tools over stdio, seven actions and eight fresh frames on 18 October, 207 analysis tools), and `docs/OBSERVED-WORKFLOW.md` (the 18 October Calculator run on the earlier executor).
