@@ -1,5 +1,7 @@
 # PR #18 assets
 
+These captures, and `alignment.md`, predate the 2026-10-19 revamp (`e630224` and later). The landing-page hero, the signal field, the Calculator evidence, the setup run and the Status details they show are no longer on the page. `website-template/builds/trace-workbench/BRIEF.md` describes the current page.
+
 Screenshots for the TRACE Workbench project page and its homepage wiring. Production build (`next build` + `next start`), headless Chrome, reduced motion unless the name says `motion`. Desktop shots were taken at 1440 px wide (downscaled to 1200 px here); mobile shots at 390 px wide, 2x.
 
 - `before/` and `after/`: the homepage wiring.

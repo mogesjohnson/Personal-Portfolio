@@ -63,8 +63,6 @@ The owner placed Projects in the header and kept both résumé buttons.
 - Every project and prototype page ends with `builds/project-footer/ProjectFooter.tsx`: one row with "All projects" (to `/projects`) and "Next project", which cycles through `detailPages` in `src/data/externalPages.ts` order. A new page joins the cycle by being listed there with a non-`page` kind and rendering `<ProjectFooter current="/its-route" />`.
 - The command palette keeps "Explore selected work" as a scroll to `#work`. "Open Projects" (`id` `projects-page`) closes the palette and routes to `/projects`.
 
-- The `trace-workbench` repo is private, like `replay-studio` and `switchyard`. Read it with `gh`. Page copy comes from `main` at `0.1.0-alpha.2` (read 2026-10-19): `README.md`, `SKILLS.md`, `docs/VERIFICATION.md`, `docs/OBSERVED-WORKFLOW.md`, and the alpha.2 receipts. Like /switchyard, the page links nowhere on GitHub, and `portfolio.ts` leaves out `githubUrl`.
-
 A third centered group was suggested ("Reach", for Résumé and Schedule a chat) and was not added. The Active Directory lab becomes an external page only after that page exists.
 
 ## Projects page
@@ -72,6 +70,10 @@ A third centered group was suggested ("Reach", for Résumé and Schedule a chat)
 The owner's brief is three GitHub repos: `mogesjohnson/shadow-army`, `mogesjohnson/post-it-board`, and `mogesjohnson/how-to-post-it`. Shadow Army on the page is v1. The two post-it repos stay separate, then a connection section joins them. `shadow-army` is private, so read it with `gh`. The public API returns 404.
 
 Checked copy lives in `builds/projects-page/sections/`. Those files win when they disagree with `builds/projects-page/SPEC.md`.
+
+## Project detail pages
+
+`/trace-workbench` (TRACE Workbench) reads the private `mogesjohnson/trace-workbench` repo with `gh`: `main` at `7b2ff92`, package `0.1.0-alpha.2`, read 2026-10-19. The page's words come from `README.md` and `skills/trace-computer-use/SKILL.md`. The homepage Work card also uses `SKILLS.md`, `docs/VERIFICATION.md` and `docs/OBSERVED-WORKFLOW.md`. Its pictures and loops are two TRACE runs on the REPLAY Studio preview's made-up sample, recorded in `builds/trace-workbench/BRIEF.md`. The page links nowhere on GitHub, and `portfolio.ts` leaves out `githubUrl`.
 
 ## Pull requests
 
