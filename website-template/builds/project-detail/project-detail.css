@@ -67,6 +67,20 @@
   margin-top: 2.75rem;
 }
 
+/* The opening (scenes.ts › heroEntrance) reveals these in full motion. Until the
+   bundle takes over they stay hidden, and the failsafe shows them after 3.5s if it
+   never does. Reduced motion and no-JS (server data-motion="reduce") never hide them. */
+[data-motion="full"] .pd-hero-title {
+  visibility: hidden;
+  animation: failsafe-show 0s 3.5s forwards;
+}
+
+[data-motion="full"] .pd-hero :is(.dispatch-kicker, .pd-status, .pd-lead),
+[data-motion="full"] .pd-hero > .pd-shot {
+  opacity: 0;
+  animation: failsafe-fade 0s 3.5s forwards;
+}
+
 /* ---------------------------------------------------------------- */
 /* Sections                                                          */
 /* ---------------------------------------------------------------- */
@@ -619,6 +633,13 @@ kbd.pd-key {
   }
 }
 
+@media (max-width: 520px) {
+  /* The page mark wraps "Main website" onto two lines on a phone; the hero says the same. */
+  .pd .dispatch-bar-end > p {
+    display: none;
+  }
+}
+
 @media (max-width: 700px) {
   .pd-hero {
     padding-top: 3rem;
@@ -661,7 +682,7 @@ kbd.pd-key {
   width: 100%;
   height: 100%;
   border: 0;
-  background: #000;
+  background: var(--bg);
 }
 
 /* A silent loop keeps its own aspect ratio instead of letterboxing in 16:9. */
@@ -683,8 +704,8 @@ kbd.pd-key {
   padding: 0.45rem 0.8rem;
   border: 1px solid color-mix(in srgb, var(--text) 25%, transparent);
   border-radius: 999px;
-  background: rgba(7, 8, 12, 0.78);
-  color: #eceef2;
+  background: color-mix(in srgb, var(--bg) 84%, transparent);
+  color: var(--text);
   font-family: var(--font-dispatch-mono), ui-monospace, monospace;
   font-size: 0.75rem;
   letter-spacing: 0.06em;
