@@ -42,3 +42,4 @@ npm run build
 | [`src/components/live/IntroSequence.tsx`](src/components/live/IntroSequence.tsx) | Title sequence |
 | [`src/components/live/flags.ts`](src/components/live/flags.ts) | Theme, motion, and intro flags set before first paint |
 | [`src/app/globals.css`](src/app/globals.css) | Design tokens and styles |
+| [`src/app/projects/page.tsx`](src/app/projects/page.tsx) | The `/projects` route. Its copy lives in [`website-template/builds/projects-page/`](website-template/builds/projects-page/): Shadow Army v1, [Post-it Board](https://mogesjohnson.github.io/post-it-board/), [How to post it](https://github.com/mogesjohnson/how-to-post-it), and the join between the last two. The checked facts for each are in that folder's `sections/` (last updated 2026-10-11, when the car-to-board transcript path went live) |
