@@ -14,7 +14,7 @@ const mono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: "Now | Moges Johnson",
   description:
-    "Current work: the Post-it Board handoff, and Shadow Army v2’s terminal screens.",
+    "Current work: the car-to-board Post-it path, running since October 11, and the Shadow Army v2 spec, still a draft.",
 };
 
 export default function Page() {
