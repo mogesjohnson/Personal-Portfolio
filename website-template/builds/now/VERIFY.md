@@ -48,7 +48,7 @@ Checked 2026-10-20 on `review/now-fixes` (this branch merged with `main` at `74d
 
 ## Homepage header
 
-`.nav-external` adds Now (28px wide, plus the 16px group gap). Measured with the Résumé pill in place (114px):
+`.nav-external` adds Now (28px wide, plus the 16px group gap). Measured with the Résumé pill in place (114px). PR #17 later removed the pill, which gives each width 114px more slack:
 
 | Width | External links shown | Header slack | Overflow |
 | --- | --- | --- | --- |

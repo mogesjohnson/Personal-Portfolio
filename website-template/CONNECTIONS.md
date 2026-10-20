@@ -49,11 +49,11 @@ The body wash is the amber and sky gradients on `body::before`. Page backgrounds
 
 `/projects` follows these tokens. An earlier draft painted its own paper field (`#f4f0e6`, `#1c1915`, `#9a4e2c`). The owner replaced that with the site palette and the shared shifter. `.dispatch` maps ink, paper, and copper onto `--text`, `--bg`, and `--amber-text`.
 
-The résumé popup (`../src/components/ResumeModal.tsx`) uses the same tokens through the `.resume-*` rules in `globals.css`. Print styles still use white paper and `#111` text. Both résumé controls stay: the header button and the hero "View résumé" button.
+The résumé popup (`../src/components/ResumeModal.tsx`) uses the same tokens through the `.resume-*` rules in `globals.css`. Print styles still use white paper and `#111` text. The résumé opens from the hero "View résumé" button and from the command palette. The header has no résumé button: PR #17 removed it to make room for the project links, and the owner kept that change.
 
 ## Navigation
 
-The owner placed Projects in the header and kept both résumé buttons.
+The owner placed Projects in the header. The header has no résumé button since PR #17.
 
 - The desktop pill lists Work, Experience, About, Toolkit, and Contact. Projects is a `.nav-external` link outside the pill.
 - The mobile menu has two centered labels. "Main website" heads the homepage sections. "External site pages" heads pages that leave the homepage, starting with Projects.
