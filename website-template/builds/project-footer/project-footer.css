@@ -69,9 +69,63 @@
   color: var(--amber-text);
 }
 
+/* The source link. A private repo says so on the link itself, before the click. */
+.pf-repo {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.6rem;
+  color: var(--text-2);
+  text-decoration: none;
+  transition: color 0.25s;
+}
+
+.pf-repo b {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.pf-repo:hover,
+.pf-repo:hover b {
+  color: var(--amber-text);
+}
+
+.pf-repo:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 3px;
+}
+
+.pf-repo > svg {
+  flex: none;
+  color: var(--amber-text);
+}
+
+.pf-private {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.12rem 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--amber) 40%, transparent);
+  border-radius: 999px;
+  color: var(--pf-muted);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.pf-private svg {
+  color: var(--amber-text);
+}
+
 @media (max-width: 700px) {
   .pf-note {
     display: none;
+  }
+
+  /* On a phone the source link takes its own row under the two page links. */
+  .pf-repo {
+    order: 3;
+    flex-basis: 100%;
   }
 
   .project-footer {

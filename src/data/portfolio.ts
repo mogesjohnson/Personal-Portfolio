@@ -29,8 +29,10 @@ export interface Project {
   architecture: string;
   tradeoff: string;
   tags: string[];
-  /** Omitted for private repositories, whose GitHub link would not open for a visitor. */
+  /** The source repository. A private one also sets `repoPrivate`. */
   githubUrl?: string;
+  /** The repo opens only for collaborators (GitHub shows everyone else a 404), so the card labels the link Private. */
+  repoPrivate?: boolean;
   liveUrl?: string;
   /** The project's own page on this site, when it has one. */
   pageUrl?: string;
@@ -420,6 +422,8 @@ const morph = (f: Formation | null, now: number) => {
     architecture: "An Electron app with a React 19 and TypeScript editor. One app-owned command service handles typed edits, revision checks, shared undo/redo and playback; the editor, a bundled MCP adapter (28 tools) and a JSON CLI all go through it, the latter two over an authenticated local Windows named pipe.",
     tradeoff: "Kept everything on the machine: no account, no upload service, original video preserved, and agent access scoped to approved import and export folders. The cost is a Windows-only, unsigned alpha that still lacks interior cuts, audio capture and narration.",
     tags: ["Electron", "React 19", "TypeScript", "Vite", "FFmpeg", "MCP", "Windows"],
+    githubUrl: "https://github.com/mogesjohnson/replay-studio",
+    repoPrivate: true,
     pageUrl: "/replay-studio",
     metrics: [
       { label: "Release", value: "v0.2.0-alpha.4" },
@@ -476,6 +480,8 @@ export interface ExportOptions {
     architecture: "A Tauri 2 app with a React and TypeScript desk over a Rust core and SQLite state. Opening a target is a two-step intent: the native side prepares an exact, validated target that expires in 30 seconds, and only an explicit confirmation dispatches it.",
     tradeoff: "Chose explicit human steps over automation. It never runs git status, hooks, project commands, dev servers or agent CLIs, so Git cleanliness, tests and runtime health stay Unknown rather than guessed.",
     tags: ["Tauri 2", "Rust", "React 19", "TypeScript", "SQLite", "Obsidian", "Windows"],
+    githubUrl: "https://github.com/mogesjohnson/switchyard",
+    repoPrivate: true,
     pageUrl: "/switchyard",
     metrics: [
       { label: "Release", value: "v0.1.0 personal" },

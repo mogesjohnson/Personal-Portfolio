@@ -47,9 +47,7 @@ export function DetailHero({
         </p>
         <h1 className="pd-hero-title">{title}</h1>
         <p className="dispatch-legacy pd-status">{status}</p>
-        <p className="dispatch-lead pd-lead" data-scrub>
-          {lead}
-        </p>
+        <p className="dispatch-lead pd-lead">{lead}</p>
       </div>
       {facts?.length ? (
         <dl className="metrics pd-facts" data-reveal>

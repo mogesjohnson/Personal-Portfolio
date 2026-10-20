@@ -73,7 +73,11 @@ Checked copy lives in `builds/projects-page/sections/`. Those files win when the
 
 ## Project detail pages
 
-`/trace-workbench` (TRACE Workbench) reads the private `mogesjohnson/trace-workbench` repo with `gh`: `main` at `7b2ff92`, package `0.1.0-alpha.2`, read 2026-10-19, and re-read at `e20568b` (`0.1.0-alpha.3`) on 2026-10-20. The page's words come from `README.md` and `skills/trace-computer-use/SKILL.md`. The homepage Work card also uses `SKILLS.md`, `docs/VERIFICATION.md` and `docs/OBSERVED-WORKFLOW.md`. Its pictures and loops are two TRACE runs on the REPLAY Studio preview's made-up sample, recorded in `builds/trace-workbench/BRIEF.md`. The page links nowhere on GitHub, and `portfolio.ts` leaves out `githubUrl`.
+`/replay-studio` and `/switchyard` share the `builds/project-detail/` shell by the owner's choice. Each page's own subject lives in its signature stage. The sources are the private repos `mogesjohnson/replay-studio` (tag `v0.2.0-alpha.4`) and `mogesjohnson/switchyard` (`main`, v0.1.0). Read them with `gh`; the public API returns 404. Each build's `BRIEF.md` lists the files read, and every fact on the page comes from them.
+
+The owner chose on 2026-10-20 to link the private repos and label them, rather than leave the pages without a source link. A page passes `repo={{ href, name, private: true }}` to `ProjectFooter`. The footer link names the repo, opens in a new tab with `rel="noopener noreferrer"`, and carries a lock and "Private · collaborators only", so a visitor knows before the click that GitHub may show a 404. The homepage Work card does the same with `githubUrl` plus `repoPrivate: true` in `src/data/portfolio.ts`: it shows "View repository" with a small "Private" label. A card without `githubUrl` keeps the "Private repository" lock text.
+
+`/trace-workbench` (TRACE Workbench) reads the private `mogesjohnson/trace-workbench` repo with `gh`: `main` at `7b2ff92`, package `0.1.0-alpha.2`, read 2026-10-19, and re-read at `e20568b` (`0.1.0-alpha.3`) on 2026-10-20. The page's words come from `README.md` and `skills/trace-computer-use/SKILL.md`. The homepage Work card also uses `SKILLS.md`, `docs/VERIFICATION.md` and `docs/OBSERVED-WORKFLOW.md`. Its pictures and loops are two TRACE runs on the REPLAY Studio preview's made-up sample, recorded in `builds/trace-workbench/BRIEF.md`. Like the other two, it links its private repo with the "Private · collaborators only" label, through `ProjectFooter`'s `repo` prop and `githubUrl` plus `repoPrivate: true` in `portfolio.ts`.
 
 ## Pull requests
 

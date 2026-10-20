@@ -239,7 +239,21 @@ export default function WorkScene() {
                     Read the project page <ArrowRight size={15} />
                   </Link>
                 )}
-                {project.githubUrl ? (
+                {project.githubUrl && project.repoPrivate ? (
+                  <a
+                    className="text-link"
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Private repository: GitHub opens it only for collaborators and shows everyone else a 404."
+                  >
+                    View repository{" "}
+                    <span className="stage-private">
+                      <Lock size={12} aria-hidden="true" /> Private
+                    </span>
+                    <ArrowUpRight size={15} />
+                  </a>
+                ) : project.githubUrl ? (
                   <a className="text-link" href={project.githubUrl} target="_blank" rel="noopener noreferrer">
                     View repository <ArrowUpRight size={15} />
                   </a>

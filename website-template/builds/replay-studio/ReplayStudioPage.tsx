@@ -97,7 +97,7 @@ function Timeline() {
         <div className="rp-track">
           <span className="rp-track-label">Text callout</span>
           <div className="rp-lane">
-            <div className="rp-clip rp-clip-callout">
+            <div className="rp-clip rp-clip-callout" data-span="0.25 0.625">
               <MessageSquareText size={12} aria-hidden="true" /> Callout
             </div>
           </div>
@@ -106,7 +106,7 @@ function Timeline() {
         <div className="rp-track">
           <span className="rp-track-label">Privacy blur</span>
           <div className="rp-lane">
-            <div className="rp-clip rp-clip-privacy">
+            <div className="rp-clip rp-clip-privacy" data-span="0.4375 0.6875">
               <EyeOff size={12} aria-hidden="true" /> Privacy region
             </div>
           </div>
@@ -260,7 +260,7 @@ export function ReplayStudioPage() {
             <Timeline />
             <ol className="rp-steps">
               {STEPS.map((step, i) => (
-                <li key={step.title} data-cue={step.cue} data-reveal>
+                <li key={step.title} data-cue={step.cue}>
                   <span className="rp-step-num">0{i + 1}</span>
                   <div>
                     <strong>{step.title}</strong>
@@ -288,10 +288,7 @@ export function ReplayStudioPage() {
           />
         </Section>
 
-        <ProjectFooter
-          current="/replay-studio"
-          note={{ label: "Private repository · no source link", title: "The source repository is private, so this page links nowhere on GitHub." }}
-        />
+        <ProjectFooter current="/replay-studio" repo={{ href: "https://github.com/mogesjohnson/replay-studio", name: "mogesjohnson/replay-studio", private: true }} />
       </DetailShell>
     </ReplayMotion>
   );
