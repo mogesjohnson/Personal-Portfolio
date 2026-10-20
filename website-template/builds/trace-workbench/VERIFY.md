@@ -51,7 +51,6 @@ The repo moved to `0.1.0-alpha.3` (`e20568b`) after the page was written. The he
 
 ## Known gaps
 
-- `docs/pr-assets/pr18/` and `alignment.md` show the page before the 2026-10-19 revamp. Whether they stay in the repo is the owner's call.
-- Shared-shell suggestions for PR #17 (not changed here): `project-detail/scenes.ts` `batchReveal` at `y: 28, duration: 0.9` sits outside the bar (8–24px of travel, 1.0–1.2s entrances), and `LoopVideo.tsx` autoplays loops while they are off screen.
+- None from the shared shell. PR #17 brought `batchReveal` to 20px over 1.0s and made `LoopVideo.tsx` play loops only while they are on screen.
 
 Screenshots: outside the repo, in the session scratchpad (`pr18/before`, `pr18/after`).
