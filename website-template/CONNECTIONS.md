@@ -71,6 +71,10 @@ The owner's brief is three GitHub repos: `mogesjohnson/shadow-army`, `mogesjohns
 
 Checked copy lives in `builds/projects-page/sections/`. Those files win when they disagree with `builds/projects-page/SPEC.md`.
 
+## Project detail pages
+
+`/replay-studio` and `/switchyard` share the `builds/project-detail/` shell by the owner's choice. Each page's own subject lives in its signature stage. The sources are the private repos `mogesjohnson/replay-studio` (tag `v0.2.0-alpha.4`) and `mogesjohnson/switchyard` (`main`, v0.1.0). Read them with `gh`; the public API returns 404. Each build's `BRIEF.md` lists the files read, and every fact on the page comes from them. Both repos are private, so neither page links to GitHub; the footer says so instead. Add a source link only after the owner makes a repo public.
+
 ## Pull requests
 
 This repo has no `.github` workflows and no commit-msg hook. Nothing here points at the pull-request rules.
