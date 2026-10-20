@@ -59,6 +59,8 @@ The owner placed Projects in the header and kept both résumé buttons.
 - The mobile menu has two centered labels. "Main website" heads the homepage sections. "External site pages" heads pages that leave the homepage, starting with Projects.
 - On `/projects`, the bar link "Main website" goes to `/`. Section links are `/#work`, `/#experience`, `/#about`, `/#stack`, and `/#contact`, so they map back to the homepage.
 - The work section stays free of a second Projects link.
+- Each entry in `src/data/externalPages.ts` has a `kind`: `page`, `prototype` or `project`. Project detail pages (`/replay-studio`, `/switchyard`) appear in the mobile menu, the DispatchBar menu and the command palette. The desktop header leaves them out so it does not overflow; the Work section reaches them through "Read the project page".
+- Every project and prototype page ends with `builds/project-footer/ProjectFooter.tsx`: one row with "All projects" (to `/projects`) and "Next project", which cycles through `detailPages` in `src/data/externalPages.ts` order. A new page joins the cycle by being listed there with a non-`page` kind and rendering `<ProjectFooter current="/its-route" />`.
 - The command palette keeps "Explore selected work" as a scroll to `#work`. "Open Projects" (`id` `projects-page`) closes the palette and routes to `/projects`.
 
 A third centered group was suggested ("Reach", for Résumé and Schedule a chat) and was not added. The Active Directory lab becomes an external page only after that page exists.
@@ -68,6 +70,12 @@ A third centered group was suggested ("Reach", for Résumé and Schedule a chat)
 The owner's brief is three GitHub repos: `mogesjohnson/shadow-army`, `mogesjohnson/post-it-board`, and `mogesjohnson/how-to-post-it`. Shadow Army on the page is v1. The two post-it repos stay separate, then a connection section joins them. `shadow-army` is private, so read it with `gh`. The public API returns 404.
 
 Checked copy lives in `builds/projects-page/sections/`. Those files win when they disagree with `builds/projects-page/SPEC.md`.
+
+## Project detail pages
+
+`/replay-studio` and `/switchyard` share the `builds/project-detail/` shell by the owner's choice. Each page's own subject lives in its signature stage. The sources are the private repos `mogesjohnson/replay-studio` (tag `v0.2.0-alpha.4`) and `mogesjohnson/switchyard` (`main`, v0.1.0). Read them with `gh`; the public API returns 404. Each build's `BRIEF.md` lists the files read, and every fact on the page comes from them.
+
+The owner chose on 2026-10-20 to link the private repos and label them, rather than leave the pages without a source link. A page passes `repo={{ href, name, private: true }}` to `ProjectFooter`. The footer link names the repo, opens in a new tab with `rel="noopener noreferrer"`, and carries a lock and "Private · collaborators only", so a visitor knows before the click that GitHub may show a 404. The homepage Work card does the same with `githubUrl` plus `repoPrivate: true` in `src/data/portfolio.ts`: it shows "View repository" with a small "Private" label. A card without `githubUrl` keeps the "Private repository" lock text.
 
 ## Pull requests
 

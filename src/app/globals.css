@@ -693,8 +693,10 @@ body::before {
   font: 600 11px var(--font-geist-mono), monospace;
 }
 
+/* Shown at every width: on desktop it replaces the old Résumé pill and opens the
+   same page menu as the /projects bar. */
 .nav-burger {
-  display: none;
+  display: inline-flex;
 }
 
 .menu {
@@ -812,19 +814,13 @@ body::before {
   .nav-actions {
     margin-left: auto;
   }
-
-  .nav-burger {
-    display: inline-flex;
-  }
 }
 
+/* On desktop the header already carries the command menu and theme controls, so
+   the open menu shows only the page links, as it does on /projects. */
 @media (min-width: 961px) {
-  .menu {
+  .menu-foot {
     display: none;
-  }
-
-  .menu.dispatch-menu {
-    display: flex;
   }
 }
 
@@ -1625,6 +1621,16 @@ body::before {
   align-items: center;
   gap: 14px 22px;
   margin-top: 1.6rem;
+}
+
+.stage-private {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--muted);
+  font: 500 11px var(--font-geist-mono), monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .turn {

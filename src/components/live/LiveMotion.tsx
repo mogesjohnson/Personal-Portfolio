@@ -89,7 +89,7 @@ export default function LiveMotion() {
       <IntroSequence />
       <div className="progress" aria-hidden="true" />
 
-      <SiteNav onOpenResume={openResume} onOpenPalette={() => setPaletteOpen(true)} />
+      <SiteNav onOpenPalette={() => setPaletteOpen(true)} />
 
       <main>
         <HeroScene onOpenResume={openResume} />
