@@ -21,8 +21,8 @@ export interface Project {
   /** Figure code shown on the project diagram. */
   code: string;
   /** Particle formation the live signal field draws for this project. */
-  signal: "sys" | "tree" | "orbit" | "reel" | "yard";
-  category: "Systems & Infrastructure" | "Data Structures & C++" | "AI & Web Systems" | "Windows Desktop Apps";
+  signal: "sys" | "tree" | "orbit" | "reel" | "yard" | "trace";
+  category: "Systems & Infrastructure" | "Data Structures & C++" | "AI & Web Systems" | "Windows Desktop Apps" | "AI Agent Tooling";
   year: string;
   summary: string;
   problem: string;
@@ -520,6 +520,46 @@ export interface ExportOptions {
       { step: "02", label: "Prepare & confirm", tech: "Rust broker · 30 s intent", detail: "Folder, Terminal or Notes targets are validated, previewed, then dispatched." },
       { step: "03", label: "Return Ticket", tech: "SQLite · versioned", detail: "One next-action sentence, with optional note, blocker, time and energy." },
       { step: "04", label: "Read-only context", tech: "Obsidian vault reader", detail: "A bounded brief with citations from an isolated, read-only Python worker." },
+    ],
+  },
+  {
+    id: "trace-workbench",
+    title: "TRACE Workbench: Shared Windows Computer Control for AI Agents",
+    shortTitle: "Computer control for agents",
+    code: "06 / TRC",
+    signal: "trace",
+    category: "AI Agent Tooling",
+    year: "2026",
+    summary: "Local Windows tools for Codex, Claude Code, Grok Build, and Gemini CLI. Reverse Engineer Anything inspects artifacts. Computer Use observes a window and operates it.",
+    problem: "Those four CLIs each need the same way to see a Windows window and act on it. TRACE is that interface. A skill stays short of universal until it has been checked with each host.",
+    architecture: "Version 0.1.0-alpha.3 is a Windows preview, not a published release. Computer Use exposes six MCP tools: doctor, list windows, open a session, observe, act, and close the session. One session holds the desktop at a time. The analysis connection still exposes 207 tools.",
+    tradeoff: "Verified on windows TRACE owns: exact key chords and selection, scrolling both ways, and drag and drop, plus a native guard that refuses input to a disabled window. Full modal recovery, a clean-machine setup, and a complete task with each agent are still open. Live Grok and Gemini sessions are unverified.",
+    tags: ["Node.js", "MCP", "Windows", "Codex", "Claude Code", "Grok Build", "Gemini CLI"],
+    githubUrl: "https://github.com/mogesjohnson/trace-workbench",
+    repoPrivate: true,
+    pageUrl: "/trace-workbench",
+    metrics: [
+      { label: "Version", value: "0.1.0-alpha.3" },
+      { label: "Computer tools", value: "6" },
+      { label: "Agent CLIs", value: "4" },
+    ],
+    codeArtifact: {
+      title: "The six Computer Use tools",
+      language: "mcp",
+      filename: "evidence/0.1.0-alpha.2/computer-live.json",
+      code: `trace_computer_doctor
+trace_computer_list_windows
+trace_computer_open_session
+trace_computer_observe
+trace_computer_act
+trace_computer_close_session`,
+      explanation: "The six tools on the trace-computer server in 0.1.0-alpha.2. A live stdio run called them against a window the test owns: seven actions, eight fresh screenshots. Typing, a coordinate click, an invoke, a checkbox, and the desktop lease were checked.",
+    },
+    architectureFlow: [
+      { step: "01", label: "Doctor", tech: "trace_computer_doctor", detail: "Continue when the provider reports ready." },
+      { step: "02", label: "Pick the window", tech: "list windows · open session", detail: "Open the exact window id that came back. One desktop lease at a time." },
+      { step: "03", label: "Observe, then act", tech: "observe · act", detail: "One action, bound to the latest observation." },
+      { step: "04", label: "Check, then release", tech: "fresh screenshot · close session", detail: "Read the new frame before the next action. Closing the session releases the desktop." },
     ],
   },
 ];

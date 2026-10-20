@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { Command, Menu, X } from "lucide-react";
-import { externalPages } from "@/data/externalPages";
+import { externalPages, menuLabel } from "@/data/externalPages";
 import ThemeToggle from "./ThemeToggle";
 import { lockScroll } from "./scroll";
 import { cls } from "./ui";
@@ -168,7 +168,7 @@ export default function SiteNav({ onOpenPalette }: SiteNavProps) {
             onNavigate={() => setMenuOpen(false)}
           />
           <p className="menu-label">External site pages</p>
-          <MenuLinks items={[...externalPages]} onNavigate={() => setMenuOpen(false)} />
+          <MenuLinks items={externalPages.map((page) => ({ label: menuLabel(page), href: page.href }))} onNavigate={() => setMenuOpen(false)} />
         </nav>
         <div className="menu-foot">
           <button

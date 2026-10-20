@@ -1,0 +1,208 @@
+/* /trace-workbench only. The observation stage for look-again.ts.
+ *
+ * Everything here is the rest pose: the Dusk picture on top, the sight marks
+ * on the window, the changed frame boxed, the cursor resting on the Dusk swatch,
+ * every step lit. Reduced motion, no-JS and a failed scene all show this. Full
+ * motion rewinds it to the Tide picture and plays observe, act, observe.
+ *
+ * Positions are percentages of the 1920×1120 screenshots, so they hold at any
+ * width: Dusk swatch centre (1754, 254); canvas frame (523, 182)–(1367, 738). */
+
+.tw-run {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(16rem, 0.8fr);
+  gap: clamp(1rem, 2.5vw, 1.75rem);
+  align-items: start;
+}
+
+.tw-stage {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  background: var(--glass);
+  box-shadow: var(--shadow);
+}
+
+.tw-stage img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.tw-stage .tw-after {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Observe: four sight marks on the observed window. */
+.tw-sight {
+  position: absolute;
+  inset: 2.4%;
+  pointer-events: none;
+}
+
+.tw-sight i {
+  position: absolute;
+  width: 5%;
+  aspect-ratio: 1;
+  border: 0 solid var(--sky);
+}
+
+.tw-sight i:nth-child(1) {
+  top: 0;
+  left: 0;
+  border-top-width: 2px;
+  border-left-width: 2px;
+}
+
+.tw-sight i:nth-child(2) {
+  top: 0;
+  right: 0;
+  border-top-width: 2px;
+  border-right-width: 2px;
+}
+
+.tw-sight i:nth-child(3) {
+  bottom: 0;
+  left: 0;
+  border-bottom-width: 2px;
+  border-left-width: 2px;
+}
+
+.tw-sight i:nth-child(4) {
+  right: 0;
+  bottom: 0;
+  border-right-width: 2px;
+  border-bottom-width: 2px;
+}
+
+/* Look again: the region that changed between the two observations. */
+.tw-diff {
+  position: absolute;
+  left: 27.24%;
+  top: 16.25%;
+  width: 43.96%;
+  height: 49.64%;
+  border: 1.5px dashed var(--sky);
+  border-radius: 6px;
+  pointer-events: none;
+}
+
+.tw-diff b {
+  position: absolute;
+  left: -1px;
+  bottom: calc(100% + 0.3rem);
+  padding: 0.15rem 0.45rem;
+  border: 1px solid var(--sky);
+  border-radius: 4px;
+  background: var(--bg);
+  color: var(--sky-text);
+  font-family: var(--font-dispatch-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+/* Act: the click on the Dusk swatch. The ring is feedback and rests hidden. */
+.tw-ring {
+  position: absolute;
+  left: 91.35%;
+  top: 22.68%;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin: -1.375rem 0 0 -1.375rem;
+  border: 2px solid var(--amber);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tw-cursor {
+  position: absolute;
+  left: 91.35%;
+  top: 22.68%;
+  width: clamp(12px, 1.6vw, 22px);
+  margin: -1px 0 0 -1px;
+  transform-origin: 0 0;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.45));
+}
+
+.tw-cursor svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  fill: #fff;
+  stroke: #0b0d12;
+  stroke-width: 1.4;
+  stroke-linejoin: round;
+}
+
+.tw-steps {
+  display: grid;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0.2rem 0 0;
+  list-style: none;
+}
+
+.tw-steps li {
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.tw-steps li:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.tw-steps span {
+  color: var(--amber-text);
+  font-family: var(--font-dispatch-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+}
+
+.tw-steps code {
+  color: var(--sky-text);
+  font-family: inherit;
+  letter-spacing: 0.02em;
+}
+
+.tw-steps strong {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--text);
+  font-family: var(--font-dispatch-serif), Georgia, serif;
+  font-size: 1.35rem;
+  font-weight: 450;
+  letter-spacing: -0.02em;
+}
+
+.tw-steps p {
+  margin: 0.3rem 0 0;
+  color: var(--text-2);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 800px) {
+  .tw-run {
+    grid-template-columns: 1fr;
+  }
+
+  .tw-diff b {
+    font-size: 0.6rem;
+  }
+
+  .tw-ring {
+    width: 2rem;
+    height: 2rem;
+    margin: -1rem 0 0 -1rem;
+  }
+}

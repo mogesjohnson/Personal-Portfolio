@@ -108,6 +108,52 @@ export function Section({
   );
 }
 
+/**
+ * The app-window frame every figure on a detail page uses: chrome bar, HUD corners
+ * and a "Fig." caption. Shot puts a real screenshot in it; a page can also frame
+ * something drawn in code (a terminal, a diagram) so it lines up with the shots.
+ */
+export function Frame({
+  figure,
+  caption,
+  chrome,
+  className,
+  children,
+}: {
+  figure: string;
+  caption: string;
+  chrome: string;
+  className?: string;
+  children: ReactNode;
+}) {
+  return (
+    <figure className={["pd-shot glass", className].filter(Boolean).join(" ")} data-reveal>
+      <div className="pd-shot-bar" aria-hidden="true">
+        <span className="pd-dots">
+          <i />
+          <i />
+          <i />
+        </span>
+        <span>{chrome}</span>
+        <span>{figure}</span>
+      </div>
+      <div className="pd-shot-frame">
+        {children}
+        <span className="pd-hud" aria-hidden="true">
+          <i />
+          <i />
+          <i />
+          <i />
+        </span>
+      </div>
+      <figcaption>
+        <span>{figure}</span>
+        {caption}
+      </figcaption>
+    </figure>
+  );
+}
+
 /** A real screenshot in an app-window frame with HUD corners and a figure caption. */
 export function Shot({
   src,
@@ -127,37 +173,16 @@ export function Shot({
   className?: string;
 }) {
   return (
-    <figure className={["pd-shot glass", className].filter(Boolean).join(" ")} data-reveal>
-      <div className="pd-shot-bar" aria-hidden="true">
-        <span className="pd-dots">
-          <i />
-          <i />
-          <i />
-        </span>
-        <span>{chrome}</span>
-        <span>{figure}</span>
-      </div>
-      <div className="pd-shot-frame">
-        <Image
-          src={src}
-          alt={alt}
-          sizes="(max-width: 900px) 100vw, 72rem"
-          placeholder="empty"
-          loading={priority ? "eager" : "lazy"}
-          fetchPriority={priority ? "high" : undefined}
-        />
-        <span className="pd-hud" aria-hidden="true">
-          <i />
-          <i />
-          <i />
-          <i />
-        </span>
-      </div>
-      <figcaption>
-        <span>{figure}</span>
-        {caption}
-      </figcaption>
-    </figure>
+    <Frame figure={figure} caption={caption} chrome={chrome} className={className}>
+      <Image
+        src={src}
+        alt={alt}
+        sizes="(max-width: 900px) 100vw, 72rem"
+        placeholder="empty"
+        loading={priority ? "eager" : "lazy"}
+        fetchPriority={priority ? "high" : undefined}
+      />
+    </Frame>
   );
 }
 

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
-import { externalPages } from "../../../src/data/externalPages";
+import { externalPages, menuLabel } from "../../../src/data/externalPages";
 import ThemeToggle from "../../../src/components/live/ThemeToggle";
 import { cls } from "../../../src/components/live/ui";
 import { holdScroll } from "../../lib/scroll";
@@ -76,7 +76,7 @@ export function DispatchBar({ current = "/projects", mark = "AI-first work" }: {
               style={{ "--i": index } as React.CSSProperties}
             >
               <span>{indexLabel(index)}</span>
-              {item.label}
+              {menuLabel(item)}
             </Link>
           ))}
         </nav>

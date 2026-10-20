@@ -57,6 +57,19 @@
   color: var(--muted);
 }
 
+/* Keep "Main website" and the page label on one line each; on a phone the label
+ * would wrap beside the link, so it is hidden there (the page title says it anyway). */
+.dispatch-bar a,
+.dispatch-bar p {
+  white-space: nowrap;
+}
+
+@media (max-width: 30rem) {
+  .dispatch-bar p {
+    display: none;
+  }
+}
+
 .dispatch-intro {
   padding: 4.5rem 0 2rem;
 }

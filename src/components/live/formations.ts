@@ -27,7 +27,7 @@ export interface Formation {
   targets: Target[];
 }
 
-export type FormationKey = "mj" | "contact" | "sys" | "tree" | "orbit" | "reel" | "yard";
+export type FormationKey = "mj" | "contact" | "sys" | "tree" | "orbit" | "reel" | "yard" | "trace";
 
 type Rand = () => number;
 type Make = (rand: Rand) => Target;
@@ -109,13 +109,22 @@ const yardStations = [
   { x: 555, label: "TICKET" },
 ];
 
+/** TRACE Workbench: four agent CLIs meet at one interface, which reaches into a Windows window holding the two skills. */
+const traceAgents = [
+  { y: 90, label: "CODEX" },
+  { y: 170, label: "CLAUDE CODE" },
+  { y: 250, label: "GROK BUILD" },
+  { y: 330, label: "GEMINI CLI" },
+];
+const traceHub = { x: 252, y: 170, w: 124, h: 80 };
+
 const orbitSatellites = [
   { x: 320, y: 55, label: "IDENTITY" },
   { x: 488, y: 285, label: "PROJECTS" },
   { x: 151, y: 285, label: "CONTACT" },
 ];
 
-export type DiagramKey = "sys" | "tree" | "orbit" | "reel" | "yard";
+export type DiagramKey = "sys" | "tree" | "orbit" | "reel" | "yard" | "trace";
 
 export const diagrams: Record<DiagramKey, Diagram> = {
   sys: {
@@ -242,6 +251,32 @@ export const diagrams: Record<DiagramKey, Diagram> = {
       { x: 420, y: 292, text: "SAME-LOOKING FOLDER", anchor: "middle" },
       { x: 420, y: 342, text: "REMOTE REFERENCE", anchor: "middle" },
       { x: 320, y: 404, text: "EXACT TARGET / RETURN TICKET / READ-ONLY CONTEXT", anchor: "middle" },
+    ],
+  },
+  trace: {
+    width: 640,
+    height: 420,
+    description: "Four agent CLIs, Codex, Claude Code, Grok Build and Gemini CLI, meet at one TRACE interface that reaches into a Windows window holding two skills: Reverse Engineer Anything and Computer Use",
+    shapes: [
+      ...traceAgents.map((a) => ({ type: "rect" as const, x: 24, y: a.y - 18, w: 136, h: 36 })),
+      ...traceAgents.map((a) => ({ type: "line" as const, x1: 160, y1: a.y, x2: traceHub.x, y2: 210, tone: "faint" as const })),
+      { type: "rect", x: traceHub.x, y: traceHub.y, w: traceHub.w, h: traceHub.h, tone: "accent" },
+      { type: "line", x1: traceHub.x + traceHub.w, y1: 210, x2: 436, y2: 210, tone: "accent" },
+      { type: "rect", x: 436, y: 60, w: 184, h: 300 },
+      { type: "line", x1: 436, y1: 86, x2: 620, y2: 86, tone: "faint" },
+      { type: "rect", x: 454, y: 106, w: 148, h: 104, tone: "accent" },
+      { type: "rect", x: 454, y: 230, w: 148, h: 110, tone: "accent" },
+    ],
+    labels: [
+      ...traceAgents.map((a) => ({ x: 92, y: a.y + 4, text: a.label, anchor: "middle" as const })),
+      { x: 314, y: 214, text: "TRACE", anchor: "middle", size: "lg" },
+      { x: 314, y: 236, text: "ONE INTERFACE", anchor: "middle" },
+      { x: 448, y: 78, text: "WINDOWS" },
+      { x: 528, y: 150, text: "SKILL 01", anchor: "middle" },
+      { x: 528, y: 172, text: "REVERSE ENGINEER", anchor: "middle" },
+      { x: 528, y: 278, text: "SKILL 02", anchor: "middle" },
+      { x: 528, y: 300, text: "COMPUTER USE", anchor: "middle" },
+      { x: 320, y: 404, text: "FOUR AGENTS / ONE INTERFACE / OBSERVE AND OPERATE WINDOWS", anchor: "middle" },
     ],
   },
 };
@@ -474,6 +509,28 @@ function recipeYard(): Primitive[] {
   return prims;
 }
 
+function recipeTrace(): Primitive[] {
+  const hubIn: [number, number] = [traceHub.x, 210];
+  const prims: Primitive[] = [
+    { weight: 12, make: rectOutline(traceHub.x, traceHub.y, traceHub.w, traceHub.h, 0) },
+    { weight: 3, make: rectFill(traceHub.x + 4, traceHub.y + 4, traceHub.w - 8, traceHub.h - 8, 0) },
+    { weight: 2, make: segment(traceHub.x + traceHub.w, 210, 436, 210, 0) },
+    { weight: 4, make: flow([[traceHub.x + traceHub.w, 210], [436, 210], [454, 158]], 0.32, 0, 3) },
+    { weight: 16, make: rectOutline(436, 60, 184, 300, 2) },
+    { weight: 2.5, make: segment(436, 86, 620, 86, 2, 0.8) },
+    { weight: 8, make: rectOutline(454, 106, 148, 104, 0) },
+    { weight: 2, make: rectFill(458, 110, 140, 96, 0) },
+    { weight: 8, make: rectOutline(454, 230, 148, 110, 0) },
+    { weight: 2, make: rectFill(458, 234, 140, 102, 0) },
+  ];
+  for (const a of traceAgents) {
+    prims.push({ weight: 5, make: rectOutline(24, a.y - 18, 136, 36, 1) });
+    prims.push({ weight: 2, make: segment(160, a.y, hubIn[0], hubIn[1], 2, 0.8) });
+    prims.push({ weight: 2.5, make: flow([[160, a.y], hubIn], 0.22, 1, 2) });
+  }
+  return prims;
+}
+
 /** Hero: the MJ monogram, sampled from real type, inside two orbiting rings. */
 function recipeMonogram(glyph: [number, number][]): Primitive[] {
   const glyphMake: Make = (rand) => {
@@ -568,6 +625,8 @@ export function buildFormation(key: FormationKey, pool: number, glyph: [number, 
       return assemble(640, 420, 1, recipeReel(), take(1), 13);
     case "yard":
       return assemble(640, 420, 1, recipeYard(), take(1), 17);
+    case "trace":
+      return assemble(640, 420, 1, recipeTrace(), take(1), 19);
   }
 }
 
