@@ -1,4 +1,5 @@
 import { DispatchBar } from "../projects-page/DispatchBar";
+import { ProjectFooter } from "../project-footer/ProjectFooter";
 import { Environment } from "./Environment";
 import type { SessionScript } from "./script";
 
@@ -29,6 +30,7 @@ export function PrototypeHeader({
         <p className="dispatch-lead">{lead}</p>
         <Environment script={script} />
       </header>
+      <ProjectFooter current={current} />
     </article>
   );
 }
