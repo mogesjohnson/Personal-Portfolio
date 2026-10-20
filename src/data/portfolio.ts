@@ -21,18 +21,23 @@ export interface Project {
   /** Figure code shown on the project diagram. */
   code: string;
   /** Particle formation the live signal field draws for this project. */
-  signal: "sys" | "tree" | "orbit";
-  category: "Systems & Infrastructure" | "Data Structures & C++" | "AI & Web Systems";
+  signal: "sys" | "tree" | "orbit" | "reel" | "yard" | "trace";
+  category: "Systems & Infrastructure" | "Data Structures & C++" | "AI & Web Systems" | "Windows Desktop Apps" | "AI Agent Tooling";
   year: string;
   summary: string;
   problem: string;
   architecture: string;
   tradeoff: string;
   tags: string[];
-  githubUrl: string;
+  /** The source repository. A private one also sets `repoPrivate`. */
+  githubUrl?: string;
+  /** The repo opens only for collaborators (GitHub shows everyone else a 404), so the card labels the link Private. */
+  repoPrivate?: boolean;
   /** Shown under the repository link when the repo is not the work the card describes. */
   repoNote?: string;
   liveUrl?: string;
+  /** The project's own page on this site, when it has one. */
+  pageUrl?: string;
   codeArtifact: CodeArtifact;
   architectureFlow: ArchitectureNode[];
   metrics: { label: string; value: string }[];
@@ -406,6 +411,159 @@ const morph = (f: Formation | null, now: number) => {
       { step: "02", label: "Code Traceability", tech: "GitHub Integration", detail: "Deep-links live repositories, code snippets, and architectural breakdowns." },
       { step: "03", label: "Milestone Sync", tech: "LinkedIn Experience", detail: "Highlights verified roles at Handshake, NonProfitly, Quincy's, and Gold Coast." },
       { step: "04", label: "Live Motion Layer", tech: "Canvas 2D + GSAP ScrollTrigger", detail: "One particle field morphs from monogram to project diagrams as you scroll; Cmd+K handles keyboard navigation." },
+    ],
+  },
+  {
+    id: "replay-studio",
+    title: "REPLAY Studio: Local Windows Demo Recorder & Editor",
+    shortTitle: "Demo recording studio",
+    code: "04 / REC",
+    signal: "reel",
+    category: "Windows Desktop Apps",
+    year: "2026",
+    summary: "A local Windows app for polished demos. Record a window, trim the take, add timed callouts and privacy blur, and export an H.264 MP4, while an authorized agent can drive the same editing, playback, and review controls.",
+    problem: "A raw screen recording rarely ships as it is: it needs a trim, a few words of explanation, and private details hidden. An agent helping with the demo also needs a way to edit the video and check what it actually shows.",
+    architecture: "An Electron app with a React 19 and TypeScript editor. One app-owned command service handles typed edits, revision checks, shared undo/redo and playback; the editor, a bundled MCP adapter (28 tools) and a JSON CLI all go through it, the latter two over an authenticated local Windows named pipe.",
+    tradeoff: "Kept everything on the machine: no account, no upload service, original video preserved, and agent access scoped to approved import and export folders. The cost is a Windows-only, unsigned alpha that still lacks interior cuts, audio capture and narration.",
+    tags: ["Electron", "React 19", "TypeScript", "Vite", "FFmpeg", "MCP", "Windows"],
+    githubUrl: "https://github.com/mogesjohnson/replay-studio",
+    repoPrivate: true,
+    pageUrl: "/replay-studio",
+    metrics: [
+      { label: "Release", value: "v0.2.0-alpha.4" },
+      { label: "Automated tests", value: "167 passing" },
+      { label: "Agent surface", value: "28 MCP tools" },
+    ],
+    codeArtifact: {
+      title: "The v0.1 project and overlay model",
+      language: "typescript",
+      filename: "src/types.ts",
+      code: `export type Look = 'tide' | 'dusk' | 'ember' | 'studio';
+
+export interface Overlay {
+  id: string;
+  type: 'text' | 'blur';
+  x: number; y: number; width: number; height: number;
+  start: number; end: number;
+  text?: string;
+}
+
+export interface Project {
+  id: string; name: string;
+  sourcePath: string; mediaUrl: string;
+  duration: number; width: number; height: number;
+  trimStart: number; trimEnd: number;
+  overlays: Overlay[];
+  look: Look; padding: number; radius: number;
+  createdAt: string; updatedAt: string;
+}
+
+export interface ExportOptions {
+  resolution: '1080p' | '720p' | 'original';
+  quality: 'high' | 'compact';
+}`,
+      explanation: "From the repository's default branch. Callouts and privacy blur are one overlay type with their own start and end, so trimming, framing and export all read the same small model while the original video stays untouched.",
+    },
+    architectureFlow: [
+      { step: "01", label: "Capture a window", tech: "Electron capture → WebM", detail: "Records one selected window with pause, resume and an immediate stop." },
+      { step: "02", label: "Edit the take", tech: "React editor", detail: "End trims, timed callouts, fixed privacy regions, canvas look, padding and radius." },
+      { step: "03", label: "Shared commands", tech: "Command service · MCP · CLI", detail: "People and agents share typed edits, revision checks, undo/redo and playback." },
+      { step: "04", label: "Export & review", tech: "FFmpeg → H.264 MP4", detail: "Exports to new files; Review builds frames, contact sheets and audio excerpts." },
+    ],
+  },
+  {
+    id: "switchyard",
+    title: "Switchyard: Personal Windows Project Desk",
+    shortTitle: "A project desk",
+    code: "05 / YRD",
+    signal: "yard",
+    category: "Windows Desktop Apps",
+    year: "2026",
+    summary: "A personal Windows project desk: choose the exact checkout, leave a Return Ticket with your next step, and come back with read-only context from an Obsidian vault. Built with Tauri 2, Rust, React and SQLite.",
+    problem: "Coming back to one of many projects means finding the right checkout, remembering where you stopped, and reopening the right folder, terminal and notes, without a tool quietly guessing priorities or running code on your behalf.",
+    architecture: "A Tauri 2 app with a React and TypeScript desk over a Rust core and SQLite state. Opening a target is a two-step intent: the native side prepares an exact, validated target that expires in 30 seconds, and only an explicit confirmation dispatches it.",
+    tradeoff: "Chose explicit human steps over automation. It never runs git status, hooks, project commands, dev servers or agent CLIs, so Git cleanliness, tests and runtime health stay Unknown rather than guessed.",
+    tags: ["Tauri 2", "Rust", "React 19", "TypeScript", "SQLite", "Obsidian", "Windows"],
+    githubUrl: "https://github.com/mogesjohnson/switchyard",
+    repoPrivate: true,
+    pageUrl: "/switchyard",
+    metrics: [
+      { label: "Release", value: "v0.1.0 personal" },
+      { label: "Tests", value: "56 frontend + 53 Rust" },
+      { label: "Library cap", value: "500 projects" },
+    ],
+    codeArtifact: {
+      title: "Dispatching a prepared open intent",
+      language: "rust",
+      filename: "src-tauri/src/broker.rs",
+      code: `pub fn commit_with(
+    &mut self,
+    r: CommitRequest,
+    dispatch: impl FnOnce(&windows::ValidatedPath, &str) -> Result<(), String>,
+) -> Result<Receipt, String> {
+    validate_uuid(&r.intent_id)?;
+    if let Some(receipt) = self.completed.get(&r.intent_id) {
+        return Ok(receipt.clone());
+    }
+    let pending = self
+        .pending
+        .remove(&r.intent_id)
+        .ok_or("This open intent is missing, used or expired; prepare again")?;
+    if pending.created.elapsed() > Duration::from_secs(30) {
+        return Err("Open intent expired; no native action occurred".into());
+    }
+    if pending.view.acknowledgment != "none" && !r.acknowledged {
+        return Err("Confirm the exact target/inspection preview before dispatch".into());
+    }
+    // ...re-resolve the target and compare its fingerprint before dispatch
+}`,
+      explanation: "An intent can be used once, expires after 30 seconds, and needs an explicit acknowledgment for new, changed or held targets. The target is resolved again before dispatch, so a moved or swapped folder never opens silently.",
+    },
+    architectureFlow: [
+      { step: "01", label: "Choose deliberately", tech: "Import · exact checkout", detail: "Only projects you select; a similar folder name never establishes identity." },
+      { step: "02", label: "Prepare & confirm", tech: "Rust broker · 30 s intent", detail: "Folder, Terminal or Notes targets are validated, previewed, then dispatched." },
+      { step: "03", label: "Return Ticket", tech: "SQLite · versioned", detail: "One next-action sentence, with optional note, blocker, time and energy." },
+      { step: "04", label: "Read-only context", tech: "Obsidian vault reader", detail: "A bounded brief with citations from an isolated, read-only Python worker." },
+    ],
+  },
+  {
+    id: "trace-workbench",
+    title: "TRACE Workbench: Shared Windows Computer Control for AI Agents",
+    shortTitle: "Computer control for agents",
+    code: "06 / TRC",
+    signal: "trace",
+    category: "AI Agent Tooling",
+    year: "2026",
+    summary: "Local Windows tools for Codex, Claude Code, Grok Build, and Gemini CLI. Reverse Engineer Anything inspects artifacts. Computer Use observes a window and operates it.",
+    problem: "Those four CLIs each need the same way to see a Windows window and act on it. TRACE is that interface. A skill stays short of universal until it has been checked with each host.",
+    architecture: "Version 0.1.0-alpha.3 is a Windows preview, not a published release. Computer Use exposes six MCP tools: doctor, list windows, open a session, observe, act, and close the session. One session holds the desktop at a time. The analysis connection still exposes 207 tools.",
+    tradeoff: "Verified on windows TRACE owns: exact key chords and selection, scrolling both ways, and drag and drop, plus a native guard that refuses input to a disabled window. Full modal recovery, a clean-machine setup, and a complete task with each agent are still open. Live Grok and Gemini sessions are unverified.",
+    tags: ["Node.js", "MCP", "Windows", "Codex", "Claude Code", "Grok Build", "Gemini CLI"],
+    githubUrl: "https://github.com/mogesjohnson/trace-workbench",
+    repoPrivate: true,
+    pageUrl: "/trace-workbench",
+    metrics: [
+      { label: "Version", value: "0.1.0-alpha.3" },
+      { label: "Computer tools", value: "6" },
+      { label: "Agent CLIs", value: "4" },
+    ],
+    codeArtifact: {
+      title: "The six Computer Use tools",
+      language: "mcp",
+      filename: "evidence/0.1.0-alpha.2/computer-live.json",
+      code: `trace_computer_doctor
+trace_computer_list_windows
+trace_computer_open_session
+trace_computer_observe
+trace_computer_act
+trace_computer_close_session`,
+      explanation: "The six tools on the trace-computer server in 0.1.0-alpha.2. A live stdio run called them against a window the test owns: seven actions, eight fresh screenshots. Typing, a coordinate click, an invoke, a checkbox, and the desktop lease were checked.",
+    },
+    architectureFlow: [
+      { step: "01", label: "Doctor", tech: "trace_computer_doctor", detail: "Continue when the provider reports ready." },
+      { step: "02", label: "Pick the window", tech: "list windows · open session", detail: "Open the exact window id that came back. One desktop lease at a time." },
+      { step: "03", label: "Observe, then act", tech: "observe · act", detail: "One action, bound to the latest observation." },
+      { step: "04", label: "Check, then release", tech: "fresh screenshot · close session", detail: "Read the new frame before the next action. Closing the session releases the desktop." },
     ],
   },
 ];

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
-import { externalPages } from "../../../src/data/externalPages";
+import { externalPages, menuLabel } from "../../../src/data/externalPages";
 import ThemeToggle from "../../../src/components/live/ThemeToggle";
 import { cls } from "../../../src/components/live/ui";
 import { holdScroll } from "../../lib/scroll";
@@ -57,7 +57,8 @@ export function DispatchBar({ current = "/projects", mark = "AI-first work" }: {
       </header>
 
       <div id="dispatch-menu" className={cls("menu", "dispatch-menu", open && "is-open")} inert={!open}>
-        <nav aria-label="Pages">
+        {/* The list can outgrow a short screen; Lenis is stopped while the menu is open, so it must not swallow this scroll. */}
+        <nav aria-label="Pages" data-lenis-prevent>
           <p className="menu-label menu-group-start">Main website</p>
           {MAIN_SECTIONS.map((item, index) => (
             <a key={item.href} href={item.href} onClick={() => setOpen(false)} style={{ "--i": index } as React.CSSProperties}>
@@ -75,7 +76,7 @@ export function DispatchBar({ current = "/projects", mark = "AI-first work" }: {
               style={{ "--i": index } as React.CSSProperties}
             >
               <span>{indexLabel(index)}</span>
-              {item.label}
+              {menuLabel(item)}
             </Link>
           ))}
         </nav>

@@ -1,0 +1,249 @@
+/* /switchyard only. Site tokens; amber is the chosen route, sky the stations' system parts. */
+
+/* ---- The yard -------------------------------------------------- */
+
+.sy-yard {
+  padding: 1.5rem 1.5rem 1.25rem;
+}
+
+.sy-yard svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.sy-sleepers line {
+  stroke: var(--line-strong);
+  stroke-width: 2;
+}
+
+.sy-rail {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.sy-rail-base {
+  stroke: var(--line-strong);
+}
+
+.sy-rail-side {
+  stroke: color-mix(in srgb, var(--text) 18%, transparent);
+}
+
+.sy-rail-dashed {
+  stroke-dasharray: 10 9;
+}
+
+.sy-route {
+  fill: none;
+  stroke: var(--amber);
+  stroke-width: 4;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--amber) 55%, transparent));
+}
+
+.sy-side-label,
+.sy-switch text {
+  fill: var(--pd-muted);
+  font-family: var(--font-dispatch-mono), ui-monospace, monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+
+/* The switch. Rest pose (and reduced motion): thrown to the main line, lever up,
+   hub filled. `.is-waiting` (switch-track.ts) lays the lever along the side track;
+   the throw is a 0.45s transition on the arrival ease. */
+.sy-switch-hub {
+  fill: color-mix(in srgb, var(--sky) 30%, var(--bg));
+  stroke: var(--sky);
+  stroke-width: 2;
+  transition: fill 0.45s var(--ease-out);
+}
+
+.sy-lever {
+  transform-box: view-box;
+  transform-origin: 200px 190px;
+  transform: rotate(-90deg);
+  transition: transform 0.45s var(--ease-out);
+}
+
+.sy-lever line {
+  stroke: var(--sky);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.sy-lever circle {
+  fill: var(--sky);
+}
+
+.sy-switch.is-waiting .sy-lever {
+  transform: rotate(0deg);
+}
+
+.sy-switch.is-waiting .sy-switch-hub {
+  fill: var(--bg);
+}
+
+/* A stop fills once the marker has passed it. */
+.sy-stop {
+  fill: var(--amber);
+  stroke: var(--amber);
+  stroke-width: 2.5;
+  transition: fill 0.4s var(--ease-out);
+}
+
+.sy-stop.is-dim {
+  fill: var(--bg);
+}
+
+.sy-marker {
+  fill: var(--amber);
+  stroke: var(--bg);
+  stroke-width: 3;
+}
+
+.sy-stations {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1rem 0 0;
+  padding: 1rem 0 0;
+  border-top: 1px solid var(--line);
+  list-style: none;
+}
+
+.sy-stations li {
+  transition: opacity 0.4s var(--ease-out);
+}
+
+.sy-stations li.is-dim {
+  opacity: 0.3;
+}
+
+.sy-stations span {
+  color: var(--amber-text);
+  font-family: var(--font-dispatch-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+}
+
+.sy-stations strong {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 1rem;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.sy-stations p {
+  margin: 0.3rem 0 0;
+  color: var(--text-2);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+
+@media (max-width: 960px) {
+  .sy-stations {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+}
+
+/* The two side-track labels, repeated in HTML for phones (the SVG copy is too small there). */
+.sy-legend {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  .sy-yard {
+    padding: 1rem;
+  }
+
+  .sy-side-label {
+    display: none;
+  }
+
+  .sy-legend {
+    display: grid;
+    gap: 0.35rem;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    list-style: none;
+    color: var(--pd-muted);
+    font-family: var(--font-dispatch-mono), ui-monospace, monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .sy-legend li::before {
+    content: "";
+    display: inline-block;
+    width: 1.4rem;
+    margin-right: 0.5rem;
+    border-top: 2px solid color-mix(in srgb, var(--text) 22%, transparent);
+    vertical-align: middle;
+  }
+
+  .sy-legend li:last-child::before {
+    border-top-style: dashed;
+  }
+
+  /* On a phone the station list is the line: a vertical rail whose amber fill
+     follows the route (--p from switch-track.ts; 1 when static), with a stop on
+     each station that fills as the marker passes it. */
+  .sy-stations {
+    position: relative;
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+    padding-left: 2rem;
+  }
+
+  .sy-stations::before,
+  .sy-stations::after {
+    content: "";
+    position: absolute;
+    top: 1.5rem;
+    bottom: 0.5rem;
+    left: 0.5rem;
+    width: 3px;
+    border-radius: 3px;
+  }
+
+  .sy-stations::before {
+    background: var(--line-strong);
+  }
+
+  .sy-stations::after {
+    background: var(--amber);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--amber) 45%, transparent);
+    transform: scaleY(var(--p, 1));
+    transform-origin: 50% 0;
+  }
+
+  .sy-stations li {
+    position: relative;
+  }
+
+  .sy-stations li::before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    top: 0.1rem;
+    left: calc(-1.5rem + 1.5px - 7px);
+    box-sizing: border-box;
+    width: 14px;
+    height: 14px;
+    border: 2.5px solid var(--amber);
+    border-radius: 50%;
+    background: var(--amber);
+    transition: background-color 0.4s var(--ease-out);
+  }
+
+  .sy-stations li.is-dim::before {
+    background: var(--bg);
+  }
+}
