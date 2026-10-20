@@ -295,7 +295,8 @@ foreach ($dept in $Departments) {
     architecture: "Built self-balancing AVL trees with automatic single and double rotations maintaining strict height balance factors, paired with Splay Trees for amortized O(log N) temporal locality.",
     tradeoff: "Selected AVL trees over Red-Black trees for read-heavy operations where strictly smaller tree heights minimize pointer-chasing latency during searches.",
     tags: ["C++", "AVL Trees", "Splay Trees", "Graph Theory", "Big-O Analysis", "Memory Management"],
-    githubUrl: "https://github.com/mogesjohnson/data-structures-cpp",
+    githubUrl: "https://github.com/mogesjohnson?tab=repositories&language=c%2B%2B",
+    repoNote: "This links to the course's C++ assignment repositories, such as Self_Organizing_Lists, LRU_Buffer_Pool and Binary_Search_Tree. They hold the course's starter files, the professor's ADT headers and code from Shaffer's textbook, rather than the finished work this card describes.",
     metrics: [
       { label: "Search Complexity", value: "O(log N) Guaranteed" },
       { label: "Memory Overhead", value: "Zero Memory Leaks (Valgrind)" },
