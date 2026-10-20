@@ -15,6 +15,14 @@ export const externalPages = [
     kind: "page",
   },
   {
+    id: "now",
+    label: "Now",
+    href: "/now",
+    command: "Open Now",
+    keywords: "now status current work",
+    kind: "page",
+  },
+  {
     id: "shadow-army",
     label: "Shadow Army",
     href: "/shadow-army",
