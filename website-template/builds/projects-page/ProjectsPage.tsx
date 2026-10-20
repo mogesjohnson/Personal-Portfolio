@@ -103,8 +103,9 @@ export function ProjectsPage() {
                 A link can open one page. The hash looks like the README’s example: <code>#day=2026-10-05&amp;pin=&lt;id&gt;&amp;page=2</code>.
               </p>
               <p data-reveal>
-                A Topics view lists every topic across all days, most recently updated first, each with one living
-                summary. It opens at <code>#view=topics</code>. The layout works on a phone.
+                A Topics view is a folder tree: every topic across all days, most recently updated first, with its note
+                count and one living summary. Folders can be searched by name, and{" "}
+                <code>#view=topics&amp;topic=&lt;slug&gt;</code> opens one. The layout works on a phone.
               </p>
               <p data-reveal>
                 Anyone can read the board. A lock icon is where the owner signs in. Everyone else gets a read-only board.
@@ -152,7 +153,8 @@ export function ProjectsPage() {
               <p data-reveal>
                 How to post it holds the docs and the code for getting a conversation with Grok in a Tesla onto the
                 Post-it Board. The docs start at <code>docs/main-workflow-goal.md</code>. The code is the transcript
-                poller in <code>poller/</code>: Node, no dependencies, and 41 unit tests.
+                poller in <code>poller/</code>: Node, no dependencies, and 53 unit tests. Since October 18 it skips
+                throwaway chats, like directions, weather, timers, and music, before it summarizes.
               </p>
               <p data-reveal>
                 The goal is zero friction while driving. No screens, no typing, no taps. One pin per topic, and one

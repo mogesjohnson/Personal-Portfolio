@@ -2,11 +2,11 @@
 
 Its own section. It names the Post-it Board as the place notes land. It does not explain how the board accepts a note. That join is the connection section.
 
-Updated 2026-10-11 from the owner's current facts and `mogesjohnson/how-to-post-it` on `main` (README, `docs/`, `poller/`). This replaces the 2026-10-09 reading, which described the transcript path as designed but not built, with an 8-second silence threshold. That reading is kept at the end of this file, marked superseded.
+Updated 2026-10-11 from the owner's current facts and `mogesjohnson/how-to-post-it` on `main` (README, `docs/`, `poller/`). This replaces the 2026-10-09 reading, which described the transcript path as designed but not built, with an 8-second silence threshold. That reading is kept at the end of this file, marked superseded. Updated again 2026-10-20: the throwaway-chat filter (`03efd1b`, PR #12, 2026-10-18, `poller/filter.mjs`) and the test count, 53/53 in `node poller/test/run.mjs` per PR #12.
 
 ## Visitor copy
 
-How to post it holds the docs and the code for getting a conversation with Grok in a Tesla onto the Post-it Board. The docs start at `docs/main-workflow-goal.md`. The code is the transcript poller in `poller/`: Node, no dependencies, and 41 unit tests.
+How to post it holds the docs and the code for getting a conversation with Grok in a Tesla onto the Post-it Board. The docs start at `docs/main-workflow-goal.md`. The code is the transcript poller in `poller/`: Node, no dependencies, and 53 unit tests. Since October 18 it skips throwaway chats, like directions, weather, timers, and music, before it summarizes.
 
 The goal is zero friction while driving. No screens, no typing, no taps. One pin per topic, and one living summary for each topic.
 
