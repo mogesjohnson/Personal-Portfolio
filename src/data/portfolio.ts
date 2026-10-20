@@ -30,6 +30,8 @@ export interface Project {
   tradeoff: string;
   tags: string[];
   githubUrl: string;
+  /** Shown under the repository link when the repo is not the work the card describes. */
+  repoNote?: string;
   liveUrl?: string;
   codeArtifact: CodeArtifact;
   architectureFlow: ArchitectureNode[];
@@ -239,7 +241,8 @@ export const projects: Project[] = [
     architecture: "Configured Windows Server 2022 as a Primary Domain Controller (PDC) hosting Active Directory Domain Services (AD DS), DNS, and hierarchical Organizational Units (OUs) mapped to corporate departments.",
     tradeoff: "Employed standardized Group Policy Objects (GPOs) applied at OU boundaries rather than individual user permissions to ensure consistent auditability and prevent configuration drift.",
     tags: ["Windows Server 2022", "Active Directory", "Group Policy Management", "DNS", "Security"],
-    githubUrl: "https://github.com/mogesjohnson/active-directory-lab",
+    githubUrl: "https://github.com/mogesjohnson/Bobs-Bodyguards-webapp",
+    repoNote: "This repository is the website for Bob's Bodyguards, the company the lab was built around. It is not the Active Directory administration work itself, which is not in a public repository.",
     metrics: [
       { label: "Environment", value: "Windows Server 2022" },
       { label: "Architecture", value: "Hierarchical OU Model" },

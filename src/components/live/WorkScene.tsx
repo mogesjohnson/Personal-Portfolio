@@ -237,6 +237,7 @@ export default function WorkScene() {
                   View repository <ArrowUpRight size={15} />
                 </a>
               </div>
+              {project.repoNote && <p className="stage-repo-note">{project.repoNote}</p>}
             </div>
 
             <CaseFile project={project} open={open} view={view} onView={setView} />

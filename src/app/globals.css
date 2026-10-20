@@ -1627,6 +1627,14 @@ body::before {
   margin-top: 1.6rem;
 }
 
+.stage-repo-note {
+  max-width: 46ch;
+  margin-top: 0.9rem;
+  color: var(--muted);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
 .turn {
   transition: transform 0.4s var(--ease-out);
 }
