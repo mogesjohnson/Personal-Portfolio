@@ -73,7 +73,9 @@ Checked copy lives in `builds/projects-page/sections/`. Those files win when the
 
 ## Project detail pages
 
-`/replay-studio` and `/switchyard` share the `builds/project-detail/` shell by the owner's choice. Each page's own subject lives in its signature stage. The sources are the private repos `mogesjohnson/replay-studio` (tag `v0.2.0-alpha.4`) and `mogesjohnson/switchyard` (`main`, v0.1.0). Read them with `gh`; the public API returns 404. Each build's `BRIEF.md` lists the files read, and every fact on the page comes from them. Both repos are private, so neither page links to GitHub; the footer says so instead. Add a source link only after the owner makes a repo public.
+`/replay-studio` and `/switchyard` share the `builds/project-detail/` shell by the owner's choice. Each page's own subject lives in its signature stage. The sources are the private repos `mogesjohnson/replay-studio` (tag `v0.2.0-alpha.4`) and `mogesjohnson/switchyard` (`main`, v0.1.0). Read them with `gh`; the public API returns 404. Each build's `BRIEF.md` lists the files read, and every fact on the page comes from them.
+
+The owner chose on 2026-10-20 to link the private repos and label them, rather than leave the pages without a source link. A page passes `repo={{ href, name, private: true }}` to `ProjectFooter`. The footer link names the repo, opens in a new tab with `rel="noopener noreferrer"`, and carries a lock and "Private · collaborators only", so a visitor knows before the click that GitHub may show a 404. The homepage Work card does the same with `githubUrl` plus `repoPrivate: true` in `src/data/portfolio.ts`: it shows "View repository" with a small "Private" label. A card without `githubUrl` keeps the "Private repository" lock text.
 
 ## Pull requests
 

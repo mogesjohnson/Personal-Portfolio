@@ -288,10 +288,7 @@ export function ReplayStudioPage() {
           />
         </Section>
 
-        <ProjectFooter
-          current="/replay-studio"
-          note={{ label: "Private repository · no source link", title: "The source repository is private, so this page links nowhere on GitHub." }}
-        />
+        <ProjectFooter current="/replay-studio" repo={{ href: "https://github.com/mogesjohnson/replay-studio", name: "mogesjohnson/replay-studio", private: true }} />
       </DetailShell>
     </ReplayMotion>
   );

@@ -9,7 +9,7 @@ Stations 1–3 merged (METHODS: section builds may merge). Route `/switchyard`, 
 - **Audience:** recruiters and engineers coming from the Work section or the site menu.
 - **One message:** Switchyard is a personal Windows project desk. It opens the exact checkout you chose, records a Return Ticket when you stop, and reads Obsidian notes as read-only context.
 - **Content inventory:** taken from the private repo `mogesjohnson/switchyard`: README, docs, the Rust broker and the UI labels. No `[[placeholder]]` copy. The Return Ticket card uses the app's own field labels and placeholders. The validation numbers (56, 53, 500, 30 s) come from the repo.
-- **Constraints:** the repo is private, so the page has no GitHub source link. The screens were captured from the repo's own browser design preview (`vite`, fixture data, no Tauri binary). Only npm dev packages were installed, with `--ignore-scripts`; no executables were downloaded.
+- **Constraints:** the repo is private. The footer links it as `mogesjohnson/switchyard` with a lock and "Private · collaborators only" (owner decision, 2026-10-20; see Overrides). The screens were captured from the repo's own browser design preview (`vite`, fixture data, no Tauri binary). Only npm dev packages were installed, with `--ignore-scripts`; no executables were downloaded.
 - **Motion budget:** calm plus one signature move. That means the hero opening, reveals, split headings and the switch track (see Score). The homepage carries this project's `yard` particle formation.
 
 ## Overrides of RULES.md (user instruction wins, recorded here)
@@ -17,6 +17,7 @@ Stations 1–3 merged (METHODS: section builds may merge). Route `/switchyard`, 
 - **R1/R2 (new palette and type):** the user asked to keep the site's color scheme. The page uses only the `globals.css` tokens and the `/projects` type pairing.
 - **R12 (no edits outside the build):** the user asked for the page on the website, so the `src/` wiring was edited (see the REPLAY Studio brief for the shared list).
 - **R14 / METHODS station 0 (branch name):** the branch is `grok/add-replay-studio-switchyard`, as the user asked.
+- **Private source link (owner decision, 2026-10-20):** the page used to say "Private repository · no source link". The owner chose to link `https://github.com/mogesjohnson/switchyard` with a visible private label instead. The footer and the homepage Work card both say it is private before the click, because GitHub shows a 404 to anyone who is not a collaborator.
 
 ## Concept
 

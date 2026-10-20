@@ -260,10 +260,7 @@ export function SwitchyardPage() {
           />
         </Section>
 
-        <ProjectFooter
-          current="/switchyard"
-          note={{ label: "Private repository · no source link", title: "The source repository is private and contains machine-specific paths, so this page links nowhere on GitHub." }}
-        />
+        <ProjectFooter current="/switchyard" repo={{ href: "https://github.com/mogesjohnson/switchyard", name: "mogesjohnson/switchyard", private: true }} />
       </DetailShell>
     </SwitchyardMotion>
   );

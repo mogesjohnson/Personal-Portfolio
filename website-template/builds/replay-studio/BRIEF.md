@@ -9,7 +9,7 @@ Stations 1–3 merged (METHODS: section builds may merge). Route `/replay-studio
 - **Audience:** recruiters and engineers coming from the Work section or the site menu.
 - **One message:** REPLAY Studio is a local Windows app that turns a recorded window into a polished, privacy-safe MP4, and an agent can drive the same editor through a local MCP bridge.
 - **Content inventory:** taken from the private repo `mogesjohnson/replay-studio` at tag `v0.2.0-alpha.4` (README, docs, `src/types.ts`, evidence images). No `[[placeholder]]` copy. Every number on the page (167 tests, 28 MCP tools, 40 TypeScript files, 6 import formats, Claude Code 2.1.302) comes from those files. Nothing is invented.
-- **Constraints:** the repo is private, so the page has no GitHub source link and says so in the footer. Screens are the repo's own evidence images, converted to WebP. `agent-access.png` was left out because it shows a local Windows user path. No executables were downloaded.
+- **Constraints:** the repo is private. The footer links it as `mogesjohnson/replay-studio` with a lock and "Private · collaborators only" (owner decision, 2026-10-20; see Overrides). Screens are the repo's own evidence images, converted to WebP. `agent-access.png` was left out because it shows a local Windows user path. No executables were downloaded.
 - **Motion budget:** calm plus one signature move. That means the hero opening, reveals, split headings and the timeline scrub (see Score). There is no particle field on the detail page; the field lives on the homepage, where this project has its own `reel` formation.
 
 ## Overrides of RULES.md (user instruction wins, recorded here)
@@ -17,6 +17,7 @@ Stations 1–3 merged (METHODS: section builds may merge). Route `/replay-studio
 - **R1/R2 (new palette and type):** the user asked to "keep the color scheme" and match the main page. The page uses only the `globals.css` tokens and the Newsreader / IBM Plex Mono pairing from `/projects`.
 - **R12 (no edits outside the build):** the user asked for these pages on the website. So `src/app/replay-studio`, `src/data/externalPages.ts`, `src/data/portfolio.ts`, the Work section and the homepage formations were edited.
 - **R14 / METHODS station 0 (branch name):** the branch is `grok/add-replay-studio-switchyard`, as the user asked. The commit and PR follow the CONNECTIONS.md layout.
+- **Private source link (owner decision, 2026-10-20):** the page used to say "Private repository · no source link". The owner chose to link `https://github.com/mogesjohnson/replay-studio` with a visible private label instead. The footer and the homepage Work card both say it is private before the click, because GitHub shows a 404 to anyone who is not a collaborator.
 
 ## Concept
 
