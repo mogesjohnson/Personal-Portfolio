@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // The shadow-docs submodule lints itself; its own app and config are not part of this site.
+    "website-template/builds/shadow-docs/**",
   ]),
 ]);
 

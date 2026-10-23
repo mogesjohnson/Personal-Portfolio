@@ -1,0 +1,4 @@
+[submodule "website-template/builds/shadow-docs"]
+	path = website-template/builds/shadow-docs
+	url = https://github.com/mogesjohnson/shadow-docs.git
+	branch = main
