@@ -23,6 +23,14 @@ export const externalPages = [
     kind: "page",
   },
   {
+    id: "shadow-docs",
+    label: "Shadow Docs",
+    href: "/shadow-docs",
+    command: "Open Shadow Docs",
+    keywords: "shadow army documentation docs guide",
+    kind: "page",
+  },
+  {
     id: "shadow-army",
     label: "Shadow Army",
     href: "/shadow-army",

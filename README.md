@@ -17,9 +17,17 @@ The field lowers its particle count automatically if the frame rate drops. The l
 ## Run locally
 
 ```bash
+git submodule update --init
 npm ci
 npm run dev
 ```
+
+Shadow Docs uses the merged commit pinned by this repo, so its development PRs
+do not change the portfolio preview. The submodule repository is private; the
+checkout and build environment need GitHub access to it. To preview a newer
+merged version, run `git submodule update --remote website-template/builds/shadow-docs`,
+verify the portfolio, and commit the updated submodule pointer. Install packages
+at the portfolio root only.
 
 Open [http://localhost:3000](http://localhost:3000). The intro plays once per browser session. Use **Replay the Live Motion intro** in the command menu (`Ctrl+K` / `Cmd+K`) to see it again.
 
