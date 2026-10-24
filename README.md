@@ -17,9 +17,17 @@ The field lowers its particle count automatically if the frame rate drops. The l
 ## Run locally
 
 ```bash
+git submodule update --init
 npm ci
 npm run dev
 ```
+
+Shadow Docs uses the merged commit pinned by this repo, so its development PRs
+do not change the portfolio preview. The submodule repository is private; the
+checkout and build environment need GitHub access to it. To preview a newer
+merged version, run `git submodule update --remote website-template/builds/shadow-docs`,
+verify the portfolio, and commit the updated submodule pointer. Install packages
+at the portfolio root only.
 
 Open [http://localhost:3000](http://localhost:3000). The intro plays once per browser session. Use **Replay the Live Motion intro** in the command menu (`Ctrl+K` / `Cmd+K`) to see it again.
 
@@ -45,3 +53,4 @@ npm run build
 | [`src/app/projects/page.tsx`](src/app/projects/page.tsx) | The `/projects` route. Its copy lives in [`website-template/builds/projects-page/`](website-template/builds/projects-page/): Shadow Army v1, [Post-it Board](https://mogesjohnson.github.io/post-it-board/), [How to post it](https://github.com/mogesjohnson/how-to-post-it), and the join between the last two. The checked facts for each are in that folder's `sections/` (last updated 2026-10-11, when the car-to-board transcript path went live) |
 | [`src/app/replay-studio/page.tsx`](src/app/replay-studio/page.tsx), [`src/app/switchyard/page.tsx`](src/app/switchyard/page.tsx) | Project detail pages for REPLAY Studio and Switchyard. Their source repos are private: the footer and the Work cards link them with a "Private" label, and only collaborators can open them. The copy and the checked facts live in [`website-template/builds/replay-studio/`](website-template/builds/replay-studio/) and [`website-template/builds/switchyard/`](website-template/builds/switchyard/). The shared layout is in [`website-template/builds/project-detail/`](website-template/builds/project-detail/) |
 | [`src/app/trace-workbench/page.tsx`](src/app/trace-workbench/page.tsx) | Project detail page for TRACE Workbench. Same shell as REPLAY Studio: what it is; how it's used, as an observe, act, observe stage that replays one real click on the REPLAY sample (Tide to Dusk); a short loop of that click; and a longer run where TRACE types, drags, scrubs, and plays the same sample. Its source repo is private: the footer and the Work card link it with a "Private" label, as for REPLAY Studio and Switchyard. Copy and sources live in [`website-template/builds/trace-workbench/`](website-template/builds/trace-workbench/) |
+| [`src/app/shadow-docs/`](src/app/shadow-docs/) | Shadow Docs, the Shadow Army documentation, at `/shadow-docs` and `/shadow-docs/<slug>`. The docs live in their own repo, [`mogesjohnson/shadow-docs`](https://github.com/mogesjohnson/shadow-docs), included here as a git submodule at `website-template/builds/shadow-docs`. The route's layout adds the site theme toggle, a link home and the portfolio footer columns. After cloning, run `git submodule update --init`. Don't run `npm install` inside the submodule: the docs use this site's React |
