@@ -12,6 +12,7 @@ This folder is a factory. It turns a request into a new, original webpage or pag
 
 ## Entry points
 
+- `How-Claude-Motion.md` is the generative guide. Read it when the request is a new page or section, or when the bar is smooth motion of the kind on claude.com, anthropic.com, or this portfolio. It is how a first edition gets invented on this kit.
 - `RULES.md` is binding on every build and every edit in this folder. Read it before starting the brief: R1–R4 shape the concept, not just the code.
 - `METHODS.md` holds the build stations (branch → brief → concept → score → build → verify → ship → harvest). Run them in order for any request to make a page or section.
 - `GRAPH.md` maps every file and folder to what it holds and how they connect. Use it to find things.

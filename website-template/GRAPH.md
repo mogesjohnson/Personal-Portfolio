@@ -11,6 +11,7 @@ website-template/
 ├─ COMPONENTS.md          vault index (YAML frontmatter only)
 ├─ CONNECTIONS.md         owner decisions: host path, palette, nav, pull requests
 ├─ GRAPH.md               this map
+├─ How-Claude-Motion.md   generative guide: quality bar, translation, first-edition workflow
 ├─ README.md              human overview
 ├─ motion-system.json     43 patterns, tokens, engine, choreography, a11y, perf, QA, recipes, remix
 ├─ motion-system.schema.json   schema for the spec

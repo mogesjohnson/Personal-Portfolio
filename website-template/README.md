@@ -57,7 +57,8 @@ Not yet verified: the scenes and particle field running inside a fresh app in a 
 
 ## Start here
 
-1. [docs/ANIMATION-AUDIT.md](docs/ANIMATION-AUDIT.md): what the site does and why it works.
-2. [docs/CHOREOGRAPHY.md](docs/CHOREOGRAPHY.md): the numbers that make it feel designed.
-3. [docs/INTEGRATION.md](docs/INTEGRATION.md): build something new with it.
-4. `motion-system.json` → `recipes` and `remix`: ideas for taking it somewhere different.
+1. [How-Claude-Motion.md](How-Claude-Motion.md): how to invent a new site at this quality, instead of repeating one.
+2. [docs/ANIMATION-AUDIT.md](docs/ANIMATION-AUDIT.md): what the site does and why it works.
+3. [docs/CHOREOGRAPHY.md](docs/CHOREOGRAPHY.md): the numbers that make it feel designed.
+4. [docs/INTEGRATION.md](docs/INTEGRATION.md): build something new with it.
+5. `motion-system.json` → `recipes` and `remix`: ideas for taking it somewhere different.
