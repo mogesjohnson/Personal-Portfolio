@@ -16,7 +16,7 @@ Binding on every build and every edit in this folder, for every agent and model.
   - its amber `#fbbf24` / sky `#38bdf8` palette
 - **R3. Other sites lend principles, never pages.** When the user cites a site, write the *principle* you take from it in `CONCEPT.md` and build from that sentence. Hard guardrail: take no markup, copy, assets, brand marks or distinctive layout from any other site.
 - **R4. Every page build has a signature move.** Name it and specify it in `SCORE.md`, and implement it inside the build folder. A section build instead shifts at least two axes from `motion-system.json` › `remix.variationAxes`.
-- **R5. Content comes from the user.** Anything not supplied is written as `[[placeholder: what goes here]]`. Facts about real people, companies and products come only from the user.
+- **R5. Real facts come from the user. A fictional world is written in full.** Facts about real people, companies, and products come only from the user. A fact the user said they would supply, and has not, is `[[placeholder: what goes here]]`. A fictional subject is the opposite: invent the names, places, numbers, and prices, set `fiction: true` in `BRIEF.md`, and ship no visible placeholder. A visitor who can read `[[placeholder]]` is looking at an unfinished page.
 - **R6. Draw assets in code** (CSS, SVG, canvas), or use files the user supplies with the rights to use them.
 
 **Originality check.** Run it at the Verify station. Every box must be ticked:
